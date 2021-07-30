@@ -202,7 +202,7 @@ impl BlockStore {
         }
         Ok(())
     }
-
+    #[allow(clippy::needless_borrow)]
     pub async fn fast_forward_sync<'a>(
         highest_ordered_cert: &'a QuorumCert,
         highest_ledger_info: LedgerInfoWithSignatures,

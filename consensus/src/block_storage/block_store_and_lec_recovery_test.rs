@@ -19,7 +19,7 @@ use futures::channel::mpsc;
 use state_sync::client::StateSyncClient;
 use std::sync::Arc;
 use storage_interface::DbReader;
-
+#[allow(clippy::needless_borrow)]
 fn get_initial_data_and_qc(db: &dyn DbReader) -> (RecoveryData, QuorumCert) {
     // find the block corresponding to storage latest ledger info
     let startup_info = db

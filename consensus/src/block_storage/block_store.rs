@@ -261,7 +261,8 @@ impl BlockStore {
         counters::LAST_COMMITTED_ROUND.set(block_store.ordered_root().round() as i64);
         block_store
     }
-
+    #[allow(clippy::unwrap_or_else_default)]
+    #[allow(clippy::needless_borrow)]
     /// Commit the given block id with the proof, returns () on success or error
     pub async fn commit(&self, finality_proof: LedgerInfoWithSignatures) -> anyhow::Result<()> {
         let block_id_to_commit = finality_proof.ledger_info().consensus_block_id();
@@ -350,7 +351,6 @@ impl BlockStore {
             .into_inner();
         self.try_commit().await;
     }
-
     /// Execute and insert a block if it passes all validation tests.
     /// Returns the Arc to the block kept in the block store after persisting it to storage
     ///
@@ -359,6 +359,7 @@ impl BlockStore {
     /// Duplicate inserts will return the previously inserted block (
     /// note that it is considered a valid non-error case, for example, it can happen if a validator
     /// receives a certificate for a block that is currently being added).
+    #[allow(clippy::unwrap_or_else_default)]
     pub fn execute_and_insert_block(&self, block: Block) -> anyhow::Result<Arc<ExecutedBlock>> {
         if let Some(existing_block) = self.get_block(block.id()) {
             return Ok(existing_block);

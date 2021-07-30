@@ -167,7 +167,7 @@ impl RecoveryManager {
         let sync_info = vote_msg.sync_info();
         self.sync_up(sync_info, author).await
     }
-
+    #[allow(clippy::needless_borrow)]
     pub async fn sync_up(&mut self, sync_info: &SyncInfo, peer: Author) -> Result<RecoveryData> {
         sync_info
             .verify(&self.epoch_state.verifier)
