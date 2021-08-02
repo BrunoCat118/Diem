@@ -141,7 +141,7 @@ impl<'env> SpecTranslator<'env> {
 
 // Specification Variables
 // =======================
-
+#[allow(clippy::unnecessary_to_owned)]
 impl<'env> SpecTranslator<'env> {
     pub fn translate_spec_vars(&self, module_env: &ModuleEnv<'_>, mono_info: &MonoInfo) {
         let empty = &BTreeSet::new();
@@ -192,7 +192,7 @@ impl<'env> SpecTranslator<'env> {
 
 // Specification Functions
 // =======================
-
+#[allow(clippy::unnecessary_to_owned)]
 impl<'env> SpecTranslator<'env> {
     pub fn translate_spec_funs(&self, module_env: &ModuleEnv<'_>, mono_info: &MonoInfo) {
         let empty = &BTreeSet::new();
@@ -323,7 +323,6 @@ impl<'env> SpecTranslator<'env> {
                     );
                 }
             }
-            emitln!(self.writer);
         } else {
             emitln!(self.writer, " {");
             self.writer.indent();
@@ -331,8 +330,9 @@ impl<'env> SpecTranslator<'env> {
             emitln!(self.writer);
             self.writer.unindent();
             emitln!(self.writer, "}");
-            emitln!(self.writer);
         }
+
+        emitln!(self.writer);
     }
 }
 

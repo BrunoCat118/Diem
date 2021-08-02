@@ -307,7 +307,7 @@ impl BlockStore {
                             block_tree,
                             storage,
                             commit_root,
-                            &executed_blocks,
+                            executed_blocks,
                         );
                     },
                 ),

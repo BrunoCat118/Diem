@@ -182,7 +182,7 @@ impl RecoveryManager {
         );
         let mut retriever = BlockRetriever::new(self.network.clone(), peer);
         let recovery_data = BlockStore::fast_forward_sync(
-            &sync_info.highest_ordered_cert(),
+            sync_info.highest_ordered_cert(),
             sync_info.highest_ledger_info().clone(),
             &mut retriever,
             self.storage.clone(),

@@ -1197,6 +1197,7 @@ impl<'env, 'translator> ModuleBuilder<'env, 'translator> {
     /// Sets up an expression translator for the given spec block context. If kind
     /// is given, includes all the symbols which can be consumed by the condition,
     /// otherwise only defines type parameters.
+    #[allow(clippy::unnecessary_to_owned)]
     fn exp_translator_for_context<'module_translator>(
         &'module_translator mut self,
         loc: &Loc,
