@@ -4993,6 +4993,7 @@ dependencies = [
  "diem-workspace-hack",
  "once_cell",
  "serde",
+ "serde_json",
 ]
 
 [[package]]
