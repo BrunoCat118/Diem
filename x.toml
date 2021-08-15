@@ -56,6 +56,7 @@ allowed = [
     "clippy::ptr-arg",
     "clippy::let-and-return",
     "clippy::iter-overeager-cloned",
+    "clippy::redundant-closure",
 ]
 warn = [
     "clippy::wildcard_dependencies",
