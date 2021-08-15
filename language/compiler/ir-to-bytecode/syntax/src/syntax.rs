@@ -399,13 +399,13 @@ fn parse_qualified_function_name(
         | Tok::BorrowGlobalMut
         | Tok::MoveFrom
         | Tok::MoveTo
-        | Tok::VecEmpty
+        | Tok::VecPack(_)
         | Tok::VecLen
         | Tok::VecImmBorrow
         | Tok::VecMutBorrow
         | Tok::VecPushBack
         | Tok::VecPopBack
-        | Tok::VecDestroyEmpty
+        | Tok::VecUnpack(_)
         | Tok::VecSwap
         | Tok::Freeze
         | Tok::ToU8
@@ -538,13 +538,13 @@ fn parse_call_or_term_(tokens: &mut Lexer) -> Result<Exp_, ParseError<Loc, anyho
         | Tok::BorrowGlobalMut
         | Tok::MoveFrom
         | Tok::MoveTo
-        | Tok::VecEmpty
+        | Tok::VecPack(_)
         | Tok::VecLen
         | Tok::VecImmBorrow
         | Tok::VecMutBorrow
         | Tok::VecPushBack
         | Tok::VecPopBack
-        | Tok::VecDestroyEmpty
+        | Tok::VecUnpack(_)
         | Tok::VecSwap
         | Tok::Freeze
         | Tok::DotNameValue
@@ -736,10 +736,10 @@ fn parse_builtin(tokens: &mut Lexer) -> Result<Builtin, ParseError<Loc, anyhow::
             consume_end_of_generics(tokens)?;
             Ok(Builtin::MoveTo(StructName(name), type_actuals))
         }
-        Tok::VecEmpty => {
+        Tok::VecPack(num) => {
             tokens.advance()?;
             let type_actuals = parse_type_actuals(tokens)?;
-            Ok(Builtin::VecEmpty(type_actuals))
+            Ok(Builtin::VecPack(type_actuals, num))
         }
         Tok::VecLen => {
             tokens.advance()?;
@@ -766,10 +766,10 @@ fn parse_builtin(tokens: &mut Lexer) -> Result<Builtin, ParseError<Loc, anyhow::
             let type_actuals = parse_type_actuals(tokens)?;
             Ok(Builtin::VecPopBack(type_actuals))
         }
-        Tok::VecDestroyEmpty => {
+        Tok::VecUnpack(num) => {
             tokens.advance()?;
             let type_actuals = parse_type_actuals(tokens)?;
-            Ok(Builtin::VecDestroyEmpty(type_actuals))
+            Ok(Builtin::VecUnpack(type_actuals, num))
         }
         Tok::VecSwap => {
             tokens.advance()?;
@@ -948,13 +948,13 @@ fn parse_cmd_(tokens: &mut Lexer) -> Result<Cmd_, ParseError<Loc, anyhow::Error>
         | Tok::BorrowGlobalMut
         | Tok::MoveFrom
         | Tok::MoveTo
-        | Tok::VecEmpty
+        | Tok::VecPack(_)
         | Tok::VecLen
         | Tok::VecImmBorrow
         | Tok::VecMutBorrow
         | Tok::VecPushBack
         | Tok::VecPopBack
-        | Tok::VecDestroyEmpty
+        | Tok::VecUnpack(_)
         | Tok::VecSwap
         | Tok::Freeze
         | Tok::DotNameValue
