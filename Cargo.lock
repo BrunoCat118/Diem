@@ -4827,7 +4827,6 @@ dependencies = [
  "move-command-line-common",
  "move-core-types",
  "move-ir-types",
- "move-lang-test-utils",
  "move-stdlib",
  "move-symbol-pool",
  "once_cell",
@@ -4852,16 +4851,6 @@ dependencies = [
  "move-lang",
  "once_cell",
  "tempfile",
-]
-
-[[package]]
-name = "move-lang-test-utils"
-version = "0.1.0"
-dependencies = [
- "datatest-stable",
- "diem-workspace-hack",
- "move-command-line-common",
- "walkdir",
 ]
 
 [[package]]
@@ -5050,7 +5039,6 @@ dependencies = [
  "move-command-line-common",
  "move-core-types",
  "move-lang",
- "move-lang-test-utils",
  "move-stdlib",
  "move-symbol-pool",
  "move-vm-runtime",
@@ -5079,7 +5067,6 @@ dependencies = [
  "move-command-line-common",
  "move-core-types",
  "move-lang",
- "move-lang-test-utils",
  "move-model",
  "move-stdlib",
  "move-vm-runtime",

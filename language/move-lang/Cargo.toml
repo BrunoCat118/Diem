@@ -22,16 +22,15 @@ move-binary-format = { path = "../move-binary-format" }
 move-core-types = { path = "../move-core/types" }
 move-bytecode-verifier = { path = "../bytecode-verifier", package = "bytecode-verifier" }
 move-symbol-pool = { path = "../move-symbol-pool" }
-diem-workspace-hack = { path = "../../common/workspace-hack" }
-move-ir-types = { path = "../move-ir/types" }
-ir-to-bytecode = { path = "../compiler/ir-to-bytecode" }
+diem-workspace-hack = { path = "../../crates/diem-workspace-hack" }
+move-ir-types = {path = "../move-ir/types" }
+ir-to-bytecode = {path = "../compiler/ir-to-bytecode" }
 borrow-graph = { path = "../borrow-graph" }
 bytecode-source-map = { path = "../compiler/bytecode-source-map" }
 bcs = { git = "https://github.com/diem/bcs", rev = "30ce9f4ac51342d2fb4c04c4f5b40683d9652dc6" }
 move-command-line-common = { path = "../move-command-line-common" }
 
 [dev-dependencies]
-move-lang-test-utils = { path = "test-utils" }
 move-stdlib = { path = "../move-stdlib" }
 datatest-stable = "0.1.1"
 
