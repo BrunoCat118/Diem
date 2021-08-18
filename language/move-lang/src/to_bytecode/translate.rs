@@ -204,7 +204,10 @@ fn module(
         }
     ) = ident;
     let ir_module = IR::ModuleDefinition {
-        name: IR::ModuleName(module_name.0.value),
+        identifier: IR::QualifiedModuleIdent {
+            address: MoveAddress::new(addr_bytes.into_bytes()),
+            name: IR::ModuleName(module_name.0.value),
+        },
         friends,
         imports,
         explicit_dependency_declarations,
@@ -214,9 +217,7 @@ fn module(
         synthetics: vec![],
     };
     let deps: Vec<&F::CompiledModule> = vec![];
-    let addr = MoveAddress::new(addr_bytes.into_bytes());
-    let (module, source_map) = match ir_to_bytecode::compiler::compile_module(addr, ir_module, deps)
-    {
+    let (module, source_map) = match ir_to_bytecode::compiler::compile_module(ir_module, deps) {
         Ok(res) => res,
         Err(e) => {
             compilation_env.add_diag(diag!(
@@ -273,8 +274,7 @@ fn script(
         main,
     };
     let deps: Vec<&F::CompiledModule> = vec![];
-    let (script, source_map) = match ir_to_bytecode::compiler::compile_script(None, ir_script, deps)
-    {
+    let (script, source_map) = match ir_to_bytecode::compiler::compile_script(ir_script, deps) {
         Ok(res) => res,
         Err(e) => {
             compilation_env.add_diag(diag!(
