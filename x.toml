@@ -55,6 +55,7 @@ allowed = [
     "clippy::format-in-format-args",
     "clippy::ptr-arg",
     "clippy::let-and-return",
+    "clippy::iter-overeager-cloned",
 ]
 warn = [
     "clippy::wildcard_dependencies",
