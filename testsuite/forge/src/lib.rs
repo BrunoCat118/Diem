@@ -21,3 +21,6 @@ pub use txn_emitter::*;
 
 mod report;
 pub use report::*;
+
+mod slack;
+pub use slack::*;
