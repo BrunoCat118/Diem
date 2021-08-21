@@ -17,6 +17,7 @@ tokio = { version = "1.8.1", features = ["full"] }
 walkdir = "2.3.1"
 
 compiler = { path = "../../language/compiler" }
+diem-config = { path = "../../config" }
 diem-events-fetcher = { path = "../../language/diem-tools/diem-events-fetcher" }
 diem-framework = { path = "../../language/diem-framework" }
 diem-framework-releases = { path = "../../language/diem-framework/releases" }
