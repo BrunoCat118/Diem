@@ -45,7 +45,6 @@ cli = { path = "../cli", features = ["fuzzing"]  }
 debug-interface = { path = "../../crates/debug-interface" }
 futures = "0.3.12"
 generate-key = { path = "../../config/generate-key" }
-diem-config = { path = "../../config" }
 diem-crypto = { path = "../../crates/diem-crypto" }
 diem-genesis-tool = {path = "../../config/management/genesis", features = ["testing"] }
 diem-global-constants = { path = "../../config/global-constants" }
