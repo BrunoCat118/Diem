@@ -58,6 +58,7 @@ allowed = [
     "clippy::iter-overeager-cloned",
     "clippy::redundant-closure",
     "clippy::needless-borrow",
+    "dead_code",
 ]
 warn = [
     "clippy::wildcard_dependencies",

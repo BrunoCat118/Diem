@@ -933,7 +933,7 @@ impl GlobalEnv {
         &mut self,
         loc: Loc,
         module: CompiledModule,
-        source_map: SourceMap<MoveIrLoc>,
+        source_map: SourceMap,
         named_constants: BTreeMap<NamedConstantId, NamedConstantData>,
         struct_data: BTreeMap<StructId, StructData>,
         function_data: BTreeMap<FunId, FunctionData>,
@@ -1436,7 +1436,7 @@ pub struct ModuleData {
     pub module_spec: Spec,
 
     /// Module source location information.
-    pub source_map: SourceMap<MoveIrLoc>,
+    pub source_map: SourceMap,
 
     /// The location of this module.
     pub loc: Loc,
