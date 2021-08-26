@@ -1103,6 +1103,7 @@ dependencies = [
  "fallible",
  "futures",
  "itertools 0.10.0",
+ "mempool-notifications",
  "mirai-annotations",
  "network",
  "num-derive",
@@ -2127,6 +2128,7 @@ dependencies = [
  "fail",
  "futures",
  "itertools 0.10.0",
+ "mempool-notifications",
  "mirai-annotations",
  "netcore",
  "network",
@@ -2218,6 +2220,7 @@ dependencies = [
  "futures",
  "hex",
  "jemallocator",
+ "mempool-notifications",
  "network-builder",
  "rand 0.8.3",
  "state-sync-v1",
@@ -4628,6 +4631,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5aa361d4faea93603064a027415f07bd8e1d5c88c9fbf68bf56a285428fd79ce"
 dependencies = [
  "autocfg",
+]
+
+[[package]]
+name = "mempool-notifications"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "diem-crypto",
+ "diem-types",
+ "diem-workspace-hack",
+ "futures",
+ "serde",
+ "thiserror",
+ "tokio",
 ]
 
 [[package]]
@@ -7580,6 +7597,7 @@ dependencies = [
  "fail",
  "futures",
  "itertools 0.10.0",
+ "mempool-notifications",
  "memsocket",
  "netcore",
  "network",
