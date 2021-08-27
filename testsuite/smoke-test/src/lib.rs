@@ -31,11 +31,6 @@ mod state_sync;
 #[cfg(test)]
 mod storage;
 
-// Left to convert
-
-#[cfg(test)]
-mod network;
-
 #[cfg(test)]
 mod smoke_test_environment;
 
