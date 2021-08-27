@@ -11,7 +11,7 @@ edition = "2018"
 
 [dependencies]
 anyhow = "1.0.38"
-bcs = { git = "https://github.com/diem/bcs", rev = "30ce9f4ac51342d2fb4c04c4f5b40683d9652dc6" }
+bcs = "0.1.2"
 ctrlc = { version = "3.1.8", default-features = false }
 reqwest = { version = "0.11.2", features = ["blocking"], default-features = false }
 structopt = "0.3.21"
@@ -23,6 +23,6 @@ diem-logger = { path = "../../crates/diem-logger" }
 diem-genesis-tool = {path = "../../config/management/genesis", features = ["testing"] }
 diem-temppath = { path = "../../crates/diem-temppath" }
 diem-types = { path = "../../types" }
-diem-workspace-hack = { path = "../../crates/diem-workspace-hack" }
+diem-workspace-hack = { path = "../../common/workspace-hack" }
 forge = { path = "../forge" }
 rand = "0.8.3"
