@@ -2203,6 +2203,7 @@ name = "diem-node"
 version = "0.1.0"
 dependencies = [
  "backup-service",
+ "bcs 0.1.3",
  "consensus",
  "crash-handler",
  "debug-interface",
@@ -4957,6 +4958,7 @@ dependencies = [
  "diem-workspace-hack",
  "gag",
  "nix",
+ "rand 0.8.3",
  "rustyline",
  "structopt 0.3.21",
  "tempfile",
