@@ -52,7 +52,7 @@ bytes = "1.0.1"
 proptest = "1.0.0"
 
 consensus-notifications = { path = "../inter-component/consensus-notifications" }
-channel = { path = "../../common/channel" }
+channel = { path = "../../crates/channel" }
 diem-framework-releases= { path = "../../language/diem-framework/releases" }
 diem-crypto = { path = "../../crates/diem-crypto" }
 diem-genesis-tool = {path = "../../config/management/genesis", features = ["testing"] }
