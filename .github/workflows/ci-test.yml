@@ -306,6 +306,114 @@ jobs:
         uses: ./.github/actions/early-terminator
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            // Find the number of the pull request that trigggers this push
+            let pr_num = ${{ needs.prepare.outputs.changes-pull-request-number }};
+            if (!pr_num) {
+              console.warn("Did not find pull request num in previous step");
+              console.log("GH event payload\n", context.payload);
+              return;
+            }
+            // Read and check cluster test results
+            let should_fail = false;
+            let env_vars = process.env;
+            let body = '';
+            const fsp = require('fs').promises;
+            try {
+              data = await fsp.readFile('report.json', 'utf-8');
+              var result = JSON.parse(data);
+              // TODO - set P/F based on metrics TPS, latency
+              body = `Cluster Test Result
+            \`\`\`
+            ${result.text}
+            ${result.links}
+            \`\`\`
+            `;
+              // Check CTI exit code for errors
+              if (parseInt(env_vars.CTI_EXIT_CODE) != 0) {
+                body += "\n :exclamation: Cluster Test failed - non-zero exit code for `cti` \n"
+                should_fail = true;
+              } else {
+                let tps = result.metrics.find(m => m.experiment == "all up" && m.metric == "avg_tps").value;
+                let min_tps = 1100;
+                if (tps < min_tps) {
+                  body += "\n :exclamation: Performance regression is detected on this PR";
+                  body += "\n TPS with PR: " + tps + ", this is lower then minimum allowed " + min_tps + " TPS.";
+                  console.log(body);
+                  should_fail = true;
+                }
+              }
+            } catch (err) {
+              if (err.code === 'ENOENT') {
+                body = "Cluster Test failed - no test report found.\n";
+                // Check Cluster Test output log for infra error
+                try {
+                  cti_log = await fsp.readFile(env_vars.CTI_OUTPUT_LOG, 'utf-8');
+                  let re = /.*(^Failed\sto\s.*\"Service\sUnavailable.\sPlease\stry\sagain\slater\.\".*)/;
+                  if (re.test(cti_log)) {
+                    let match = re.exec(cti_log);
+                    body += " There was service infra error:\n";
+                    body += `
+                    ${match[1]}
+                    `
+                    + "\n"
+                    ;
+                    body += "To retry, comment your PR with `/land`.";
+                    body += " If that doesn't trigger re-run, amend and push again.";
+                  }
+                } catch (err) {
+                  console.error("Failed to check infra error in CT output log.\n", err);
+                }
+              } else {
+                body = "Cluster Test runner failed.";
+                console.error(err);
+              }
+              body += " See https://github.com/diem/diem/actions/runs/${{github.run_id}}";
+              // Post comment on PR then fail this workflow
+              should_fail = true;
+            }
+            // Add repro cmd to message
+            try {
+              body += "\nRepro cmd:\n";
+              body += `
+              \`\`\`
+              ${env_vars.CTI_REPRO_CMD}
+              \`\`\`
+              `
+            } catch (err) {
+              if (err.code === 'ReferenceError') {
+                console.error("One of the following env vars is not set");
+              } else {
+                body += "[GHA DEBUG]\nFound error in actions/github-script\n";
+                body += err;
+              }
+            }
+            // Post test result on original pull request
+            try {
+              if (!should_fail) {
+                body += "\n :tada: Land-blocking cluster test passed! :ok_hand:"
+              }
+              await github.issues.createComment(
+                  {
+                    issue_number: pr_num,
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    body: body,
+                  }
+              );
+            } catch (err) {
+              if (err.status === 401) {
+                // Fail silently for auth but log to console.
+                console.warn("GH token has expired when trying to POST\n", err);
+              } else {
+                console.error("HttpError other than 401 is not bypassed");
+                throw err;
+              }
+            }
+            // Fail the workflow if test fails or perf regresses
+            if (should_fail) {
+              throw "Land-blocking test failed";
+            }
 
   non-rust-lint:
     runs-on: ubuntu-20.04-xl

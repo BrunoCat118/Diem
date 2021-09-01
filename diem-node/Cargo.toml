@@ -10,7 +10,7 @@ publish = false
 edition = "2018"
 
 [dependencies]
-bcs = "0.1.2"
+bcs = { git = "https://github.com/diem/bcs", rev = "30ce9f4ac51342d2fb4c04c4f5b40683d9652dc6" }
 fail = "0.4.0"
 futures = "0.3.12"
 hex = "0.4.3"
