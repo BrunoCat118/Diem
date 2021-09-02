@@ -61,6 +61,8 @@ allowed = [
     "dead_code",
     "semicolon-in-expressions-from-macros",
     "clippy::needless-late-init",
+    "clippy::map-identity",
+    "clippy::unnecessary-to-owned",
 ]
 warn = [
     "clippy::wildcard_dependencies",
@@ -229,6 +231,7 @@ members = [
     "language-e2e-tests",
     "language-e2e-testsuite",
     "memsocket",
+    "mirai-dataflow-analysis",
     "module-generation",
     "move-lang-functional-tests",
     "move-oncall-trainer",
