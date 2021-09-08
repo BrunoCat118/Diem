@@ -63,6 +63,7 @@ allowed = [
     "clippy::needless-late-init",
     "clippy::map-identity",
     "clippy::unnecessary-to-owned",
+    "clippy::derivable-impls",
 ]
 warn = [
     "clippy::wildcard_dependencies",
