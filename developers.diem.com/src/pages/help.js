@@ -16,10 +16,6 @@ const Help = props => {
       title: 'Browse Docs',
     },
     {
-      content: 'Ask questions about the documentation and project',
-      title: 'Join the community',
-    },
-    {
       content: "Find out what's new with this project",
       title: 'Stay up to date',
     },
@@ -40,7 +36,7 @@ const Help = props => {
             </div>
           ))}
         </div>
-        <div contents={supportLinks} layout="threeColumn" />
+        <div contents={supportLinks} layout="twoColumn" />
       </div>
     </Layout>
   );

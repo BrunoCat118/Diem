@@ -89,10 +89,6 @@ function DocItem(props) {
               </div>
             </article>
             <Feedback />
-            <span className={styles.community}>
-              <a href="https://community.diem.com/">Ask the community</a> for
-              support
-            </span>
             {!disablePagination && <Pagination metadata={metadata} />}
           </div>
         </div>
