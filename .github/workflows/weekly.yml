@@ -9,7 +9,7 @@ jobs:
   dep-report:
     runs-on: ubuntu-latest
     container:
-      image: diem/build_environment:main
+      image: diem/build_environment:latest
     env:
       MESSAGE_PAYLOAD_FILE: /tmp/message
     steps:
@@ -19,7 +19,7 @@ jobs:
             fetch-depth: 0
       - uses: ./.github/actions/build-setup
       - name: Produce report
-        run: ./scripts/weekly-dep-report.sh ${GITHUB_REPOSITORY} main | tee ${MESSAGE_PAYLOAD_FILE}
+        run: ./scripts/weekly-dep-report.sh ${GITHUB_REPOSITORY} latest | tee ${MESSAGE_PAYLOAD_FILE}
       - name: "Send Message"
         uses: ./.github/actions/slack-file
         with:
@@ -29,7 +29,7 @@ jobs:
   transaction-replay:
     runs-on: ubuntu-latest-xl
     container:
-      image: diem/build_environment:main
+      image: diem/build_environment:latest
       volumes:
         - "${{github.workspace}}:/opt/git/diem"
     env:

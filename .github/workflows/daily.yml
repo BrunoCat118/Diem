@@ -11,7 +11,7 @@ jobs:
   audit:
     runs-on: ubuntu-latest
     container:
-      image: diem/build_environment:main
+      image: diem/build_environment:latest
       volumes:
         - "${{github.workspace}}:/opt/git/diem"
     strategy:
@@ -19,7 +19,7 @@ jobs:
       matrix:
         #this is a painful solution since it doesn't pick up new branches, other option is lotsa shell in one job....
         #to test in canary add in canary here.....
-        target-branch: [main, release-1.2, release-1.3]
+        target-branch: [latest, release-1.2, release-1.3]
     env:
       AUDIT_SUMMARY_FILE: /tmp/summary
     steps:
@@ -58,7 +58,7 @@ jobs:
   coverage:
     runs-on: ubuntu-latest-xl
     container:
-      image: diem/build_environment:main
+      image: diem/build_environment:latest
       volumes:
         - "${{github.workspace}}:/opt/git/diem"
     environment:
@@ -102,11 +102,11 @@ jobs:
 
   json-rpc-backward-compat-test:
     # Test old client from release (prod) and pre-release (rc) branches
-    # against new server in the main branch through cluster-test's
+    # against new server in the latest branch through cluster-test's
     # json-rpc interface.
     runs-on: ubuntu-latest-xl
     container:
-      image: diem/build_environment:main
+      image: diem/build_environment:latest
       volumes:
         - "${{github.workspace}}:/opt/git/diem"
     env:
@@ -147,7 +147,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target-branch: [main, release-1.2, release-1.3]
+        target-branch: [latest, release-1.2, release-1.3]
     steps:
       - uses: actions/checkout@v2.3.4
         with:

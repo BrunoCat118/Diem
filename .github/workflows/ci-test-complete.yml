@@ -1,8 +1,8 @@
 # This workflow is run after CI tests are completed. This has to be done as a separate workflow because forks
 # don't have the right permissions.
 #
-# For this and other workflow_run scripts, the main branch's copy of the action is *always* used, even on release
-# branches. Changes to this action cannot be tested until it is updated on main.
+# For this and other workflow_run scripts, the latest branch's copy of the action is *always* used, even on release
+# branches. Changes to this action cannot be tested until it is updated on latest.
 
 name: ci-test-complete
 

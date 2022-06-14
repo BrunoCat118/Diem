@@ -4,7 +4,7 @@
 
 set -e
 
-oldrev="origin/main"
+oldrev="origin/latest"
 newrev="HEAD"
 
 # Disallow merge commits
