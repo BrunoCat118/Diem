@@ -1,4 +1,4 @@
-> **Note to readers:** On December 1, 2020, the Libra Association was renamed to Diem Association. The project repos are in the process of being migrated. All projects will remain available for use here until the migration to a new GitHub Organization is complete.
+> **Note to readers:** Silvergate Capital Corporation announced in January 2022 that it acquired intellectual property and other technology assets related to running a blockchain-based payment network from Diem, further investing in its platform and enhancing its existing stablecoin infrastructure.
 
 <a href="https://developers.diem.com">
 	<img width="200" src="./.assets/diem.png" alt="Diem Logo" />
