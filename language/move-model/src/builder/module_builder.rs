@@ -228,7 +228,7 @@ impl<'env, 'translator> ModuleBuilder<'env, 'translator> {
                 }
             }
             EA::SpecBlockTarget_::Schema(name, _) => {
-                let qsym = self.qualified_by_module_from_name(&name);
+                let qsym = self.qualified_by_module_from_name(name);
                 if self.parent.spec_schema_table.contains_key(&qsym) {
                     Some(SpecBlockContext::Schema(qsym))
                 } else {
@@ -377,7 +377,7 @@ impl<'env, 'translator> ModuleBuilder<'env, 'translator> {
         }
         // If this is a schema spec block, process its declaration.
         if let EA::SpecBlockTarget_::Schema(name, type_params) = &block.value.target.value {
-            self.decl_ana_schema(&block, &name, type_params.iter().map(|(name, _)| name));
+            self.decl_ana_schema(block, name, type_params.iter().map(|(name, _)| name));
         }
     }
 
@@ -673,7 +673,7 @@ impl<'env, 'translator> ModuleBuilder<'env, 'translator> {
                             }
                         }
                         _ => {
-                            self.parent.error(&loc, "item not allowed");
+                            self.parent.error(loc, "item not allowed");
                         }
                     }
                 }
@@ -745,7 +745,7 @@ impl<'env, 'translator> ModuleBuilder<'env, 'translator> {
                 let mut field_map = BTreeMap::new();
                 for (_name_loc, field_name_, (idx, ty)) in fields {
                     let field_sym = et.symbol_pool().make(field_name_);
-                    let field_ty = et.translate_type(&ty);
+                    let field_ty = et.translate_type(ty);
                     field_map.insert(field_sym, (*idx, field_ty));
                 }
                 Some(field_map)
@@ -786,7 +786,7 @@ impl<'env, 'translator> ModuleBuilder<'env, 'translator> {
             for (idx, (n, ty)) in params.iter().enumerate() {
                 et.define_local(&loc, *n, ty.clone(), None, Some(idx));
             }
-            let translated = et.translate_seq(&loc, &seq, &result_type);
+            let translated = et.translate_seq(&loc, seq, &result_type);
             et.finalize_types();
             // If no errors were generated, then the function is considered pure.
             if !*et.errors_generated.borrow() {
@@ -812,7 +812,7 @@ impl<'env, 'translator> ModuleBuilder<'env, 'translator> {
     /// Move functions.
     fn propagate_function_impurity(
         &mut self,
-        mut visited: &mut BTreeMap<SpecFunId, bool>,
+        visited: &mut BTreeMap<SpecFunId, bool>,
         spec_fun_id: SpecFunId,
     ) -> bool {
         if let Some(is_pure) = visited.get(&spec_fun_id) {
@@ -849,7 +849,7 @@ impl<'env, 'translator> ModuleBuilder<'env, 'translator> {
                     // This is calling a function from the module we are currently translating.
                     // Need to recursively ensure we have propagated impurity because of
                     // arbitrary call graphs, including cyclic.
-                    if !self.propagate_function_impurity(&mut visited, *fid) {
+                    if !self.propagate_function_impurity(visited, *fid) {
                         is_pure = false;
                     }
                 }
@@ -916,7 +916,7 @@ impl<'env, 'translator> ModuleBuilder<'env, 'translator> {
         });
 
         for member in let_sorted_members {
-            self.def_ana_spec_block_member(context, &member)
+            self.def_ana_spec_block_member(context, member)
         }
 
         // clear the let bindings stored in the build.
@@ -1115,14 +1115,12 @@ impl<'env, 'translator> ModuleBuilder<'env, 'translator> {
         use SpecBlockContext::*;
         match context {
             Function(name) => update(
-                &mut self
-                    .fun_specs
+                self.fun_specs
                     .entry(name.symbol)
                     .or_insert_with(Spec::default),
             ),
             FunctionCode(name, spec_info) => update(
-                &mut self
-                    .fun_specs
+                self.fun_specs
                     .entry(name.symbol)
                     .or_insert_with(Spec::default)
                     .on_impl
@@ -1138,8 +1136,7 @@ impl<'env, 'translator> ModuleBuilder<'env, 'translator> {
                     .spec,
             ),
             Struct(name) => update(
-                &mut self
-                    .struct_specs
+                self.struct_specs
                     .entry(name.symbol)
                     .or_insert_with(Spec::default),
             ),
@@ -1462,7 +1459,7 @@ impl<'env, 'translator> ModuleBuilder<'env, 'translator> {
                     }
                     None
                 };
-                let mut rewriter = ExpRewriter::new(&self.parent.env, &mut replacer);
+                let mut rewriter = ExpRewriter::new(self.parent.env, &mut replacer);
                 let exp = rewriter.rewrite_exp(exp);
                 let additional_exps = additional_exps
                     .into_iter()
@@ -1725,14 +1722,13 @@ impl<'env, 'translator> ModuleBuilder<'env, 'translator> {
         visiting.push(name.clone());
 
         // First recursively visit all schema includes and ensure they are analyzed.
-        for included_name in self
-            .iter_schema_includes(&block.value.members)
-            .map(|(_, _, exp)| {
-                let mut res = vec![];
-                extract_schema_access(exp, &mut res);
-                res
-            })
-            .flatten()
+        for included_name in
+            self.iter_schema_includes(&block.value.members)
+                .flat_map(|(_, _, exp)| {
+                    let mut res = vec![];
+                    extract_schema_access(exp, &mut res);
+                    res
+                })
         {
             let included_loc = self.parent.env.to_loc(&included_name.loc);
             let included_name = self.module_access_to_qualified(included_name);
@@ -2104,7 +2100,7 @@ impl<'env, 'translator> ModuleBuilder<'env, 'translator> {
         };
 
         // Translate type arguments
-        let mut et = self.exp_translator_for_schema(&loc, context_type_params, vars);
+        let mut et = self.exp_translator_for_schema(loc, context_type_params, vars);
         let type_arguments = &et.translate_types_opt(type_args_opt);
         if schema_entry.type_params.len() != type_arguments.len() {
             self.parent.error(
@@ -2764,8 +2760,7 @@ impl<'env, 'translator> ModuleBuilder<'env, 'translator> {
                 {
                     let struct_spec = self
                         .struct_specs
-                        .remove(&name)
-                        .unwrap_or_else(Spec::default);
+                        .remove(&name).unwrap_or_default();
                     Some((
                         StructId::new(name),
                         self.parent.env.create_struct_data(
@@ -2801,7 +2796,7 @@ impl<'env, 'translator> ModuleBuilder<'env, 'translator> {
                 } else {
                     self.symbol_pool().make(name_str)
                 };
-                let fun_spec = self.fun_specs.remove(&name).unwrap_or_else(Spec::default);
+                let fun_spec = self.fun_specs.remove(&name).unwrap_or_default();
                 if let Some(entry) = self.parent.fun_table.get(&self.qualified_by_module(name)) {
                     let arg_names = project_1st(&entry.params);
                     let type_arg_names = project_1st(&entry.type_params);

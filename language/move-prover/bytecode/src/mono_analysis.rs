@@ -293,13 +293,12 @@ impl<'a> Analyzer<'a> {
         for module in self.env.get_modules() {
             for fun in module.get_functions() {
                 for (_, target) in self.targets.get_targets(&fun) {
-                    let is_verified: bool;
                     let options = ProverOptions::get(self.env);
-                    if options.invariants_v2 {
-                        is_verified = verification_analysis_v2::get_info(&target).verified;
+                    let is_verified: bool = if options.invariants_v2 {
+                        verification_analysis_v2::get_info(&target).verified
                     } else {
-                        is_verified = verification_analysis::get_info(&target).verified;
-                    }
+                        verification_analysis::get_info(&target).verified
+                    };
                     if is_verified {
                         self.analyze_fun(target.clone());
 

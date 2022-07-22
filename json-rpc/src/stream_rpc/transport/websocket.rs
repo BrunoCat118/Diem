@@ -60,7 +60,7 @@ pub fn get_websocket_routes(
                     remote_addr: Some(&format!("{:?}", info.remote_addr())),
                     user_agent: Some(info.user_agent().unwrap_or("")),
                     action: logging::StreamRpcAction::HttpRequestLog(logging::HttpRequestLog {
-                        path: &info.path().to_string(),
+                        path: info.path(),
                         status: info.status().as_u16(),
                         referer: info.referer(),
                         forwarded: info

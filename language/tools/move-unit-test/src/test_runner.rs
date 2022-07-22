@@ -98,7 +98,7 @@ fn print_resources(cs: &ChangeSet, storage: &InMemoryStorage) -> Result<String> 
                 writeln!(
                     &mut buf,
                     "\t{}",
-                    format!("=> {}", annotator.view_resource(tag, resource)?).replace("\n", "\n\t")
+                    format!("=> {}", annotator.view_resource(tag, resource)?).replace('\n', "\n\t")
                 )?;
             }
         }
@@ -190,7 +190,7 @@ impl SharedTestingConfig {
         let now = Instant::now();
         let return_result = session.execute_function(
             &test_plan.module_id,
-            &IdentStr::new(function_name).unwrap(),
+            IdentStr::new(function_name).unwrap(),
             vec![], // no ty args, at least for now
             serialize_values(test_info.arguments.iter()),
             &mut gas_meter,
@@ -234,7 +234,7 @@ impl SharedTestingConfig {
         let global_state = GlobalState::default();
         let (return_result, change_set, _) = interpreter.interpret(
             &test_plan.module_id,
-            &IdentStr::new(function_name).unwrap(),
+            IdentStr::new(function_name).unwrap(),
             &[], // no ty args, at least for now
             &test_info.arguments,
             &global_state,
@@ -332,7 +332,7 @@ impl SharedTestingConfig {
                             None,
                             None,
                         ),
-                        &test_plan,
+                        test_plan,
                     );
                     continue;
                 }
@@ -345,7 +345,7 @@ impl SharedTestingConfig {
                             None,
                             None,
                         ),
-                        &test_plan,
+                        test_plan,
                     );
                     continue;
                 }
@@ -372,7 +372,7 @@ impl SharedTestingConfig {
                                 Some(err),
                                 save_session_state(),
                             ),
-                            &test_plan,
+                            test_plan,
                         )
                     }
                     // Expected the test to not abort, but it aborted with `code`
@@ -385,7 +385,7 @@ impl SharedTestingConfig {
                                 Some(err),
                                 save_session_state(),
                             ),
-                            &test_plan,
+                            test_plan,
                         )
                     }
                     // Expected the test the abort with a specific `code`, and it did abort with
@@ -394,7 +394,7 @@ impl SharedTestingConfig {
                         if err.major_status() == StatusCode::ABORTED && *code == other_code =>
                     {
                         pass(function_name);
-                        stats.test_success(test_run_info, &test_plan);
+                        stats.test_success(test_run_info, test_plan);
                     }
                     // Expected the test to abort with a specific `code` but it aborted with a
                     // different `other_code`
@@ -407,20 +407,20 @@ impl SharedTestingConfig {
                                 Some(err),
                                 save_session_state(),
                             ),
-                            &test_plan,
+                            test_plan,
                         )
                     }
                     // Expected the test to abort and it aborted, but we don't need to check the code
                     (Some(ExpectedFailure::Expected), Some(_)) => {
                         pass(function_name);
-                        stats.test_success(test_run_info, &test_plan);
+                        stats.test_success(test_run_info, test_plan);
                     }
                     // Expected the test to abort and it aborted with internal error
                     (Some(ExpectedFailure::Expected), None)
                         if err.major_status() != StatusCode::EXECUTED =>
                     {
                         pass(function_name);
-                        stats.test_success(test_run_info, &test_plan);
+                        stats.test_success(test_run_info, test_plan);
                     }
                     // Unexpected return status from the VM, signal that we hit an unknown error.
                     (_, None) => {
@@ -432,7 +432,7 @@ impl SharedTestingConfig {
                                 Some(err),
                                 save_session_state(),
                             ),
-                            &test_plan,
+                            test_plan,
                         )
                     }
                 },
@@ -447,12 +447,12 @@ impl SharedTestingConfig {
                                 None,
                                 save_session_state(),
                             ),
-                            &test_plan,
+                            test_plan,
                         )
                     } else {
                         // Expected the test to execute fully and it did
                         pass(function_name);
-                        stats.test_success(test_run_info, &test_plan);
+                        stats.test_success(test_run_info, test_plan);
                     }
                 }
             }

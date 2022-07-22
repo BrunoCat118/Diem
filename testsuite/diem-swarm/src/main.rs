@@ -91,11 +91,8 @@ fn main() {
     println!("To run the Diem CLI client in a separate process and connect to the validator nodes you just spawned, use this command:");
 
     println!(
-        "\tcli -u {} -m {:?} --waypoint {} --chain-id {:?}",
-        format!(
-            "http://localhost:{}",
-            validator_config.json_rpc.address.port()
-        ),
+        "\tcli -u http://localhost:{} -m {:?} --waypoint {} --chain-id {:?}",
+        validator_config.json_rpc.address.port(),
         diem_root_key_path,
         waypoint,
         ChainId::test().id()
@@ -137,11 +134,8 @@ fn main() {
         let full_node_config = NodeConfig::load(&swarm.config.config_files[0]).unwrap();
         println!("To connect to the full nodes you just spawned, use this command:");
         println!(
-            "\tcli -u {} -m {:?} --waypoint {} --chain-id {}",
-            format!(
-                "http://localhost:{}",
-                full_node_config.json_rpc.address.port()
-            ),
+            "\tcli -u http://localhost:{} -m {:?} --waypoint {} --chain-id {}",
+            full_node_config.json_rpc.address.port(),
             diem_root_key_path,
             waypoint,
             ChainId::test().id(),
@@ -184,7 +178,7 @@ fn main() {
                 args.cli_path.as_ref().unwrap().as_ref(),
                 port,
                 Path::new(&diem_root_key_path),
-                &tmp_mnemonic_file.path(),
+                tmp_mnemonic_file.path(),
                 waypoint,
             )
         };

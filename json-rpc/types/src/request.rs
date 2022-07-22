@@ -601,7 +601,7 @@ mod test {
 
     #[test]
     fn get_account_transactions_with_proofs() {
-        let parse = |value| serde_json::from_value::<GetAccountTransactionsWithProofsParams>(value);
+        let parse = serde_json::from_value::<GetAccountTransactionsWithProofsParams>;
         let parse_ok = |value| parse(value).unwrap();
         let parse_err = |value| parse(value).unwrap_err();
         let account = "1668f6be25668c1a17cd8caf6b8d2f25";
@@ -769,7 +769,7 @@ mod test {
 
     #[test]
     fn get_accumulator_consistency_proof() {
-        let parse = |value| serde_json::from_value::<GetAccumulatorConsistencyProofParams>(value);
+        let parse = serde_json::from_value::<GetAccumulatorConsistencyProofParams>;
         let parse_ok = |value| parse(value).unwrap();
         let parse_err = |value| parse(value).unwrap_err();
 
@@ -820,7 +820,7 @@ mod test {
 
     #[test]
     fn get_account_state_with_proof() {
-        let parse = |value| serde_json::from_value::<GetAccountStateWithProofParams>(value);
+        let parse = serde_json::from_value::<GetAccountStateWithProofParams>;
         let parse_ok = |value| parse(value).unwrap();
         let parse_err = |value| parse(value).unwrap_err();
 
@@ -872,7 +872,7 @@ mod test {
 
     #[test]
     fn get_transactions_with_proofs() {
-        let parse = |value| serde_json::from_value::<GetTransactionsWithProofsParams>(value);
+        let parse = serde_json::from_value::<GetTransactionsWithProofsParams>;
         let parse_ok = |value| parse(value).unwrap();
         let parse_err = |value| parse(value).unwrap_err();
 
@@ -912,7 +912,7 @@ mod test {
 
     #[test]
     fn get_events_with_proofs() {
-        let parse = |value| serde_json::from_value::<GetEventsWithProofsParams>(value);
+        let parse = serde_json::from_value::<GetEventsWithProofsParams>;
         let parse_ok = |value| parse(value).unwrap();
         let parse_err = |value| parse(value).unwrap_err();
 
@@ -960,7 +960,7 @@ mod test {
 
     #[test]
     fn get_event_by_version_with_proof() {
-        let parse = |value| serde_json::from_value::<GetEventByVersionWithProof>(value);
+        let parse = serde_json::from_value::<GetEventByVersionWithProof>;
         let parse_ok = |value| parse(value).unwrap();
         let parse_err = |value| parse(value).unwrap_err();
 

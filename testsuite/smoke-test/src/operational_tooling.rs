@@ -239,7 +239,7 @@ fn test_extract_private_key() {
     // Extract the operator private key to file
     let (_, node_config_path) = load_node_config(&env.validator_swarm, 0);
     let key_file_path = node_config_path.with_file_name(OPERATOR_KEY);
-    let _ = op_tool
+    op_tool
         .extract_private_key(
             OPERATOR_KEY,
             key_file_path.to_str().unwrap(),
@@ -263,7 +263,7 @@ fn test_extract_public_key() {
     // Extract the operator public key to file
     let (_, node_config_path) = load_node_config(&env.validator_swarm, 0);
     let key_file_path = node_config_path.with_file_name(OPERATOR_KEY);
-    let _ = op_tool
+    op_tool
         .extract_public_key(
             OPERATOR_KEY,
             key_file_path.to_str().unwrap(),
@@ -867,7 +867,7 @@ fn test_validator_set() {
     // Overwrite the shared network encryption key in storage and verify that the
     // validator set can still be retrieved (but unable to decrypt the validator
     // network address)
-    let _ = storage
+    storage
         .set(VALIDATOR_NETWORK_ADDRESS_KEYS, "random string")
         .unwrap();
     let validator_set_infos = op_tool.validator_set(None, Some(&backend)).unwrap();
@@ -1157,10 +1157,9 @@ fn set_operator_and_add_new_validator_helper() -> VMStatusView {
     // Check the validator set size
     let validator_set_infos = op_tool.validator_set(None, Some(&backend)).unwrap();
     assert_eq!(num_nodes, validator_set_infos.len());
-    assert!(validator_set_infos
+    assert!(!validator_set_infos
         .iter()
-        .find(|info| info.account_address == validator_account)
-        .is_none());
+        .any(|info| info.account_address == validator_account));
 
     // Add the validator to the validator set
     let txn_ctx = op_tool

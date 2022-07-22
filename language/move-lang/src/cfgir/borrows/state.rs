@@ -305,7 +305,7 @@ impl BorrowState {
         assert!(full_borrows.is_empty());
         field_borrows
             .remove(&Self::local_label(local))
-            .unwrap_or_else(BTreeMap::new)
+            .unwrap_or_default()
     }
 
     fn resource_borrowed_by(&self, resource: &StructName) -> BTreeMap<RefID, Loc> {
@@ -313,7 +313,7 @@ impl BorrowState {
         assert!(full_borrows.is_empty());
         field_borrows
             .remove(&Self::resource_label(resource))
-            .unwrap_or_else(BTreeMap::new)
+            .unwrap_or_default()
     }
 
     // returns empty errors if borrowed_by is empty
@@ -655,7 +655,7 @@ impl BorrowState {
             )
         } else {
             let msg = || format!("Invalid immutable borrow at field '{}'.", field);
-            self.readable(loc, ReferenceSafety::RefTrans, msg, id, Some(&field))
+            self.readable(loc, ReferenceSafety::RefTrans, msg, id, Some(field))
         };
         let field_borrow_id = self.declare_new_ref(mut_);
         self.add_field_borrow(loc, id, field.clone(), field_borrow_id);

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #![forbid(unsafe_code)]
+#![allow(dead_code)]
 
 //! This crate provides [`DiemDB`] which represents physical storage of the core Diem data
 //! structures.
@@ -445,7 +446,7 @@ impl DiemDB {
             // Caller wants the latest, figure out the latest seq_num.
             // In the case of no events on that path, use 0 and expect empty result below.
             self.event_store
-                .get_latest_sequence_number(ledger_version, &event_key)?
+                .get_latest_sequence_number(ledger_version, event_key)?
                 .unwrap_or(0)
         } else {
             start_seq_num
@@ -456,7 +457,7 @@ impl DiemDB {
 
         // Query the index.
         let mut event_indices = self.event_store.lookup_events_by_key(
-            &event_key,
+            event_key,
             first_seq,
             real_limit,
             ledger_version,
@@ -530,7 +531,7 @@ impl DiemDB {
         &self,
         txns_to_commit: &[TransactionToCommit],
         first_version: u64,
-        mut cs: &mut ChangeSet,
+        cs: &mut ChangeSet,
     ) -> Result<HashValue> {
         let last_version = first_version + txns_to_commit.len() as u64 - 1;
 
@@ -548,14 +549,13 @@ impl DiemDB {
             account_state_sets,
             node_hashes,
             first_version,
-            &mut cs,
+            cs,
         )?;
 
         // Event updates. Gather event accumulator root hashes.
         let event_root_hashes = zip_eq(first_version..=last_version, txns_to_commit)
             .map(|(ver, txn_to_commit)| {
-                self.event_store
-                    .put_events(ver, txn_to_commit.events(), &mut cs)
+                self.event_store.put_events(ver, txn_to_commit.events(), cs)
             })
             .collect::<Result<Vec<_>>>()?;
 
@@ -563,7 +563,7 @@ impl DiemDB {
         zip_eq(first_version..=last_version, txns_to_commit).try_for_each(
             |(ver, txn_to_commit)| {
                 self.transaction_store
-                    .put_transaction(ver, txn_to_commit.transaction(), &mut cs)
+                    .put_transaction(ver, txn_to_commit.transaction(), cs)
             },
         )?;
 
@@ -583,7 +583,7 @@ impl DiemDB {
 
         let new_root_hash =
             self.ledger_store
-                .put_transaction_infos(first_version, &txn_infos, &mut cs)?;
+                .put_transaction_infos(first_version, &txn_infos, cs)?;
 
         Ok(new_root_hash)
     }
@@ -612,7 +612,7 @@ impl DbReader for DiemDB {
     ) -> Result<EpochChangeProof> {
         gauged_api("get_epoch_ending_ledger_infos", || {
             let (ledger_info_with_sigs, more) =
-                Self::get_epoch_ending_ledger_infos(&self, start_epoch, end_epoch)?;
+                Self::get_epoch_ending_ledger_infos(self, start_epoch, end_epoch)?;
             Ok(EpochChangeProof::new(ledger_info_with_sigs, more))
         })
     }
@@ -962,7 +962,7 @@ impl DbReader for DiemDB {
             // requested event_version.
             let maybe_seq_num = self
                 .event_store
-                .get_latest_sequence_number(event_version, &event_key)?;
+                .get_latest_sequence_number(event_version, event_key)?;
 
             let (lower_bound_incl, upper_bound_excl) = if let Some(seq_num) = maybe_seq_num {
                 // We need to request the surrounding events (surrounding
@@ -975,7 +975,7 @@ impl DbReader for DiemDB {
                 let limit = 2;
 
                 let events = self.get_events_with_proof_by_event_key(
-                    &event_key,
+                    event_key,
                     seq_num,
                     Order::Ascending,
                     limit,
@@ -996,7 +996,7 @@ impl DbReader for DiemDB {
                 let limit = 1;
 
                 let events = self.get_events_with_proof_by_event_key(
-                    &event_key,
+                    event_key,
                     seq_num,
                     Order::Ascending,
                     limit,

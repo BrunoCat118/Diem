@@ -251,9 +251,7 @@ impl BlockStore {
             "Committed block round lower than root"
         );
 
-        let blocks_to_commit = self
-            .path_from_root(block_id_to_commit)
-            .unwrap_or_else(Vec::new);
+        let blocks_to_commit = self.path_from_root(block_id_to_commit).unwrap_or_default();
 
         let block_tree = self.inner.clone();
         let storage = self.storage.clone();
@@ -268,7 +266,7 @@ impl BlockStore {
                 &blocks_to_commit,
                 finality_proof,
                 Box::new(move |executed_blocks: &[Arc<ExecutedBlock>]| {
-                    update_counters_and_prune_blocks(block_tree, storage, root, &executed_blocks);
+                    update_counters_and_prune_blocks(block_tree, storage, root, executed_blocks);
                 }),
             )
             .await
@@ -341,9 +339,7 @@ impl BlockStore {
             Ok(res) => Ok(res),
             Err(Error::BlockNotFound(parent_block_id)) => {
                 // recover the block tree in executor
-                let blocks_to_reexecute = self
-                    .path_from_root(parent_block_id)
-                    .unwrap_or_else(Vec::new);
+                let blocks_to_reexecute = self.path_from_root(parent_block_id).unwrap_or_default();
 
                 for block in blocks_to_reexecute {
                     self.execute_block(block.block().clone())?;

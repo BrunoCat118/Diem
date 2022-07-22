@@ -527,7 +527,7 @@ impl AbilitySet {
     }
 
     pub fn has_ability(&self, a: &Ability) -> bool {
-        self.0.contains(&a)
+        self.0.contains(a)
     }
 
     pub fn has_ability_(&self, a: Ability_) -> bool {
@@ -627,7 +627,7 @@ impl Iterator for AbilitySetIntoIter {
     }
 }
 
-impl<'a> IntoIterator for AbilitySet {
+impl IntoIterator for AbilitySet {
     type Item = Ability;
     type IntoIter = AbilitySetIntoIter;
 
@@ -1215,7 +1215,7 @@ impl AstDebug for StructTypeParameter {
             w.write("phantom ");
         }
         w.write(&name.value);
-        ability_constraints_ast_debug(w, &constraints)
+        ability_constraints_ast_debug(w, constraints)
     }
 }
 

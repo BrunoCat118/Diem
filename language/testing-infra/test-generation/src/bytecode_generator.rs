@@ -386,23 +386,23 @@ impl<'a> BytecodeGenerator<'a> {
                 }
                 BytecodeType::ConstantPoolIndex(instruction) => {
                     // Select a random address from the module's address pool
-                    Self::index_or_none(&module.constant_pool, &mut self.rng)
+                    Self::index_or_none(&module.constant_pool, self.rng)
                         .map(|x| instruction(ConstantPoolIndex::new(x)))
                 }
                 BytecodeType::StructIndex(instruction) => {
                     // Select a random struct definition and local signature
-                    Self::index_or_none(&module.struct_defs, &mut self.rng)
+                    Self::index_or_none(&module.struct_defs, self.rng)
                         .map(|x| instruction(StructDefinitionIndex::new(x)))
                 }
                 BytecodeType::FieldHandleIndex(instruction) => {
                     // Select a field definition from the module's field definitions
-                    Self::index_or_none(&module.field_handles, &mut self.rng)
+                    Self::index_or_none(&module.field_handles, self.rng)
                         .map(|x| instruction(FieldHandleIndex::new(x)))
                 }
                 BytecodeType::FunctionIndex(instruction) => {
                     // Select a random function handle and local signature
                     let callable_fns = &state.call_graph.can_call(fn_context.function_handle_index);
-                    Self::index_or_none(callable_fns, &mut self.rng)
+                    Self::index_or_none(callable_fns, self.rng)
                         .and_then(|handle_idx| {
                             Self::call_stack_backpressure(
                                 &state,
@@ -410,21 +410,21 @@ impl<'a> BytecodeGenerator<'a> {
                                 callable_fns[handle_idx as usize],
                             )
                         })
-                        .map(|handle| instruction(handle))
+                        .map(instruction)
                 }
                 BytecodeType::StructInstantiationIndex(instruction) => {
                     // Select a field definition from the module's field definitions
-                    Self::index_or_none(&module.struct_def_instantiations, &mut self.rng)
+                    Self::index_or_none(&module.struct_def_instantiations, self.rng)
                         .map(|x| instruction(StructDefInstantiationIndex::new(x)))
                 }
                 BytecodeType::FunctionInstantiationIndex(instruction) => {
                     // Select a field definition from the module's field definitions
-                    Self::index_or_none(&module.function_instantiations, &mut self.rng)
+                    Self::index_or_none(&module.function_instantiations, self.rng)
                         .map(|x| instruction(FunctionInstantiationIndex::new(x)))
                 }
                 BytecodeType::FieldInstantiationIndex(instruction) => {
                     // Select a field definition from the module's field definitions
-                    Self::index_or_none(&module.field_instantiations, &mut self.rng)
+                    Self::index_or_none(&module.field_instantiations, self.rng)
                         .map(|x| instruction(FieldInstantiationIndex::new(x)))
                 }
             };
@@ -466,7 +466,7 @@ impl<'a> BytecodeGenerator<'a> {
         } else {
             1.0
         };
-        let prob_add = Self::value_backpressure(&state, prob_add);
+        let prob_add = Self::value_backpressure(state, prob_add);
         debug!("Pr[add] = {:?}", prob_add);
         let next_instruction_index;
         if self.rng.gen_range(0.0..1.0) <= prob_add {
@@ -728,7 +728,7 @@ impl<'a> BytecodeGenerator<'a> {
         // generation range.
         assume!(number_of_blocks > 0);
         let mut cfg = CFG::new(
-            &mut self.rng,
+            self.rng,
             locals,
             &module.signatures[fh.parameters.0 as usize],
             number_of_blocks,
@@ -796,7 +796,7 @@ impl<'a> BytecodeGenerator<'a> {
                     // Return: Add return types to last block
                     for token_type in module.signatures[fh.return_.0 as usize].0.iter() {
                         let next_instructions =
-                            Self::inhabit_with_bytecode_seq(&mut state_f.module, &token_type);
+                            Self::inhabit_with_bytecode_seq(&mut state_f.module, token_type);
                         debug!(
                             "Return value instructions: {:#?} for token {:#?}",
                             next_instructions, &token_type
@@ -847,7 +847,7 @@ impl<'a> BytecodeGenerator<'a> {
                 code.code = self.generate(
                     &mut fn_context,
                     &locals_sigs,
-                    &f_handle,
+                    f_handle,
                     &fdef.acquires_global_resources,
                     &mut module,
                     &mut call_graph,
@@ -891,7 +891,7 @@ impl<'a> BytecodeGenerator<'a> {
                     .iter()
                     .flat_map(|field| {
                         let field_sig_tok = &field.signature.0;
-                        Self::inhabit_with_bytecode_seq(module, &field_sig_tok)
+                        Self::inhabit_with_bytecode_seq(module, field_sig_tok)
                     })
                     .collect();
                 bytecodes.push(Bytecode::Pack(StructDefinitionIndex(
@@ -919,7 +919,7 @@ impl<'a> BytecodeGenerator<'a> {
                     .iter()
                     .flat_map(|field| {
                         let field_sig_tok = &field.signature.0;
-                        let reified_field_sig_tok = substitute(field_sig_tok, &instantiation);
+                        let reified_field_sig_tok = substitute(field_sig_tok, instantiation);
                         Self::inhabit_with_bytecode_seq(module, &reified_field_sig_tok)
                     })
                     .collect();

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #![forbid(unsafe_code)]
+#![allow(dead_code)]
 
 //! Used to perform catching up between nodes for committed states.
 //! Used for node restarts, network partitions, full node syncs

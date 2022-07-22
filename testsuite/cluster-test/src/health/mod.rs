@@ -158,11 +158,18 @@ impl HealthCheckRunner {
 
         let mut failed = vec![];
         let mut validators_message = "".to_string();
+        use std::fmt::Write as _;
         for (i, (node, healthy)) in node_health.into_iter().sorted().enumerate() {
             if healthy {
-                validators_message.push_str(&format!("{}* {}{}   ", Fg(Green), node, Fg(Reset)));
+                let _ = write!(
+                    validators_message,
+                    "{}* {}{}   ",
+                    Fg(Green),
+                    node,
+                    Fg(Reset)
+                );
             } else {
-                validators_message.push_str(&format!("{}* {}{}   ", Fg(Red), node, Fg(Reset)));
+                let _ = write!(validators_message, "{}* {}{}   ", Fg(Red), node, Fg(Reset));
                 failed.push(node);
             }
             if (i + 1) % 15 == 0 {
@@ -170,8 +177,8 @@ impl HealthCheckRunner {
             }
         }
         messages.push(validators_message);
-        messages.push(format!(""));
-        messages.push(format!(""));
+        messages.push(String::new());
+        messages.push(String::new());
 
         let affected_validators_set_refs: HashSet<_> = affected_validators_set.iter().collect();
         let failed_set: HashSet<_> = failed.iter().collect();

@@ -273,8 +273,8 @@ impl SpeculationCache {
         Ok(self
             .block_map
             .lock()
-            .get(&block_id)
-            .ok_or_else(|| Error::BlockNotFound(*block_id))?
+            .get(block_id)
+            .ok_or(Error::BlockNotFound(*block_id))?
             .upgrade()
             .ok_or_else(|| {
                 format_err!(

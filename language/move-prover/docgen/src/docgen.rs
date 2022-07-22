@@ -798,7 +798,7 @@ impl<'env> Docgen<'env> {
             .join(format!(
                 "{}_{}_dep.svg",
                 module_name,
-                (if is_forward { "forward" } else { "backward" }).to_string()
+                (if is_forward { "forward" } else { "backward" })
             ));
 
         self.gen_svg_file(&out_file_path, &dot_src_lines.join("\n"));
@@ -1088,7 +1088,7 @@ impl<'env> Docgen<'env> {
     /// Generates documentation for a function signature.
     fn function_header_display(&self, func_env: &FunctionEnv<'_>) -> String {
         let name = self.name_string(func_env.get_name());
-        let tctx = &self.type_display_context_for_fun(&func_env);
+        let tctx = &self.type_display_context_for_fun(func_env);
         let params = func_env
             .get_parameters()
             .iter()
@@ -1501,7 +1501,8 @@ impl<'env> Docgen<'env> {
                                             "Missing backtick found in {} while generating documentation for the following text: \"{}\"",
                                             self.current_module.as_ref().unwrap().get_name().display_full(self.env.symbol_pool()), text,
                                         );
-                    decorated_text += &format!("<code>{}</code>", self.decorate_code(&code));
+                    use std::fmt::Write as _;
+                    let _ = write!(decorated_text, "<code>{}</code>", self.decorate_code(&code));
                 }
             } else {
                 decorated_text.push(chr);
@@ -1564,7 +1565,7 @@ impl<'env> Docgen<'env> {
                 }
             };
             if replacement.is_empty() {
-                r += &code[at..at + cap.get(0).unwrap().end()].replace("<", "&lt;");
+                r += &code[at..at + cap.get(0).unwrap().end()].replace('<', "&lt;");
             } else {
                 r += &code[at..at + cap.get(0).unwrap().start()];
                 r += &replacement;
@@ -1572,7 +1573,7 @@ impl<'env> Docgen<'env> {
                     // Append the call or generic open we may have also matched to distinguish
                     // a simple name from a function call or generic instantiation. Need to
                     // replace the `<` as well.
-                    r += &m.as_str().replace("<", "&lt;");
+                    r += &m.as_str().replace('<', "&lt;");
                 }
             }
             at += cap.get(0).unwrap().end();
@@ -1601,7 +1602,7 @@ impl<'env> Docgen<'env> {
                 // Cannot resolve.
                 return None;
             }
-            let addr = BigUint::parse_bytes(&parts[0][2..].as_bytes(), 16)?;
+            let addr = BigUint::parse_bytes(parts[0][2..].as_bytes(), 16)?;
             let mname = ModuleName::new(addr, self.env.symbol_pool().make(parts[1]));
             parts = &parts[2..];
             Some(self.env.find_module(&mname)?)
@@ -1626,7 +1627,7 @@ impl<'env> Docgen<'env> {
                         && (module.find_function(name).is_some()
                             || module.get_spec_funs_of_name(name).next().is_some()))
                 {
-                    Some(self.ref_for_module_item(&module, name))
+                    Some(self.ref_for_module_item(module, name))
                 } else {
                     None
                 }

@@ -136,8 +136,9 @@ impl fmt::Display for ConsensusRequest {
         let payload = match self {
             ConsensusRequest::GetBlockRequest(block_size, excluded_txns, _) => {
                 let mut txns_str = "".to_string();
+                use std::fmt::Write as _;
                 for tx in excluded_txns.iter() {
-                    txns_str += &format!("{} ", tx);
+                    let _ = write!(txns_str, "{} ", tx);
                 }
                 format!(
                     "GetBlockRequest [block_size: {}, excluded_txns: {}]",
@@ -146,8 +147,9 @@ impl fmt::Display for ConsensusRequest {
             }
             ConsensusRequest::RejectNotification(rejected_txns, _) => {
                 let mut txns_str = "".to_string();
+                use std::fmt::Write as _;
                 for tx in rejected_txns.iter() {
-                    txns_str += &format!("{} ", tx);
+                    let _ = write!(txns_str, "{} ", tx);
                 }
                 format!("RejectNotification [rejected_txns: {}]", txns_str)
             }
@@ -175,8 +177,9 @@ pub struct CommitNotification {
 impl fmt::Display for CommitNotification {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut txns = "".to_string();
+        use std::fmt::Write as _;
         for txn in self.transactions.iter() {
-            txns += &format!("{} ", txn);
+            let _ = write!(txns, "{} ", txn);
         }
         write!(
             f,

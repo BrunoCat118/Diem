@@ -44,7 +44,7 @@ pub fn display_var(s: &str) -> DisplayVar {
         DisplayVar::Tmp
     } else {
         let mut orig = s.to_owned();
-        orig.truncate(orig.find('#').unwrap_or_else(|| s.len()));
+        orig.truncate(orig.find('#').unwrap_or(s.len()));
         DisplayVar::Orig(orig)
     }
 }
@@ -81,7 +81,7 @@ impl<'env> Context<'env> {
     pub fn extract_function_locals(&mut self) -> (UniqueMap<Var, H::SingleType>, BTreeSet<Var>) {
         self.local_scope = UniqueMap::new();
         let locals = std::mem::replace(&mut self.function_locals, UniqueMap::new());
-        let used = std::mem::replace(&mut self.used_locals, BTreeSet::new());
+        let used = std::mem::take(&mut self.used_locals);
         (locals, used)
     }
 
@@ -949,7 +949,7 @@ fn exp_<'env>(
         operands: vec![],
         context,
     };
-    let rc_result = Rc::new(RefCell::new(std::mem::replace(result, Block::new())));
+    let rc_result = Rc::new(RefCell::new(std::mem::take(result)));
     exp_loop(
         &mut stack,
         rc_result.clone(),
@@ -1864,7 +1864,7 @@ fn remove_unused_bindings_command(unused: &BTreeSet<Var>, sp!(_, c_): &mut H::Co
     }
 }
 
-fn remove_unused_bindings_lvalues(unused: &BTreeSet<Var>, ls: &mut Vec<H::LValue>) {
+fn remove_unused_bindings_lvalues(unused: &BTreeSet<Var>, ls: &mut [H::LValue]) {
     ls.iter_mut()
         .for_each(|l| remove_unused_bindings_lvalue(unused, l))
 }

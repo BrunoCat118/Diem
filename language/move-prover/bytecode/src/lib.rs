@@ -48,14 +48,16 @@ pub fn print_targets_for_test(
     header: &str,
     targets: &FunctionTargetsHolder,
 ) -> String {
+    use std::fmt::Write as _;
     let mut text = String::new();
-    text.push_str(&format!("============ {} ================\n", header));
+    let _ = writeln!(text, "============ {} ================", header);
     for module_env in env.get_modules() {
         for func_env in module_env.get_functions() {
             for (variant, target) in targets.get_targets(&func_env) {
                 if !target.data.code.is_empty() || target.func_env.is_native_or_intrinsic() {
                     target.register_annotation_formatters_for_test();
-                    text += &format!("\n[variant {}]\n{}\n", variant, target);
+                    use std::fmt::Write as _;
+                    let _ = write!(text, "\n[variant {}]\n{}\n", variant, target);
                 }
             }
         }

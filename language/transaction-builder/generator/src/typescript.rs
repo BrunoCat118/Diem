@@ -287,7 +287,7 @@ return new DiemTypes.Script(code, tyArgs, args);"#,
         writeln!(
             self.out,
             "  description: \"{}\",",
-            abi.doc().replace("\"", "\\\"").replace("\n", "\" + \n \"")
+            abi.doc().replace('\"', "\\\"").replace('\n', "\" + \n \"")
         )?;
         writeln!(
             self.out,
@@ -465,7 +465,7 @@ impl crate::SourceInstaller for Installer {
         let dir_path = self.install_dir.join(name);
         std::fs::create_dir_all(&dir_path)?;
         let mut file = std::fs::File::create(dir_path.join("index.ts"))?;
-        output(&mut file, &abis)?;
+        output(&mut file, abis)?;
         Ok(())
     }
 }

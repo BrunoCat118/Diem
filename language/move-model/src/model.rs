@@ -1121,8 +1121,7 @@ impl GlobalEnv {
         name: &Identifier,
     ) -> Option<FunctionEnv<'_>> {
         self.find_module_by_language_storage_id(id)
-            .map(|menv| menv.find_function(menv.symbol_pool().make(name.as_str())))
-            .flatten()
+            .and_then(|menv| menv.find_function(menv.symbol_pool().make(name.as_str())))
     }
 
     /// Gets a StructEnv in this module by its `StructTag`
@@ -1131,11 +1130,10 @@ impl GlobalEnv {
         tag: &language_storage::StructTag,
     ) -> Option<QualifiedId<StructId>> {
         self.find_module(&self.to_module_name(&tag.module_id()))
-            .map(|menv| {
+            .and_then(|menv| {
                 menv.find_struct_by_identifier(tag.name.clone())
                     .map(|sid| menv.get_id().qualified(sid))
             })
-            .flatten()
     }
 
     /// Return the module enclosing this location.
@@ -1397,7 +1395,7 @@ impl GlobalEnv {
             .borrow()
             .get(&node_id)
             .cloned()
-            .unwrap_or_else(Vec::new)
+            .unwrap_or_default()
     }
 
     /// Gets the type parameter instantiation associated with the given node, if it is available.
@@ -2671,7 +2669,7 @@ impl<'env> FunctionEnv<'env> {
     /// If such pragma is not specified for this function, None is returned.
     pub fn get_ident_pragma(&self, name: &str) -> Option<Rc<String>> {
         let sym = &self.symbol_pool().make(name);
-        match self.get_spec().properties.get(&sym) {
+        match self.get_spec().properties.get(sym) {
             Some(PropertyValue::Symbol(sym)) => Some(self.symbol_pool().string(*sym)),
             Some(PropertyValue::QualifiedSymbol(qsym)) => {
                 let module_name = qsym.module_name.display(self.symbol_pool());
@@ -2689,7 +2687,7 @@ impl<'env> FunctionEnv<'env> {
     /// exists and its value represents a function in the system.
     pub fn get_func_env_from_pragma(&self, name: &str) -> Option<FunctionEnv<'env>> {
         let sym = &self.symbol_pool().make(name);
-        match self.get_spec().properties.get(&sym) {
+        match self.get_spec().properties.get(sym) {
             Some(PropertyValue::Symbol(sym)) => self.module_env.find_function(*sym),
             Some(PropertyValue::QualifiedSymbol(qsym)) => {
                 if let Some(module_env) = self.module_env.env.find_module(&qsym.module_name) {
@@ -3181,7 +3179,7 @@ impl Loc {
 
 impl<'env> fmt::Display for LocDisplay<'env> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        if let Some((fname, pos)) = self.env.get_file_and_location(&self.loc) {
+        if let Some((fname, pos)) = self.env.get_file_and_location(self.loc) {
             if self.only_line {
                 write!(f, "at {}:{}", fname, pos.line + LineOffset(1))
             } else {

@@ -72,8 +72,8 @@ impl ReleaseArtifacts {
 
 fn artifact_path() -> PathBuf {
     let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-    path.push(ARTIFACT_PATH.to_string());
-    path.push(ARTIFACT_NAME.to_string());
+    path.push(ARTIFACT_PATH);
+    path.push(ARTIFACT_NAME);
     path.with_extension(ARTIFACT_EXTENSION)
 }
 

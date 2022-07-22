@@ -234,7 +234,7 @@ impl<T: FootprintDomain> AccessPathTrie<T> {
             match (*data1_opt, data2_opt) {
                 (Some(data1), Some(data2)) => {
                     let mut new_data = data1.clone();
-                    new_data.join(&data2);
+                    new_data.join(data2);
                     self.update_access_path_weak(ap.clone(), Some(new_data));
                 }
                 (None, Some(data)) | (Some(data), None) => {
@@ -387,8 +387,7 @@ impl<T: FootprintDomain> AccessPathTrie<T> {
     /// Retrieve the data associated with `local_index` in the trie. Returns `None` if there is no associated data
     pub fn get_local(&self, local_index: TempIndex, fun_env: &FunctionEnv) -> Option<&T> {
         self.get_local_node(local_index, fun_env)
-            .map(|n| n.data.as_ref())
-            .flatten()
+            .and_then(|n| n.data.as_ref())
     }
 
     /// Retrieve the node associated with `local_index` in the trie. Returns `None` if there is no associated node

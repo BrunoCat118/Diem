@@ -229,9 +229,7 @@ impl DiemVMImpl {
         let secondary_public_key_hashes: Vec<MoveValue> = txn_data
             .secondary_authentication_key_preimages
             .iter()
-            .map(|preimage| {
-                MoveValue::vector_u8(HashValue::sha3_256_of(&preimage.to_vec()).to_vec())
-            })
+            .map(|preimage| MoveValue::vector_u8(HashValue::sha3_256_of(preimage).to_vec()))
             .collect();
         let args = if self.get_diem_version()? >= DIEM_VERSION_3 && txn_data.is_multi_agent() {
             vec![
@@ -297,7 +295,7 @@ impl DiemVMImpl {
         session
             .execute_function(
                 &account_config::ACCOUNT_MODULE,
-                &MODULE_PROLOGUE_NAME,
+                MODULE_PROLOGUE_NAME,
                 vec![gas_currency_ty],
                 serialize_values(&vec![
                     MoveValue::Signer(txn_data.sender),
@@ -340,7 +338,7 @@ impl DiemVMImpl {
         session
             .execute_function(
                 &account_config::ACCOUNT_MODULE,
-                &USER_EPILOGUE_NAME,
+                USER_EPILOGUE_NAME,
                 vec![gas_currency_ty],
                 serialize_values(&vec![
                     MoveValue::Signer(txn_data.sender),
@@ -375,7 +373,7 @@ impl DiemVMImpl {
         session
             .execute_function(
                 &account_config::ACCOUNT_MODULE,
-                &USER_EPILOGUE_NAME,
+                USER_EPILOGUE_NAME,
                 vec![gas_currency_ty],
                 serialize_values(&vec![
                     MoveValue::Signer(txn_data.sender),
@@ -410,7 +408,7 @@ impl DiemVMImpl {
         session
             .execute_function(
                 &account_config::ACCOUNT_MODULE,
-                &WRITESET_PROLOGUE_NAME,
+                WRITESET_PROLOGUE_NAME,
                 vec![],
                 serialize_values(&vec![
                     MoveValue::Signer(txn_data.sender),
@@ -439,7 +437,7 @@ impl DiemVMImpl {
         session
             .execute_function(
                 &account_config::ACCOUNT_MODULE,
-                &WRITESET_EPILOGUE_NAME,
+                WRITESET_EPILOGUE_NAME,
                 vec![],
                 serialize_values(&vec![
                     MoveValue::Signer(txn_data.sender),

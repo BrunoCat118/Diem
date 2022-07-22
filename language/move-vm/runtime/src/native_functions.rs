@@ -64,7 +64,7 @@ pub struct NativeContext<'a> {
     resolver: &'a Resolver<'a>,
 }
 
-impl<'a, 'b> NativeContext<'a> {
+impl<'a> NativeContext<'a> {
     pub(crate) fn new(
         interpreter: &'a mut Interpreter,
         data_store: &'a mut dyn DataStore,

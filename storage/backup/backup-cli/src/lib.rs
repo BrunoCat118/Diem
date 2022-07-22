@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #![allow(clippy::integer_arithmetic)]
+#![allow(dead_code)]
 
 pub mod backup_types;
 pub mod coordinators;

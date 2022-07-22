@@ -160,7 +160,7 @@ impl OnDiskStateView {
 
     fn get_addr_path(&self, addr: &AccountAddress) -> PathBuf {
         let mut path = self.storage_dir.clone();
-        path.push(format!("0x{}", addr.to_string()));
+        path.push(format!("0x{}", addr));
         path
     }
 
@@ -412,7 +412,7 @@ impl OnDiskStateView {
         let mut named_address_mapping_changes = BTreeMap::new();
         let mut is_empty = true;
         for ((module_id, address_name_opt), module_bytes) in modules {
-            self.save_module(&module_id, module_bytes)?;
+            self.save_module(module_id, module_bytes)?;
             named_address_mapping_changes.insert(module_id.clone(), address_name_opt.clone());
             is_empty = false;
         }

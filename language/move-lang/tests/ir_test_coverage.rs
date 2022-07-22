@@ -28,23 +28,28 @@ fn test_ir_test_coverage() {
     if !not_migrated.is_empty() {
         let mut msg = "\n\nThe following tests have not been migrated:\n".to_owned();
         for path in not_migrated {
-            msg.push_str(&format!("{}\n", path));
+            use std::fmt::Write as _;
+            let _ = writeln!(msg, "{}", path);
         }
         msg.push_str("\nA corresponding test needs to be added:\n");
-        msg.push_str(&format!(
-            "    {}/<dir name>/<test name>.{}\n",
+        use std::fmt::Write as _;
+        let _ = writeln!(
+            msg,
+            "    {}/<dir name>/<test name>.{}",
             MOVE_CHECK_DIR, MOVE_EXTENSION
-        ));
+        );
         msg.push_str("  or\n");
-        msg.push_str(&format!(
-            "    {}/<dir name>/<test name>.{}\n",
+        let _ = writeln!(
+            msg,
+            "    {}/<dir name>/<test name>.{}",
             FUNCTIONAL_TEST_DIR, MOVE_EXTENSION
-        ));
-        msg.push_str(&format!(
+        );
+        let _ =
+            write!(msg,
             "Replace the extension '.{}' with '.{}' to mark the test as present, but it will not \
              be run.\n\n",
             MOVE_EXTENSION, TODO_EXTENSION
-        ));
+        );
         msg.push_str("Running the following tool may help with the migration:\n");
         msg.push_str(
             "  cargo run -p move-lang-ir-utils --bin ir-test-translation -- -d <dir_name>\n\n",

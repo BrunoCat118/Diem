@@ -30,14 +30,14 @@ pub(crate) type StreamingClientReceiver = mpsc::Receiver<StreamResult<StreamJson
 pub(crate) type StreamingClientSender = mpsc::Sender<StreamResult<StreamJsonRpcResponse>>;
 
 struct SubscriptionSender {
-    pub id: Id,
+    pub _id: Id,
     pub sender: StreamingClientSender,
 }
 
 impl SubscriptionSender {
-    pub fn new(id: Id, sender: StreamingClientSender) -> Self {
+    pub fn new(_id: Id, sender: StreamingClientSender) -> Self {
         Self {
-            id,
+            _id,
             sender,
         }
     }
@@ -187,7 +187,7 @@ impl StreamingClient {
         let id = match res {
             Ok(id) => id,
             Err(e) => {
-                self.clear_subscription(&subscription_stream.id()).await;
+                self.clear_subscription(subscription_stream.id()).await;
                 return Err(e);
             }
         };

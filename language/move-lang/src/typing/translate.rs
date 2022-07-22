@@ -269,7 +269,7 @@ fn function_body(
     };
     core::solve_constraints(context);
     expand::function_body_(context, &mut b_);
-    globals::function_body_(context, &acquires, &b_);
+    globals::function_body_(context, acquires, &b_);
     // freeze::function_body_(context, &mut b_);
     sp(loc, b_)
 }
@@ -653,7 +653,7 @@ fn check_phantom_params(
         // References cannot appear in structs, but we still report them as a non-phantom position
         // for full information.
         Type_::Ref(_, inner) => {
-            check_phantom_params(context, type_parameters, &inner, Some(TypeArg))
+            check_phantom_params(context, type_parameters, inner, Some(TypeArg))
         }
         Type_::Var(_) | Type_::Anything | Type_::Unit | Type_::UnresolvedError => {}
     }
@@ -1813,7 +1813,7 @@ fn add_field_types<T>(
         }
     };
     for (_, f_, _) in &fields_ty {
-        if fields.get_(&f_).is_none() {
+        if fields.get_(f_).is_none() {
             let msg = format!("Missing {} for field '{}' in '{}::{}'", verb, f_, m, n);
             context
                 .env

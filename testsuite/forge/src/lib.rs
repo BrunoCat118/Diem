@@ -1,6 +1,8 @@
 // Copyright (c) The Diem Core Contributors
 // SPDX-License-Identifier: Apache-2.0
 
+#![allow(dead_code)]
+
 //! Forge is a framework for writing and running end-to-end tests in Diem
 
 pub use anyhow::Result;

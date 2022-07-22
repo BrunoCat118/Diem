@@ -69,7 +69,7 @@ fn write_helper_file(
     emitter.output_transaction_script_encoder_map(&common::transaction_script_abis(abis))?;
     emitter.output_script_function_encoder_map(&common::script_function_abis(abis))?;
     for abi in &common::transaction_script_abis(abis) {
-        emitter.output_code_constant(&abi)?;
+        emitter.output_code_constant(abi)?;
     }
     // Must be defined after the constants.
     emitter.output_decoder_maps(abis)?;
@@ -416,19 +416,22 @@ return new TransactionPayload.ScriptFunction(
             abi.name().to_camel_case(),
         )?;
         let mut params = String::from("");
+        use std::fmt::Write as _;
         for (index, ty_arg) in abi.ty_args().iter().enumerate() {
-            params.push_str(&format!(
+            let _ = write!(
+                params,
                 "    // {}\n    script.ty_args[{}],\n",
                 ty_arg.name(),
                 index,
-            ));
+            );
         }
         for (index, arg) in abi.args().iter().enumerate() {
-            params.push_str(&format!(
-                "    Helpers.decode_{}_argument(script.args[{}]),\n",
+            let _ = writeln!(
+                params,
+                "    Helpers.decode_{}_argument(script.args[{}]),",
                 common::mangle_type(arg.type_tag()),
                 index,
-            ));
+            );
         }
         params.pop(); // removes last newline
         params.pop(); // removes last trailing comma
@@ -467,12 +470,14 @@ return new TransactionPayload.ScriptFunction(
             abi.name().to_camel_case(),
         )?;
         let mut params = String::from("");
+        use std::fmt::Write as _;
         for (index, ty_arg) in abi.ty_args().iter().enumerate() {
-            params.push_str(&format!(
+            let _ = write!(
+                params,
                 "    // {}\n    script.ty_args[{}],\n",
                 ty_arg.name(),
                 index,
-            ));
+            );
         }
         for (index, arg) in abi.args().iter().enumerate() {
             let decoding = match Self::bcs_primitive_type_name(arg.type_tag()) {
@@ -486,7 +491,7 @@ return new TransactionPayload.ScriptFunction(
                     index, type_name
                 ),
             };
-            params.push_str(&format!("    {},\n", decoding,));
+            let _ = writeln!(params, "    {},", decoding,);
         }
         params.pop(); // removes last newline
         params.pop(); // removes last trailing comma

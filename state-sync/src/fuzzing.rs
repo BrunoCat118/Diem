@@ -35,6 +35,8 @@ proptest! {
     }
 }
 
+// TODO: state sync seems to work fine but this is throwing a Clippy error, worth investigating
+#[allow(clippy::await_holding_lock)]
 pub fn test_state_sync_msg_fuzzer_impl(message: StateSyncMessage) {
     block_on(async move {
         let _ = STATE_SYNC_COORDINATOR

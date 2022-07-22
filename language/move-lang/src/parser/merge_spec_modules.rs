@@ -99,7 +99,7 @@ fn extract_spec_module(
 
 fn merge_spec_modules(
     spec_modules: &mut BTreeMap<(Option<LeadingNameAccess_>, String), ModuleDefinition>,
-    defs: &mut Vec<Definition>,
+    defs: &mut [Definition],
 ) {
     use Definition::*;
     for def in defs.iter_mut() {

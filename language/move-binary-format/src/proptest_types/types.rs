@@ -144,7 +144,7 @@ pub struct StructDefinitionGen {
     name_idx: PropIndex,
     abilities: AbilitySetGen,
     type_parameters: Vec<(AbilitySetGen, bool)>,
-    is_public: bool,
+    _is_public: bool,
     field_defs: Option<Vec<FieldDefinitionGen>>,
 }
 
@@ -164,11 +164,11 @@ impl StructDefinitionGen {
             option::of(vec(FieldDefinitionGen::strategy(), field_count)),
         )
             .prop_map(
-                |(name_idx, abilities, type_parameters, is_public, field_defs)| Self {
+                |(name_idx, abilities, type_parameters, _is_public, field_defs)| Self {
                     name_idx,
                     abilities,
                     type_parameters,
-                    is_public,
+                    _is_public,
                     field_defs,
                 },
             )

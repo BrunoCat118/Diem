@@ -1,6 +1,9 @@
 // Copyright (c) The Diem Core Contributors
 // SPDX-License-Identifier: Apache-2.0
 
+// edge case in this file where the borrow is expected, despite Clippy
+#![allow(clippy::needless_borrow)]
+
 use crate::{
     counters,
     errors::is_internal_error,
@@ -186,7 +189,7 @@ pub fn bootstrap(
         health_route
             .or(route_v1.or(route_root))
             .or(stream_rpc::startup::get_stream_routes(
-                &stream_config,
+                stream_config,
                 content_len_limit as u64,
                 diem_db,
             ));
@@ -307,7 +310,7 @@ async fn rpc_endpoint_without_metrics(
                 });
                 let responses = join_all(futures).await;
                 for resp in &responses {
-                    log_response!(&trace_id, &resp, true);
+                    log_response!(&trace_id, resp, true);
                 }
                 warp::reply::json(&responses)
             }
@@ -358,7 +361,7 @@ async fn rpc_request_handler(
     request_type_label: &str,
     sdk_info: SdkInfo,
 ) -> JsonRpcResponse {
-    let handler = Handler::new(&service, &ledger_info);
+    let handler = Handler::new(service, ledger_info);
 
     let mut response = JsonRpcResponse::new(
         service.chain_id(),

@@ -178,12 +178,13 @@ impl<'env> StacklessBytecodeInterpreter<'env> {
 
         // dump the bytecode if requested
         if settings.verbose_stepwise {
+            use std::fmt::Write as _;
             let mut text = String::new();
             for module_env in env.get_modules() {
                 for func_env in module_env.get_functions() {
                     for (variant, target) in targets.get_targets(&func_env) {
                         target.register_annotation_formatters_for_test();
-                        text += &format!("[variant {}]\n{}\n", variant, target);
+                        let _ = write!(text, "[variant {}]\n{}\n", variant, target);
                     }
                 }
             }
@@ -314,13 +315,14 @@ fn verbose_stepwise_processing(
         .unwrap_or_else(|| "stackless".to_string());
 
     // dump bytecode
+    use std::fmt::Write as _;
     let mut text = String::new();
     for module_env in env.get_modules() {
         for func_env in module_env.get_functions() {
             for (_, target) in targets.get_targets(&func_env) {
                 if !target.data.code.is_empty() {
                     target.register_annotation_formatters_for_test();
-                    text += &format!("[{}-{}]\n{}\n", step, name, target);
+                    let _ = write!(text, "[{}-{}]\n{}\n", step, name, target);
                 }
             }
         }

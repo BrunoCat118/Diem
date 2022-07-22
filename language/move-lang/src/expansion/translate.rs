@@ -85,7 +85,7 @@ impl<'env> Context<'env> {
     }
 
     pub fn extract_exp_specs(&mut self) -> BTreeMap<SpecId, E::SpecBlock> {
-        std::mem::replace(&mut self.exp_specs, BTreeMap::new())
+        std::mem::take(&mut self.exp_specs)
     }
 }
 
@@ -492,8 +492,7 @@ fn script_(context: &mut Context, pscript: P::Script) -> E::Script {
 fn flatten_attributes(context: &mut Context, attributes: Vec<P::Attributes>) -> Vec<E::Attribute> {
     attributes
         .into_iter()
-        .map(|attrs| attrs.value)
-        .flatten()
+        .flat_map(|attrs| attrs.value)
         .flat_map(|attr| attribute(context, attr))
         .collect()
 }
@@ -549,7 +548,7 @@ fn all_module_members<'a>(
                 let addr = match &m.address {
                     Some(a) => address_impl(
                         compilation_env,
-                        &address_mapping,
+                        address_mapping,
                         /* suggest_declaration */ true,
                         a.clone(),
                     ),
@@ -561,7 +560,7 @@ fn all_module_members<'a>(
             P::Definition::Address(addr_def) => {
                 let addr = address_impl(
                     compilation_env,
-                    &address_mapping,
+                    address_mapping,
                     /* suggest_declaration */ false,
                     addr_def.addr.clone(),
                 );
@@ -584,7 +583,7 @@ fn module_members(
     if !always_add && members.contains_key(&mident) {
         return;
     }
-    let mut cur_members = members.remove(&mident).unwrap_or_else(ModuleMembers::new);
+    let mut cur_members = members.remove(&mident).unwrap_or_default();
     for mem in &m.members {
         use P::{SpecBlockMember_ as SBM, SpecBlockTarget_ as SBT, SpecBlock_ as SB};
         match mem {
@@ -2176,7 +2175,7 @@ fn unbound_names_bind(unbound: &mut BTreeSet<Name>, sp!(_, l_): &E::LValue) {
     use E::LValue_ as EL;
     match l_ {
         EL::Var(sp!(_, E::ModuleAccess_::Name(n)), _) => {
-            unbound.remove(&n);
+            unbound.remove(n);
         }
         EL::Var(sp!(_, E::ModuleAccess_::ModuleAccess(..)), _) => {
             // Qualified vars are not considered in unbound set.

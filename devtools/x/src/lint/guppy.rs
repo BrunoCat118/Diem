@@ -286,7 +286,8 @@ impl<'cfg> ProjectLinter for DirectDepDups<'cfg> {
             if versions.len() > 1 {
                 let mut msg = format!("duplicate direct dependency '{}':\n", direct_dep);
                 for (version, packages) in versions {
-                    msg.push_str(&format!("  * {} (", version));
+                    use std::fmt::Write as _;
+                    let _ = write!(msg, "  * {} (", version);
                     msg.push_str(&packages.join(", "));
                     msg.push_str(")\n");
                 }
@@ -377,12 +378,14 @@ impl<'cfg> PackageLinter for OverlayFeatures<'cfg> {
         if !overlays.is_empty() {
             let mut msg = "overlay features enabled by default:\n".to_string();
             for (from_feature, to_package, to_feature) in overlays {
-                msg.push_str(&format!(
-                    "  * {} -> {}/{}\n",
+                use std::fmt::Write as _;
+                let _ = writeln!(
+                    msg,
+                    "  * {} -> {}/{}",
                     feature_str(from_feature),
                     to_package,
                     feature_str(to_feature)
-                ));
+                );
             }
             msg.push_str("Use a line in the [features] section instead.\n");
             out.write(LintLevel::Error, msg);

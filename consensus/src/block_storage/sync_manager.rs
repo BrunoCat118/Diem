@@ -94,7 +94,7 @@ impl BlockStore {
         qc: &QuorumCert,
         retriever: &mut BlockRetriever,
     ) -> anyhow::Result<()> {
-        match self.need_fetch_for_quorum_cert(&qc) {
+        match self.need_fetch_for_quorum_cert(qc) {
             NeedFetchResult::NeedFetch => self.fetch_quorum_cert(qc.clone(), retriever).await?,
             NeedFetchResult::QCBlockExist => self.insert_single_quorum_cert(qc.clone())?,
             _ => (),
@@ -204,7 +204,7 @@ impl BlockStore {
         );
 
         let blocks = retriever
-            .retrieve_block_for_qc(&highest_commit_cert, 3)
+            .retrieve_block_for_qc(highest_commit_cert, 3)
             .await?;
         assert_eq!(
             blocks.last().expect("should have 3-chain").id(),

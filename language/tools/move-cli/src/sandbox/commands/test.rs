@@ -161,7 +161,8 @@ pub fn run_one(
             .current_dir(exe_dir)
             .args(args_iter)
             .output()?;
-        output += &format!("Command `{}`:\n", args_line);
+        use std::fmt::Write as _;
+        let _ = writeln!(output, "Command `{}`:", args_line);
         output += std::str::from_utf8(&cmd_output.stdout)?;
         output += std::str::from_utf8(&cmd_output.stderr)?;
     }

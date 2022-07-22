@@ -120,7 +120,7 @@ fn get_account_role(sender: AccountAddress, remote_cache: &StateViewCache) -> Go
 
 pub(crate) fn validate_signature_checked_transaction<S: MoveStorage>(
     vm: &DiemVMImpl,
-    mut session: &mut Session<S>,
+    session: &mut Session<S>,
     transaction: &SignatureCheckedTransaction,
     remote_cache: &S,
     allow_too_new: bool,
@@ -155,7 +155,7 @@ pub(crate) fn validate_signature_checked_transaction<S: MoveStorage>(
     let prologue_status = match transaction.payload() {
         TransactionPayload::Script(_) => {
             vm.check_gas(&txn_data, log_context)?;
-            vm.run_script_prologue(&mut session, &txn_data, &currency_code, log_context)
+            vm.run_script_prologue(session, &txn_data, &currency_code, log_context)
         }
         TransactionPayload::ScriptFunction(_) => {
             // gate the behavior until the Diem version is ready
@@ -164,14 +164,14 @@ pub(crate) fn validate_signature_checked_transaction<S: MoveStorage>(
             }
             // NOTE: Script and ScriptFunction shares the same prologue
             vm.check_gas(&txn_data, log_context)?;
-            vm.run_script_prologue(&mut session, &txn_data, &currency_code, log_context)
+            vm.run_script_prologue(session, &txn_data, &currency_code, log_context)
         }
         TransactionPayload::Module(_module) => {
             vm.check_gas(&txn_data, log_context)?;
-            vm.run_module_prologue(&mut session, &txn_data, &currency_code, log_context)
+            vm.run_module_prologue(session, &txn_data, &currency_code, log_context)
         }
         TransactionPayload::WriteSet(_cs) => {
-            vm.run_writeset_prologue(&mut session, &txn_data, log_context)
+            vm.run_writeset_prologue(session, &txn_data, log_context)
         }
     };
 

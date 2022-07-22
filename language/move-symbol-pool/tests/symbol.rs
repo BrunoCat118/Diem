@@ -5,7 +5,9 @@ use move_symbol_pool::Symbol;
 
 #[test]
 fn test_from() {
-    Symbol::from("this shouldn't panic");
+    let s = Symbol::from("this shouldn't panic");
+    // make linter happy
+    s.as_str();
 }
 
 #[test]

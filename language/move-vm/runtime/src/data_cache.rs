@@ -292,6 +292,7 @@ impl<'r, 'l, S: MoveStorage> DataStore for TransactionDataCache<'r, 'l, S> {
         val: Value,
     ) -> PartialVMResult<()> {
         let ty_layout = self.loader.type_to_type_layout(&ty)?;
-        Ok(self.event_data.push((guid, seq_num, ty, ty_layout, val)))
+        self.event_data.push((guid, seq_num, ty, ty_layout, val));
+        Ok(())
     }
 }

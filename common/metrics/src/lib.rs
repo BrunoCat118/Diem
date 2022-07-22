@@ -157,6 +157,7 @@ pub fn get_all_metrics() -> HashMap<String, String> {
 /// Include call counts, time, and whether it's inside or not (1 or 0).
 /// It assumes a OpMetrics defined as OP_COUNTERS in crate::counters;
 #[macro_export]
+#[allow(clippy::crate_in_macro_def)]
 macro_rules! monitor {
     ( $name:literal, $fn:expr ) => {{
         use crate::counters::OP_COUNTERS;

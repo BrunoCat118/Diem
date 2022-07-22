@@ -44,16 +44,13 @@ fn extract_decls(
     >,
 ) {
     let pre_compiled_modules = || {
-        pre_compiled_lib
-            .iter()
-            .map(|pre_compiled| {
-                pre_compiled
-                    .cfgir
-                    .modules
-                    .key_cloned_iter()
-                    .filter(|(mident, _m)| !prog.modules.contains_key(mident))
-            })
-            .flatten()
+        pre_compiled_lib.iter().flat_map(|pre_compiled| {
+            pre_compiled
+                .cfgir
+                .modules
+                .key_cloned_iter()
+                .filter(|(mident, _m)| !prog.modules.contains_key(mident))
+        })
     };
 
     let mut max_ordering = 0;
@@ -397,7 +394,7 @@ fn used_local_info(
     used_local_types: &BTreeMap<Var, H::SingleType>,
 ) -> UniqueMap<Var, VarInfo> {
     UniqueMap::maybe_from_iter(used_local_types.iter().map(|(v, ty)| {
-        let (v, info) = var_info(&local_map, v.clone(), ty.clone());
+        let (v, info) = var_info(local_map, v.clone(), ty.clone());
         let v_orig_ = match display_var(&v.0.value) {
             DisplayVar::Tmp => panic!("ICE spec block captured a tmp"),
             DisplayVar::Orig(s) => s,

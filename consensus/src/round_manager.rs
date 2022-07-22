@@ -159,13 +159,13 @@ impl RecoveryManager {
     ) -> Result<RecoveryData> {
         let author = proposal_msg.proposer();
         let sync_info = proposal_msg.sync_info();
-        self.sync_up(&sync_info, author).await
+        self.sync_up(sync_info, author).await
     }
 
     pub async fn process_vote_msg(&mut self, vote_msg: VoteMsg) -> Result<RecoveryData> {
         let author = vote_msg.vote().author();
         let sync_info = vote_msg.sync_info();
-        self.sync_up(&sync_info, author).await
+        self.sync_up(sync_info, author).await
     }
 
     pub async fn sync_up(&mut self, sync_info: &SyncInfo, peer: Author) -> Result<RecoveryData> {
@@ -182,7 +182,7 @@ impl RecoveryManager {
         );
         let mut retriever = BlockRetriever::new(self.network.clone(), peer);
         let recovery_data = BlockStore::fast_forward_sync(
-            &sync_info.highest_commit_cert(),
+            sync_info.highest_commit_cert(),
             &mut retriever,
             self.storage.clone(),
             self.state_computer.clone(),
@@ -407,7 +407,7 @@ impl RoundManager {
         help_remote: bool,
     ) -> anyhow::Result<()> {
         let local_sync_info = self.block_store.sync_info();
-        if help_remote && local_sync_info.has_newer_certificates(&sync_info) {
+        if help_remote && local_sync_info.has_newer_certificates(sync_info) {
             counters::SYNC_INFO_MSGS_SENT_COUNT.inc();
             debug!(
                 self.new_log(LogEvent::HelpPeerSync).remote_peer(author),
@@ -437,7 +437,7 @@ impl RoundManager {
                 })?;
             let result = self
                 .block_store
-                .add_certs(&sync_info, self.create_block_retriever(author))
+                .add_certs(sync_info, self.create_block_retriever(author))
                 .await;
             self.process_certificates().await?;
             result

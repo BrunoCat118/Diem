@@ -18,12 +18,12 @@ pub trait Effect: Display {
     async fn deactivate(&mut self) -> Result<()>;
 }
 
-pub async fn activate_all<T: Effect>(effects: &mut Vec<T>) -> Result<()> {
+pub async fn activate_all<T: Effect>(effects: &mut [T]) -> Result<()> {
     try_join_all(effects.iter_mut().map(Effect::activate)).await?;
     Ok(())
 }
 
-pub async fn deactivate_all<T: Effect>(effects: &mut Vec<T>) -> Result<()> {
+pub async fn deactivate_all<T: Effect>(effects: &mut [T]) -> Result<()> {
     try_join_all(effects.iter_mut().map(Effect::deactivate)).await?;
     Ok(())
 }

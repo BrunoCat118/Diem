@@ -276,7 +276,7 @@ where
     // Compute the matches.
     let mut matches = vec![];
     let mut it = MatchIterator::new(&groups, &text);
-    while let Some((is_positive, m)) = it.next() {
+    for (is_positive, m) in it.by_ref() {
         if !is_positive {
             return MatchResult {
                 status: MatchStatus::Failure(vec![MatchError::NegativeMatch(m)]),

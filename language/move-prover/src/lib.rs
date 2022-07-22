@@ -63,11 +63,17 @@ pub fn run_move_prover<W: WriteColor>(
     }
     // Same for the error map generator
     if options.run_errmapgen {
-        return Ok(run_errmapgen(&env, &options, now));
+        return {
+            run_errmapgen(&env, &options, now);
+            Ok(())
+        };
     }
     // Same for read/write set analysis
     if options.run_read_write_set {
-        return Ok(run_read_write_set(&env, &options, now));
+        return {
+            run_read_write_set(&env, &options, now);
+            Ok(())
+        };
     }
 
     // Check correct backend versions.
@@ -137,7 +143,7 @@ pub fn generate_boogie(
 ) -> anyhow::Result<CodeWriter> {
     let writer = CodeWriter::new(env.internal_loc());
     add_prelude(env, &options.backend, &writer)?;
-    let mut translator = BoogieTranslator::new(&env, &options.backend, &targets, &writer);
+    let mut translator = BoogieTranslator::new(env, &options.backend, targets, &writer);
     translator.translate();
     Ok(writer)
 }
@@ -152,8 +158,8 @@ pub fn verify_boogie(
     debug!("writing boogie to `{}`", &options.output_path);
     writer.process_result(|result| fs::write(&options.output_path, result))?;
     let boogie = BoogieWrapper {
-        env: &env,
-        targets: &targets,
+        env,
+        targets,
         writer: &writer,
         options: &options.backend,
     };

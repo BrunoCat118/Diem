@@ -316,12 +316,11 @@ impl PreheatedTransactionRestore {
             "{} started. Manifest: {}",
             name, self.controller.manifest_handle
         );
-        let res = self
-            .run_impl()
+        self.run_impl()
             .await
             .map_err(|e| anyhow!("{} failed: {}", name, e))?;
         info!("{} succeeded.", name);
-        Ok(res)
+        Ok(())
     }
 
     pub fn get_last_version(&self) -> Result<Version> {

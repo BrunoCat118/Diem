@@ -185,7 +185,7 @@ impl Experiment for Reconfiguration {
         } else {
             context.report.report_text(format!(
                 "{} finished in {} seconds",
-                self.to_string(),
+                self,
                 elapsed.as_secs()
             ));
         }

@@ -39,7 +39,7 @@ impl DurationHistogram {
 
 #[derive(Clone)]
 pub struct OpMetrics {
-    module: String,
+    // module: String,
     counters: IntCounterVec,
     gauges: IntGaugeVec,
     peer_gauges: IntGaugeVec,
@@ -50,7 +50,7 @@ impl OpMetrics {
     pub fn new<S: Into<String>>(name: S) -> OpMetrics {
         let name_str = name.into();
         OpMetrics {
-            module: name_str.clone(),
+            // module: name_str.clone(),
             counters: IntCounterVec::new(
                 Opts::new(name_str.clone(), format!("Counters for {}", name_str)),
                 &["op"],

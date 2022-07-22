@@ -61,14 +61,11 @@ impl ReadWriteSetAnalysis {
     /// Return an overapproximation access paths read/written by `module`::`fun`.
     /// Returns `None` if the function or module does not exist.
     pub fn get_summary(&self, module: &ModuleId, fun: &IdentStr) -> Option<&ReadWriteSetState> {
-        self.get_function_env(module, fun)
-            .map(|fenv| {
-                self.targets
-                    .get_data(&fenv.get_qualified_id(), &FunctionVariant::Baseline)
-                    .map(|data| data.annotations.get::<ReadWriteSetState>())
-                    .flatten()
-            })
-            .flatten()
+        self.get_function_env(module, fun).and_then(|fenv| {
+            self.targets
+                .get_data(&fenv.get_qualified_id(), &FunctionVariant::Baseline)
+                .and_then(|data| data.annotations.get::<ReadWriteSetState>())
+        })
     }
 
     fn get_summary_(&self, module: &ModuleId, fun: &IdentStr) -> Result<&ReadWriteSetState> {

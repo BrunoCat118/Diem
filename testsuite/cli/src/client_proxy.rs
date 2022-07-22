@@ -292,7 +292,7 @@ impl ClientProxy {
         if self.accounts.is_empty() {
             println!("No user accounts");
         } else {
-            for (ref index, ref account) in self.accounts.iter().enumerate() {
+            for (ref index, account) in self.accounts.iter().enumerate() {
                 println!(
                     "User account index: {}, address: {}, private_key: {:?}, sequence number: {}, status: {:?}",
                     index,
@@ -395,9 +395,7 @@ impl ClientProxy {
 
                 Ok(format!(
                     "{}.{:0>6}{}",
-                    whole_num.to_string(),
-                    remainder.to_string(),
-                    amt_view.currency
+                    whole_num, remainder, amt_view.currency
                 ))
             })
             .collect()
@@ -491,7 +489,7 @@ impl ClientProxy {
 
         let txn = self.create_txn_to_submit(
             TransactionPayload::Script(program),
-            &sender,
+            sender,
             max_gas_amount,    /* max_gas_amount */
             gas_unit_price,    /* gas_unit_price */
             gas_currency_code, /* gas_currency_code */
@@ -723,7 +721,7 @@ impl ClientProxy {
 
     /// Submit transaction and waits for the transaction executed
     pub fn submit_and_wait(&mut self, txn: &SignedTransaction, is_blocking: bool) -> Result<()> {
-        self.client.submit_transaction(&txn)?;
+        self.client.submit_transaction(txn)?;
         if is_blocking {
             self.wait_for_signed_transaction(txn)?;
         } else {
@@ -934,7 +932,8 @@ impl ClientProxy {
             tmp_output_path.display(),
         );
         for dep in &space_delim_strings[2..] {
-            args.push_str(&format!(" -d {}", dep));
+            use std::fmt::Write as _;
+            let _ = write!(args, " -d {}", dep);
         }
 
         let status = Command::new("cargo")
@@ -986,7 +985,7 @@ impl ClientProxy {
         let (sender_address, _) =
             self.get_account_address_from_parameter(space_delim_strings[1])?;
         let sender = self.get_account_data(&sender_address)?;
-        let txn = self.create_txn_to_submit(program, &sender, None, None, None)?;
+        let txn = self.create_txn_to_submit(program, sender, None, None, None)?;
 
         self.submit_and_wait(&txn, true)?;
         Ok(())
@@ -1230,7 +1229,7 @@ impl ClientProxy {
         );
 
         self.wallet
-            .write_recovery(&Path::new(space_delim_strings[1]))?;
+            .write_recovery(Path::new(space_delim_strings[1]))?;
         Ok(())
     }
 
@@ -1243,7 +1242,7 @@ impl ClientProxy {
             space_delim_strings.len() == 2,
             "Invalid number of arguments for recovering wallets"
         );
-        let wallet = WalletLibrary::recover(&Path::new(space_delim_strings[1]))?;
+        let wallet = WalletLibrary::recover(Path::new(space_delim_strings[1]))?;
         self.set_wallet(wallet);
         self.recover_accounts_in_wallet()
     }
@@ -1323,7 +1322,7 @@ impl ClientProxy {
         // version and breaks with our testnet deployment, so disabling this for now.
         // self.client.update_and_verify_state_proof()?;
 
-        if let Some(ref ac) = account.as_ref() {
+        if let Some(ac) = account.as_ref() {
             self.update_account_seq(address, ac.sequence_number)
         }
         Ok(account)
@@ -1729,9 +1728,9 @@ mod tests {
         let mut client_proxy = ClientProxy::new(
             ChainId::test(),
             "http://localhost:8080/v1",
-            &"",
-            &"",
-            &"",
+            "",
+            "",
+            "",
             false,
             None,
             Some(mnemonic_path),

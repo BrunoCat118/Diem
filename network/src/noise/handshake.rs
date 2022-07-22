@@ -116,7 +116,7 @@ impl HandshakeAuthMode {
             HandshakeAuthMode::Mutual {
                 anti_replay_timestamps,
                 ..
-            } => Some(&anti_replay_timestamps),
+            } => Some(anti_replay_timestamps),
             HandshakeAuthMode::MaybeMutual(_) => None,
         }
     }
@@ -227,7 +227,7 @@ impl NoiseUpgrader {
         client_message[PeerId::LENGTH..Self::PROLOGUE_SIZE]
             .copy_from_slice(remote_public_key.as_slice());
 
-        let (prologue_msg, mut client_noise_msg) = client_message.split_at_mut(Self::PROLOGUE_SIZE);
+        let (prologue_msg, client_noise_msg) = client_message.split_at_mut(Self::PROLOGUE_SIZE);
 
         // craft 8-byte payload as current timestamp (in milliseconds)
         let payload = time_provider();
@@ -238,10 +238,10 @@ impl NoiseUpgrader {
             .noise_config
             .initiate_connection(
                 &mut rng,
-                &prologue_msg,
+                prologue_msg,
                 remote_public_key,
                 Some(&payload),
-                &mut client_noise_msg,
+                client_noise_msg,
             )
             .map_err(NoiseHandshakeError::BuildClientHandshakeMessageFailed)?;
 
@@ -343,7 +343,7 @@ impl NoiseUpgrader {
         let (prologue, client_init_message) = client_message.split_at(Self::PROLOGUE_SIZE);
         let (remote_public_key, handshake_state, payload) = self
             .noise_config
-            .parse_client_init_message(&prologue, &client_init_message)
+            .parse_client_init_message(prologue, client_init_message)
             .map_err(|err| NoiseHandshakeError::ServerParseClient(remote_peer_short, err))?;
 
         // if mutual auth mode, verify the remote pubkey is in our set of trusted peers
@@ -446,7 +446,7 @@ impl NoiseUpgrader {
         peer: &Peer,
         remote_public_key: &x25519::PublicKey,
     ) -> Result<PeerRole, NoiseHandshakeError> {
-        if !peer.keys.contains(&remote_public_key) {
+        if !peer.keys.contains(remote_public_key) {
             return Err(NoiseHandshakeError::UnauthenticatedClientPubkey(
                 remote_peer_short,
                 hex::encode(remote_public_key.as_slice()),

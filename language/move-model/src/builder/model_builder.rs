@@ -337,7 +337,7 @@ impl<'env> ModelBuilder<'env> {
     pub fn bin_op_symbol(&self, op: &PA::BinOp_) -> QualifiedSymbol {
         QualifiedSymbol {
             module_name: self.builtin_module(),
-            symbol: self.env.symbol_pool().make(&op.symbol()),
+            symbol: self.env.symbol_pool().make(op.symbol()),
         }
     }
 
@@ -345,7 +345,7 @@ impl<'env> ModelBuilder<'env> {
     pub fn unary_op_symbol(&self, op: &PA::UnaryOp_) -> QualifiedSymbol {
         QualifiedSymbol {
             module_name: self.builtin_module(),
-            symbol: self.env.symbol_pool().make(&op.symbol()),
+            symbol: self.env.symbol_pool().make(op.symbol()),
         }
     }
 

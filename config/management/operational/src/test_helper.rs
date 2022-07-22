@@ -744,7 +744,8 @@ fn backend_args(backend: &config::SecureBackend) -> Result<String, Error> {
                 path = config.path.to_str().unwrap(),
             );
             if let Some(namespace) = config.namespace.as_ref() {
-                s.push_str(&format!(";namespace={}", namespace));
+                use std::fmt::Write as _;
+                let _ = write!(s, ";namespace={}", namespace);
             }
 
             Ok(s)

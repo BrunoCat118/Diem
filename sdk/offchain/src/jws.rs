@@ -97,7 +97,7 @@ pub struct JwsError {
 
 #[derive(Debug)]
 struct InnerError {
-    kind: ErrorKind,
+    _kind: ErrorKind,
     source: Option<BoxError>,
 }
 
@@ -112,10 +112,10 @@ impl JwsError {
     //
     // Constructors
     //
-    fn new<E: Into<BoxError>>(kind: ErrorKind, source: Option<E>) -> Self {
+    fn new<E: Into<BoxError>>(_kind: ErrorKind, source: Option<E>) -> Self {
         Self {
             inner: Box::new(InnerError {
-                kind,
+                _kind,
                 source: source.map(Into::into),
             }),
         }
@@ -185,6 +185,6 @@ mod test {
 
         let keypair2 = Keypair::generate(&mut rand_core::OsRng);
         let error = deserialize::<CommandResponseObject, _>(s.as_bytes(), &keypair2).unwrap_err();
-        assert_eq!(error.inner.kind, ErrorKind::Signature);
+        assert_eq!(error.inner._kind, ErrorKind::Signature);
     }
 }

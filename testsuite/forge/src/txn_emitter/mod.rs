@@ -246,14 +246,14 @@ impl<'t> TxnEmitter<'t> {
     pub async fn get_money_source(&mut self, coins_total: u64) -> Result<&mut LocalAccount> {
         let mut client = self.client.clone();
         println!("Creating and minting faucet account");
-        let mut faucet_account = &mut self.chain_info.designated_dealer_account;
+        let faucet_account = &mut self.chain_info.designated_dealer_account;
         let mint_txn = gen_transfer_txn_request(
             faucet_account,
             &faucet_account.address(),
             coins_total,
             self.txn_factory.clone(),
         );
-        execute_and_wait_transactions(&mut client, &mut faucet_account, vec![mint_txn])
+        execute_and_wait_transactions(&mut client, faucet_account, vec![mint_txn])
             .await
             .map_err(|e| format_err!("Failed to mint into faucet account: {}", e))?;
         let balance = retrieve_account_balance(&client, faucet_account.address()).await?;
@@ -282,7 +282,7 @@ impl<'t> TxnEmitter<'t> {
             let mut client = self.pick_mint_client(json_rpc_clients).clone();
             let batch_size = min(MAX_TXN_BATCH_SIZE, seed_account_num - i);
             let mut batch = gen_random_accounts(batch_size, self.rng());
-            let mut creation_account = &mut self.chain_info.treasury_compliance_account;
+            let creation_account = &mut self.chain_info.treasury_compliance_account;
             let create_requests = batch
                 .iter()
                 .map(|account| {
@@ -293,8 +293,7 @@ impl<'t> TxnEmitter<'t> {
                     )
                 })
                 .collect();
-            execute_and_wait_transactions(&mut client, &mut creation_account, create_requests)
-                .await?;
+            execute_and_wait_transactions(&mut client, creation_account, create_requests).await?;
             i += batch_size;
             seed_accounts.append(&mut batch);
         }

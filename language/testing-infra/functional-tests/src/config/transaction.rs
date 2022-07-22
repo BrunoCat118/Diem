@@ -289,9 +289,9 @@ impl<'a> Config<'a> {
         Ok(Self {
             disabled_stages,
             sender: sender.unwrap_or_else(|| config.accounts.get("default").unwrap().account()),
-            secondary_signers: secondary_signers.unwrap_or_else(Vec::new),
-            ty_args: ty_args.unwrap_or_else(Vec::new),
-            args: args.unwrap_or_else(Vec::new),
+            secondary_signers: secondary_signers.unwrap_or_default(),
+            ty_args: ty_args.unwrap_or_default(),
+            args: args.unwrap_or_default(),
             max_gas,
             gas_price,
             gas_currency_code,

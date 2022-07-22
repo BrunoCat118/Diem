@@ -1189,7 +1189,7 @@ impl EvalState {
         self.saved_memory
             .get(label)
             .and_then(|sub| sub.get(&inst.ident))
-            .and_then(|sub| sub.get(&inst))
+            .and_then(|sub| sub.get(inst))
             .and_then(|sub| sub.get(addr))
             .cloned()
     }
@@ -1217,8 +1217,7 @@ impl EvalState {
     pub fn all_addresses(&self) -> BTreeSet<AccountAddress> {
         self.saved_memory
             .values()
-            .map(|v1| v1.values().map(|v2| v2.values().map(|v3| v3.keys())))
-            .flatten()
+            .flat_map(|v1| v1.values().map(|v2| v2.values().map(|v3| v3.keys())))
             .flatten()
             .flatten()
             .copied()

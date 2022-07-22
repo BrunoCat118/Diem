@@ -185,7 +185,7 @@ fn parse_account_address(
             location: current_token_loc(tokens),
         });
     }
-    let addr = AccountAddress::from_hex_literal(&tokens.content())
+    let addr = AccountAddress::from_hex_literal(tokens.content())
         .with_context(|| {
             format!(
                 "The address {:?} is of invalid length. Addresses are at most 32-bytes long",
@@ -1803,9 +1803,9 @@ fn parse_function_decl(
     let func = Function_::new(
         visibility,
         args,
-        ret.unwrap_or_else(Vec::new),
+        ret.unwrap_or_default(),
         type_parameters,
-        acquires.unwrap_or_else(Vec::new),
+        acquires.unwrap_or_default(),
         specifications,
         if is_native {
             consume_token(tokens, Tok::Semicolon)?;

@@ -87,14 +87,8 @@ fn ensure_targets_deps_dont_intersect(
             Err(_) => p.to_owned(),
         }
     }
-    let target_set = targets
-        .iter()
-        .map(|s| canonicalize(s))
-        .collect::<BTreeSet<_>>();
-    let dep_set = deps
-        .iter()
-        .map(|s| canonicalize(s))
-        .collect::<BTreeSet<_>>();
+    let target_set = targets.iter().map(canonicalize).collect::<BTreeSet<_>>();
+    let dep_set = deps.iter().map(canonicalize).collect::<BTreeSet<_>>();
     let intersection = target_set.intersection(&dep_set).collect::<Vec<_>>();
     if intersection.is_empty() {
         return Ok(());

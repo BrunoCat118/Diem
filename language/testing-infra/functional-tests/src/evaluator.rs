@@ -306,7 +306,7 @@ struct TransactionParameters<'a> {
     pub secondary_signer_addresses: Vec<AccountAddress>,
     pub pubkey: &'a Ed25519PublicKey,
     pub privkey: &'a Ed25519PrivateKey,
-    pub secondary_pubkeys: Vec<Ed25519PublicKey>,
+    pub _secondary_pubkeys: Vec<Ed25519PublicKey>,
     pub secondary_privkeys: Vec<&'a Ed25519PrivateKey>,
     pub sequence_number: u64,
     pub max_gas_amount: u64,
@@ -358,7 +358,7 @@ fn get_transaction_parameters<'a>(
             .collect(),
         pubkey: &config.sender.pubkey,
         privkey: &config.sender.privkey,
-        secondary_pubkeys: config
+        _secondary_pubkeys: config
             .secondary_signers
             .iter()
             .map(|signer| signer.pubkey.clone())
@@ -523,7 +523,7 @@ fn run_transaction_exp_mode(
         .unwrap();
     let (vm_status, txn_output) = match outputs.pop() {
         Some(x) => x,
-        None => unreachable!("expected 1 output got {}"),
+        None => unreachable!("{}", "expected 1 output got {}"),
     };
 
     log.append(EvaluationOutput::PlainMessage(format!(
@@ -649,7 +649,7 @@ fn eval_transaction<TComp: Compiler>(
             log.append(EvaluationOutput::Stage(Stage::Runtime));
         }
         let script_function_transaction =
-            make_script_function_transaction(&exec, &transaction.config, module, function)?;
+            make_script_function_transaction(exec, &transaction.config, module, function)?;
 
         if global_config.exp_mode {
             run_transaction_exp_mode(exec, script_function_transaction, log, &transaction.config);
@@ -735,7 +735,7 @@ fn eval_transaction<TComp: Compiler>(
                     bytes
                 }
             };
-            let script_transaction = make_script_transaction(&exec, &transaction.config, bytes)?;
+            let script_transaction = make_script_transaction(exec, &transaction.config, bytes)?;
 
             if global_config.exp_mode {
                 run_transaction_exp_mode(exec, script_transaction, log, &transaction.config);
@@ -785,7 +785,7 @@ fn eval_transaction<TComp: Compiler>(
                 log.append(EvaluationOutput::Stage(Stage::Runtime));
             }
             let module_transaction =
-                make_module_transaction(&exec, &transaction.config, compiled_module)?;
+                make_module_transaction(exec, &transaction.config, compiled_module)?;
 
             if global_config.exp_mode {
                 run_transaction_exp_mode(exec, module_transaction, log, &transaction.config);
@@ -851,13 +851,13 @@ pub fn eval<TComp: Compiler>(
         // use custom validator set. this requires dynamically generating a new genesis tx and
         // is thus more expensive.
         FakeExecutor::custom_genesis(
-            &module_blobs,
+            module_blobs,
             Some(config.validator_accounts),
             VMPublishingOption::open(),
         )
     };
     for data in config.accounts.values() {
-        exec.add_account_data(&data);
+        exec.add_account_data(data);
     }
 
     for (idx, command) in commands.iter().enumerate() {

@@ -40,7 +40,7 @@ pub fn initialize_all_metric_counters() {
         WAITING_ON_TRANSACTION_EXECUTION,
         UNEXPECTED_ERROR_ENCOUNTERED,
     ];
-    let _ = metric_counter_states
+    metric_counter_states
         .iter()
         .for_each(|metric_counter_state| {
             COUNTER.with_label_values(metric_counter_state).reset();

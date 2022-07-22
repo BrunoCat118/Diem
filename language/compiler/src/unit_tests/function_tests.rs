@@ -41,11 +41,12 @@ fn compile_module_with_functions() {
 
 fn generate_function(name: &str, num_formals: usize, num_locals: usize) -> String {
     let mut code = format!("public {}(", name);
+    use std::fmt::Write as _;
 
     code.reserve(30 * (num_formals + num_locals));
 
     for i in 0..num_formals {
-        code.push_str(&format!("formal_{}: u64", i));
+        let _ = write!(code, "formal_{}: u64", i);
         if i < num_formals - 1 {
             code.push_str(", ");
         }
@@ -54,10 +55,10 @@ fn generate_function(name: &str, num_formals: usize, num_locals: usize) -> Strin
     code.push_str(") {\n");
 
     for i in 0..num_locals {
-        code.push_str(&format!("let x_{}: u64;\n", i));
+        let _ = writeln!(code, "let x_{}: u64;", i);
     }
     for i in 0..num_locals {
-        code.push_str(&format!("x_{} = {};\n", i, i));
+        let _ = writeln!(code, "x_{} = {};", i, i);
     }
 
     code.push_str("return;");

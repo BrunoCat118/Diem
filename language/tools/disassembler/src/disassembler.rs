@@ -141,7 +141,7 @@ impl<'a, Location: Clone + Eq> Disassembler<'a, Location> {
                 self.coverage_map.as_ref().and_then(|coverage_map| {
                     coverage_map
                         .module_maps
-                        .get(&module)
+                        .get(module)
                         .and_then(|module_map| module_map.get_function_coverage(function_name))
                 })
             })
@@ -808,7 +808,7 @@ impl<'a, Location: Clone + Eq> Disassembler<'a, Location> {
                     instruction,
                     locals_sigs,
                     function_source_map,
-                    &decl_location,
+                    decl_location,
                 )
             })
             .collect::<Result<Vec<String>>>()?;
@@ -906,7 +906,7 @@ impl<'a, Location: Clone + Eq> Disassembler<'a, Location> {
             .map(|(local_idx, (name, _))| {
                 let ty =
                     self.type_for_local(parameter_len + local_idx, signature, function_source_map)?;
-                Ok(format!("{}: {}", name.to_string(), ty))
+                Ok(format!("{}: {}", name, ty))
             })
             .collect::<Result<Vec<String>>>()?;
         Ok(locals_names_tys)
@@ -1070,7 +1070,7 @@ impl<'a, Location: Clone + Eq> Disassembler<'a, Location> {
                 .map(|(name, ty)| {
                     let ty_str =
                         self.disassemble_sig_tok(ty.0.clone(), &struct_source_map.type_parameters)?;
-                    Ok(format!("{}: {}", name.to_string(), ty_str))
+                    Ok(format!("{}: {}", name, ty_str))
                 })
                 .collect::<Result<Vec<String>>>()?,
         };
@@ -1095,8 +1095,7 @@ impl<'a, Location: Clone + Eq> Disassembler<'a, Location> {
 
     pub fn disassemble(&self) -> Result<String> {
         let name_opt = self.source_mapper.source_map.module_name_opt.as_ref();
-        let name =
-            name_opt.map(|(addr, n)| format!("{}.{}", addr.short_str_lossless(), n.to_string()));
+        let name = name_opt.map(|(addr, n)| format!("{}.{}", addr.short_str_lossless(), n));
         let version = format!("{}", self.source_mapper.bytecode.version());
         let header = match name {
             Some(s) => format!("module {}", s),

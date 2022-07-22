@@ -175,7 +175,7 @@ impl Service {
 
         let batch = txns
             .iter()
-            .map(|txn| MethodRequest::submit(txn))
+            .map(MethodRequest::submit)
             .collect::<Result<_, _>>()
             .expect("serialization should not fail");
         let response = self.client.batch(batch).await?;

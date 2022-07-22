@@ -281,9 +281,7 @@ impl InferredType {
     }
 
     fn build_signature_tokens(tys: &[InferredType]) -> Result<Vec<SignatureToken>> {
-        tys.iter()
-            .map(|sig_ty| Self::to_signature_token(sig_ty))
-            .collect()
+        tys.iter().map(Self::to_signature_token).collect()
     }
 }
 
@@ -760,7 +758,7 @@ fn struct_type_parameters(ast_tys: &[ast::StructTypeParameter]) -> Vec<StructTyp
 fn abilities(abilities: &BTreeSet<ast::Ability>) -> AbilitySet {
     abilities
         .iter()
-        .map(|a| ability(a))
+        .map(ability)
         .fold(AbilitySet::EMPTY, |acc, a| acc | a)
 }
 
@@ -819,7 +817,7 @@ fn compile_type(
             }
         }
         Type::TypeParameter(ty_var) => {
-            let idx = match type_parameters.get(&ty_var) {
+            let idx = match type_parameters.get(ty_var) {
                 None => bail!("Unbound type parameter {}", ty_var),
                 Some(idx) => *idx,
             };
@@ -1749,7 +1747,7 @@ fn compile_call(
                 compile_types(context, function_frame.type_parameters(), &type_actuals)?;
             let ty_args = ty_arg_tokens
                 .iter()
-                .map(|t| InferredType::from_signature_token(t))
+                .map(InferredType::from_signature_token)
                 .collect::<Vec<_>>();
             let subst = &make_type_argument_subst(&ty_args)?;
             let tokens = Signature(ty_arg_tokens);

@@ -99,7 +99,7 @@ where
         account: AccountAddress,
     ) -> Result<Vec<NetworkAddress>, Error> {
         let keys = self.read()?;
-        let enc_addrs: Vec<EncNetworkAddress> = bcs::from_bytes(&encrypted_network_addresses)
+        let enc_addrs: Vec<EncNetworkAddress> = bcs::from_bytes(encrypted_network_addresses)
             .map_err(|e| Error::AddressDeserialization(account, e.to_string()))?;
         let mut addrs = Vec::new();
         for (idx, enc_addr) in enc_addrs.iter().enumerate() {
@@ -203,19 +203,10 @@ where
         })
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct ValidatorKeys {
     keys: HashMap<KeyVersion, StorageKey>,
     current: KeyVersion,
-}
-
-impl Default for ValidatorKeys {
-    fn default() -> Self {
-        ValidatorKeys {
-            current: 0,
-            keys: HashMap::new(),
-        }
-    }
 }
 
 #[cfg(test)]

@@ -105,7 +105,7 @@ impl ContentLinter for PlaygroundContent {
 pub struct Args {
     /// Dummy arg that doesn't do anything
     #[structopt(long)]
-    dummy: bool,
+    _dummy: bool,
 }
 
 pub fn run(args: Args, xctx: XContext) -> crate::Result<()> {

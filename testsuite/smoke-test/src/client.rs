@@ -100,7 +100,7 @@ fn test_get_events_via_websocket_stream() {
         assert_eq!(count_before, 1, "Only one subscription should be running");
 
         // If we're here, then the subscription has already sent the 'OK' message
-        let count_after;
+
         if &currency.code == "XUS" {
             println!("Getting msg 1 for {}", &currency.code);
 
@@ -134,7 +134,7 @@ fn test_get_events_via_websocket_stream() {
 
         rt.block_on(sleep(ms_500));
 
-        count_after = rt
+        let count_after = rt
             .block_on(timeout(ms_500, s_client.subscription_count()))
             .unwrap_or_else(|e| panic!("Timeout count for {}: {}", &currency.code, e));
 

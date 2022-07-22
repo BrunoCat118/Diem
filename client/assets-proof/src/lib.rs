@@ -1,6 +1,8 @@
 // Copyright (c) The Diem Core Contributors
 // SPDX-License-Identifier: Apache-2.0
 
+#![allow(dead_code)]
+
 //! A CLI tool for collecting and aggregating a VASPs current on-chain assets into
 //! an easily digestible json output.
 //!
@@ -593,7 +595,7 @@ impl Client for diem_client::BlockingClient {
             Some(account_blob) => account_blob,
             None => return Ok(Response::new(None, response_state)),
         };
-        let account_blob: AccountStateBlob = bcs::from_bytes(&account_blob_view.as_ref())
+        let account_blob: AccountStateBlob = bcs::from_bytes(account_blob_view.as_ref())
             .context("Failed to deserialize AccountStateBlob")?;
 
         let account_state =

@@ -30,7 +30,7 @@ pub fn get_info(target: &FunctionTarget<'_>) -> VerificationInfo {
         .get_annotations()
         .get::<VerificationInfo>()
         .cloned()
-        .unwrap_or_else(VerificationInfo::default)
+        .unwrap_or_default()
 }
 
 pub struct VerificationAnalysisProcessor();
@@ -214,7 +214,7 @@ fn mark_inlined(
         return;
     }
     debug_assert!(
-        targets.get_target_variants(fun_env).contains(&variant),
+        targets.get_target_variants(fun_env).contains(variant),
         "`{}` has variant `{:?}`",
         fun_env.get_name().display(fun_env.symbol_pool()),
         variant

@@ -50,18 +50,19 @@ impl TxnsLog {
 
 impl fmt::Display for TxnsLog {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        use std::fmt::Write as _;
         let mut txns = "".to_string();
 
         for (account, seq_num, status, timestamp) in self.txns.iter() {
             let mut txn = format!("{}:{}", account, seq_num);
             if let Some(status) = status {
-                txn += &format!(":{}", status)
+                let _ = write!(txn, ":{}", status);
             }
             if let Some(timestamp) = timestamp {
-                txn += &format!(":{:?}", timestamp)
+                let _ = write!(txn, ":{:?}", timestamp);
             }
 
-            txns += &format!("{} ", txn);
+            let _ = write!(txns, "{} ", txn);
         }
 
         write!(f, "{}", txns)
