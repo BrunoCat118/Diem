@@ -6,18 +6,14 @@
 
 [![License](https://img.shields.io/badge/license-Apache-green.svg)](LICENSE.md)
 
-Diem Core implements a decentralized, programmable database which provides a financial infrastructure that can empower billions of people.
+Explore the technical and economic concepts behind the Diem Payment Networks.
 
 ## Note to Developers
 * Diem Core is a prototype.
 * The APIs are constantly evolving and designed to demonstrate types of functionality. Expect substantial changes before the release.
 * We've launched a testnet that is a live demonstration of an early prototype of the Diem Blockchain software.
 
-## Contributing
-
-Read our [Contributing guide](https://developers.diem.com/docs/community/contributing). Find out what's coming on our [blog](https://developers.diem.com/blog/2019/06/18/the-path-forward).
-
-## Getting Started
+## Getting started
 
 ### Learn About Diem
 * [Welcome](https://developers.diem.com/docs/welcome-to-diem)
@@ -37,12 +33,6 @@ Read our [Contributing guide](https://developers.diem.com/docs/community/contrib
 ### Blog
 * [Diem: The Path Forward](https://developers.diem.com/blog/2019/06/18/the-path-forward/)
 
-
-## Community
-
-Join us on the [Diem Discourse](https://community.diem.com).
-
-Get the latest updates to our project by signing up to our [newsletter](https://developers.diem.com/newsletter_form).
 
 ## License
 
