@@ -7,7 +7,7 @@ use network::error::NetworkError;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
-#[derive(Clone, Debug, Deserialize, Error, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Error, PartialEq, Eq, Serialize)]
 pub enum Error {
     #[error("Failed to send callback: {0}")]
     CallbackSendFailed(String),

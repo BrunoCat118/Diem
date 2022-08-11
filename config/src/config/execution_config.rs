@@ -13,7 +13,7 @@ use std::{
 
 const GENESIS_DEFAULT: &str = "genesis.blob";
 
-#[derive(Clone, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(default, deny_unknown_fields)]
 pub struct ExecutionConfig {
     #[serde(skip)]
@@ -98,7 +98,7 @@ impl ExecutionConfig {
 }
 
 /// Defines how execution correctness should be run
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "snake_case", tag = "type")]
 pub enum ExecutionCorrectnessService {
     /// This runs execution correctness in the same thread as event processor.
@@ -112,7 +112,7 @@ pub enum ExecutionCorrectnessService {
     Thread,
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct RemoteExecutionService {
     pub server_address: SocketAddr,

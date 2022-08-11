@@ -5,7 +5,7 @@ use crate::utils;
 use serde::{Deserialize, Serialize};
 use std::net::SocketAddr;
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(default, deny_unknown_fields)]
 pub struct JsonRpcConfig {
     pub address: SocketAddr,
@@ -48,7 +48,7 @@ impl JsonRpcConfig {
 
 /// This API is experimental and subject to change
 /// Documentation is in /json-rpc/src/stream_rpc/README.md
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(default, deny_unknown_fields)]
 pub struct StreamConfig {
     pub enabled: bool,

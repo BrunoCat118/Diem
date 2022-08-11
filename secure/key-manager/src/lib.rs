@@ -53,7 +53,7 @@ const GAS_UNIT_PRICE: u64 = 0;
 const MAX_GAS_AMOUNT: u64 = 400_000;
 
 /// Defines actions that KeyManager should perform after a check of all associated state.
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum Action {
     /// There is no need to perform a rotation (keys are still fresh).
     NoAction,
@@ -68,7 +68,7 @@ pub enum Action {
 }
 
 #[allow(clippy::large_enum_variant)]
-#[derive(Debug, Error, PartialEq)]
+#[derive(Debug, Error, PartialEq, Eq)]
 pub enum Error {
     #[error("Key mismatch, config: {0}, info: {1}")]
     ConfigInfoKeyMismatch(Ed25519PublicKey, Ed25519PublicKey),

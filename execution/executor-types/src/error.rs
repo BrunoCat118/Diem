@@ -5,7 +5,7 @@ use diem_crypto::HashValue;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
-#[derive(Debug, Deserialize, Error, PartialEq, Serialize)]
+#[derive(Debug, Deserialize, Error, PartialEq, Eq, Serialize)]
 /// Different reasons for proposal rejection
 pub enum Error {
     #[error("Cannot find speculation result for block id {0}")]

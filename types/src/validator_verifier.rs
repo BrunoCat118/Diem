@@ -17,7 +17,7 @@ use anyhow::{ensure, Result};
 use proptest_derive::Arbitrary;
 
 /// Errors possible during signature verification.
-#[derive(Debug, Error, PartialEq)]
+#[derive(Debug, Error, PartialEq, Eq)]
 pub enum VerifyError {
     #[error("Author is unknown")]
     /// The author for this signature is unknown by this validator.

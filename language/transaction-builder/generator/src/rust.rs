@@ -128,7 +128,8 @@ where
 "#
         )?;
 
-        writeln!(self.out, "#![allow(clippy::unnecessary_wraps)]")
+        writeln!(self.out, "#![allow(clippy::unnecessary_wraps)]")?;
+        writeln!(self.out, "#![allow(clippy::derive_partial_eq_without_eq)]")
     }
 
     fn output_script_call_enum_with_imports(&mut self, abis: &[ScriptABI]) -> Result<()> {

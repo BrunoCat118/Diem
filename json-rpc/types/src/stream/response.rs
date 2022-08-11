@@ -96,13 +96,13 @@ impl FromStr for StreamJsonRpcResponse {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub enum SubscriptionResult {
     #[serde(rename = "OK")]
     OK,
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub struct UnsubscribeResult {
     pub unsubscribe: SubscriptionResult,
 }
@@ -115,7 +115,7 @@ impl UnsubscribeResult {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub struct SubscribeResult {
     pub status: SubscriptionResult,
     pub transaction_version: u64,

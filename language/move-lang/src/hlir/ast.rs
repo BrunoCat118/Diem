@@ -59,7 +59,7 @@ pub struct ModuleDefinition {
 // Structs
 //**************************************************************************************************
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct StructDefinition {
     pub attributes: Vec<Attribute>,
     pub abilities: AbilitySet,
@@ -67,7 +67,7 @@ pub struct StructDefinition {
     pub fields: StructFields,
 }
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum StructFields {
     Defined(Vec<(Field, BaseType)>),
     Native(Loc),
@@ -89,7 +89,7 @@ pub struct Constant {
 // Functions
 //**************************************************************************************************
 
-#[derive(PartialEq, Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct FunctionSignature {
     pub type_parameters: Vec<TParam>,
     pub parameters: Vec<(Var, SingleType)>,
@@ -136,14 +136,14 @@ pub enum BaseType_ {
 }
 pub type BaseType = Spanned<BaseType_>;
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum SingleType_ {
     Base(BaseType),
     Ref(bool, BaseType),
 }
 pub type SingleType = Spanned<SingleType_>;
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 #[allow(clippy::large_enum_variant)]
 pub enum Type_ {
     Unit,
@@ -229,7 +229,7 @@ pub type LValue = Spanned<LValue_>;
 // Expressions
 //**************************************************************************************************
 
-#[derive(Debug, PartialEq, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum UnitCase {
     Trailing,
     Implicit,
@@ -245,7 +245,7 @@ pub struct ModuleCall {
     pub acquires: BTreeMap<StructName, Loc>,
 }
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum BuiltinFunction_ {
     MoveTo(BaseType),
     MoveFrom(BaseType),

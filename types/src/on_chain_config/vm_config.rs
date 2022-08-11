@@ -7,7 +7,7 @@ use move_core_types::gas_schedule::{CostTable, GasConstants};
 use serde::{Deserialize, Serialize};
 
 /// Defines all the on chain configuration data needed by VM.
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub struct VMConfig {
     pub gas_schedule: CostTable,
 }

@@ -129,7 +129,7 @@ pub enum Neighbor {
 
 pub type Fields<T> = UniqueMap<Field, (usize, T)>;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct StructTypeParameter {
     pub is_phantom: bool,
     pub name: Name,
@@ -259,14 +259,14 @@ pub enum SpecBlockMember_ {
 }
 pub type SpecBlockMember = Spanned<SpecBlockMember_>;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct PragmaProperty_ {
     pub name: Name,
     pub value: Option<PragmaValue>,
 }
 pub type PragmaProperty = Spanned<PragmaProperty_>;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum PragmaValue {
     Literal(Value),
     Ident(ModuleAccess),

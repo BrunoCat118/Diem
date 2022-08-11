@@ -4,7 +4,7 @@
 use crate::utils;
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(default, deny_unknown_fields)]
 pub struct DebugInterfaceConfig {
     pub admission_control_node_debug_port: u16,

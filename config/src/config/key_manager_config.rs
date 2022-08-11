@@ -13,7 +13,7 @@ const DEFAULT_ROTATION_PERIOD_SECS: u64 = 604_800; // 1 week
 const DEFAULT_SLEEP_PERIOD_SECS: u64 = 600; // 10 minutes
 const DEFAULT_TXN_EXPIRATION_SECS: u64 = 3600; // 1 hour
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(default, deny_unknown_fields)]
 pub struct KeyManagerConfig {
     pub logger: LoggerConfig,

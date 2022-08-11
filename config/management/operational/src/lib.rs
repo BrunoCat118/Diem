@@ -25,7 +25,7 @@ use serde::Serialize;
 
 /// Information for validating a transaction after it's been submitted, or
 /// retrieving the execution result.
-#[derive(Debug, PartialEq, Serialize)]
+#[derive(Debug, PartialEq, Eq, Serialize)]
 pub struct TransactionContext {
     pub address: AccountAddress,
     pub sequence_number: u64,

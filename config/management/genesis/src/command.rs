@@ -34,7 +34,7 @@ pub enum Command {
     Verify(crate::verify::Verify),
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum CommandName {
     CreateWaypoint,
     Genesis,

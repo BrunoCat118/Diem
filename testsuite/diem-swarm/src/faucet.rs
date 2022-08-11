@@ -72,7 +72,7 @@ impl Process {
     }
 
     pub fn mint_url(&self) -> String {
-        return format!("http://localhost:{}/mint", self.port);
+        format!("http://localhost:{}/mint", self.port)
     }
 
     pub fn health_check_url(&self) -> Url {

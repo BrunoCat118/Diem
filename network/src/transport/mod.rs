@@ -96,7 +96,7 @@ impl ConnectionIdGenerator {
 }
 
 /// Metadata associated with an established and fully upgraded connection.
-#[derive(Clone, PartialEq, Serialize)]
+#[derive(Clone, PartialEq, Eq, Serialize)]
 pub struct ConnectionMetadata {
     pub remote_peer_id: PeerId,
     pub connection_id: ConnectionId,

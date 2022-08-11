@@ -53,7 +53,7 @@ impl MoveStructType for Credential {
 impl MoveResource for Credential {}
 
 /// Defines the dual attest limit in microDiem XDX
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub struct Limit {
     pub micro_xdx_limit: u64,
 }

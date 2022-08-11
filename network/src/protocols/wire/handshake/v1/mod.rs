@@ -106,7 +106,7 @@ impl fmt::Display for ProtocolId {
 //
 
 /// A bit vector of supported [`ProtocolId`]s.
-#[derive(Clone, Debug, Default, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Deserialize, Serialize)]
 #[cfg_attr(any(test, feature = "fuzzing"), derive(Arbitrary))]
 pub struct SupportedProtocols(bitvec::BitVec);
 

@@ -139,7 +139,7 @@ impl ::core::clone::Clone for TestDiemCryptoHasher {
     fn clone(&self) -> TestDiemCryptoHasher {
         match *self {
             TestDiemCryptoHasher(ref __self_0_0) => {
-                TestDiemCryptoHasher(::core::clone::Clone::clone(&(*__self_0_0)))
+                TestDiemCryptoHasher(::core::clone::Clone::clone(__self_0_0))
             }
         }
     }

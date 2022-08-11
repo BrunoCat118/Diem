@@ -11,7 +11,7 @@ use std::{
 /// Port selected RocksDB options for tuning underlying rocksdb instance of DiemDB.
 /// see https://github.com/facebook/rocksdb/blob/master/include/rocksdb/options.h
 /// for detailed explanations.
-#[derive(Copy, Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Copy, Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(default, deny_unknown_fields)]
 pub struct RocksdbConfig {
     pub max_open_files: i32,
@@ -32,7 +32,7 @@ impl Default for RocksdbConfig {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(default, deny_unknown_fields)]
 pub struct StorageConfig {
     pub address: SocketAddr,

@@ -392,7 +392,7 @@ impl QualifiedInstId<StructId> {
 /// # Verification Scope
 
 /// Defines what functions to verify.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum VerificationScope {
     /// Verify only public functions.
     Public,
@@ -1890,13 +1890,13 @@ impl<'env> ModuleEnv<'env> {
             SignatureToken::Address => Type::Primitive(PrimitiveType::Address),
             SignatureToken::Signer => Type::Primitive(PrimitiveType::Signer),
             SignatureToken::Reference(t) => {
-                Type::Reference(false, Box::new(self.globalize_signature(&*t)))
+                Type::Reference(false, Box::new(self.globalize_signature(t)))
             }
             SignatureToken::MutableReference(t) => {
-                Type::Reference(true, Box::new(self.globalize_signature(&*t)))
+                Type::Reference(true, Box::new(self.globalize_signature(t)))
             }
             SignatureToken::TypeParameter(index) => Type::TypeParameter(*index),
-            SignatureToken::Vector(bt) => Type::Vector(Box::new(self.globalize_signature(&*bt))),
+            SignatureToken::Vector(bt) => Type::Vector(Box::new(self.globalize_signature(bt))),
             SignatureToken::Struct(handle_idx) => {
                 let struct_view = StructHandleView::new(
                     &self.data.module,

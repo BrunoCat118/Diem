@@ -27,7 +27,7 @@ use move_core_types::{
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use std::{collections::btree_map::BTreeMap, convert::TryFrom, fmt};
 
-#[derive(Default, Deserialize, PartialEq, Serialize)]
+#[derive(Default, Deserialize, PartialEq, Eq, Serialize)]
 pub struct AccountState(BTreeMap<Vec<u8>, Vec<u8>>);
 
 impl AccountState {

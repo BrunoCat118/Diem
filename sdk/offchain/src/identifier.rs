@@ -232,7 +232,7 @@ fn encode_intent(
         return format!("diem://{}?{}", encoded_account_identifier, params.join("&"));
     }
 
-    return format!("diem://{}", encoded_account_identifier);
+    format!("diem://{}", encoded_account_identifier)
 }
 
 fn normalize_amount(input: Option<&String>) -> Result<Option<u64>, IntentIdentifierError> {

@@ -14,7 +14,7 @@ const ACCEPT_VALUE: &str = "Accept: application/vnd.github.v3+json";
 const TIMEOUT: u64 = 10_000;
 const URL: &str = "https://api.github.com";
 
-#[derive(Debug, Error, PartialEq)]
+#[derive(Debug, Error, PartialEq, Eq)]
 pub enum Error {
     #[error("Http error, status code: {0}, status text: {1}, body: {2}")]
     HttpError(u16, String, String),

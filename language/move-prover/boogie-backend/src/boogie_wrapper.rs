@@ -963,7 +963,7 @@ impl ModelValue {
                 self.pretty_struct(wrapper, model, *module_id, *struct_id, params)
             }
             Type::Reference(_, bt) => {
-                Some(PrettyDoc::text("&").append(self.pretty(wrapper, model, &*bt)?))
+                Some(PrettyDoc::text("&").append(self.pretty(wrapper, model, bt)?))
             }
             Type::TypeParameter(_) => {
                 // The value of a generic cannot be easily displayed because we do not know the

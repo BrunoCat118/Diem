@@ -168,7 +168,7 @@ fn test_runner_for_feature(path: &Path, feature: &Feature) -> datatest_stable::R
     };
     if baseline_valid {
         if let Some(ref path) = baseline_path {
-            diags += &String::from_utf8_lossy(&error_writer.into_inner()).to_string();
+            diags += &String::from_utf8_lossy(&error_writer.into_inner());
             verify_or_update_baseline(path.as_path(), &diags)?
         } else if !diags.is_empty() {
             return Err(anyhow!(

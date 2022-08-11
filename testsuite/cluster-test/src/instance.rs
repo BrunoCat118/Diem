@@ -19,7 +19,7 @@ use std::{
 };
 use tokio::{process::Command, time};
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ValidatorGroup {
     pub index: u32,
     pub twin_index: Option<u32>,

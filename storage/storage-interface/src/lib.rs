@@ -128,7 +128,7 @@ impl TreeState {
     }
 }
 
-#[derive(Debug, Deserialize, Error, PartialEq, Serialize)]
+#[derive(Debug, Deserialize, Error, PartialEq, Eq, Serialize)]
 pub enum Error {
     #[error("Service error: {:?}", error)]
     ServiceError { error: String },

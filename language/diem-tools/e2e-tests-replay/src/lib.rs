@@ -515,7 +515,7 @@ impl<'env> TraceReplayer<'env> {
             &mut session,
             xrunner.as_mut(),
             &*DIEM_BLOCK_MODULE,
-            &*BLOCK_PROLOGUE,
+            BLOCK_PROLOGUE,
             vec![],
             args,
         );
@@ -736,7 +736,7 @@ fn execute_txn_user_script_prologue(
         session,
         xrunner,
         &*ACCOUNT_MODULE,
-        &*SCRIPT_PROLOGUE_NAME,
+        SCRIPT_PROLOGUE_NAME,
         vec![gas_currency_ty.clone()],
         args,
     )?;
@@ -774,7 +774,7 @@ fn execute_txn_user_script_epilogue(
         session,
         xrunner,
         &*ACCOUNT_MODULE,
-        &*USER_EPILOGUE_NAME,
+        USER_EPILOGUE_NAME,
         vec![gas_currency_ty.clone()],
         args,
     )?;
@@ -810,7 +810,7 @@ fn execute_txn_admin_script_prologue(
         session,
         xrunner,
         &*ACCOUNT_MODULE,
-        &*WRITESET_PROLOGUE_NAME,
+        WRITESET_PROLOGUE_NAME,
         vec![],
         args,
     )?;
@@ -841,7 +841,7 @@ fn execute_txn_admin_script_epilogue(
         session,
         xrunner,
         &*ACCOUNT_MODULE,
-        &*WRITESET_EPILOGUE_NAME,
+        WRITESET_EPILOGUE_NAME,
         vec![],
         args,
     )?;

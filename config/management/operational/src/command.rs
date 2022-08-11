@@ -74,7 +74,7 @@ pub enum Command {
     ValidatorSet(crate::validator_set::ValidatorSet),
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum CommandName {
     AccountResource,
     AddValidator,

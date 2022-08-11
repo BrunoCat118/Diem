@@ -70,7 +70,7 @@ pub struct StructDefinition {
     pub fields: StructFields,
 }
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct StructTypeParameter {
     pub param: TParam,
     pub is_phantom: bool,

@@ -36,7 +36,7 @@ const MAX_NUM_KEY_VERSIONS: u32 = 4;
 const DEFAULT_CONNECTION_TIMEOUT_MS: u64 = 1_000;
 const DEFAULT_RESPONSE_TIMEOUT_MS: u64 = 1_000;
 
-#[derive(Debug, Error, PartialEq)]
+#[derive(Debug, Error, PartialEq, Eq)]
 pub enum Error {
     #[error("Http error, status code: {0}, status text: {1}, body: {2}")]
     HttpError(u16, String, String),
@@ -769,7 +769,7 @@ pub fn process_unsealed_response(resp: Response) -> Result<bool, Error> {
 /// This is intended to be a very simple application of it only for the purpose of introducing a
 /// single key with no versioning history into Vault. This is /only/ for test purposes and not
 /// intended for production use cases.
-#[derive(Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub struct KeyBackup {
     policy: KeyBackupPolicy,
 }
@@ -810,7 +810,7 @@ impl KeyBackup {
     }
 }
 
-#[derive(Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub struct KeyBackupPolicy {
     name: String,
     keys: BTreeMap<u32, KeyBackupInfo>,
@@ -835,7 +835,7 @@ pub struct KeyBackupPolicy {
     storage_prefix: String,
 }
 
-#[derive(Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub struct KeyBackupInfo {
     key: Option<String>,
     hhmac_key: Option<String>,
@@ -849,7 +849,7 @@ pub struct KeyBackupInfo {
     creation_time: u32,
 }
 
-#[derive(Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub struct BackupInfo {
     time: String,
     version: u32,
@@ -995,7 +995,7 @@ struct ReadKeys {
     key_type: String,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub struct ReadKey {
     creation_time: String,
     public_key: String,
@@ -1094,7 +1094,7 @@ struct RenewTokenAuth {
 /// }
 /// Note: Vault claims rules is deprecated and policy should be used instead, but that doesn't seem
 /// to work and makes the reading asymmetrical from the writing.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub struct Policy {
     #[serde(skip)]
     internal_rules: PolicyPaths,
@@ -1138,19 +1138,19 @@ impl TryFrom<&Policy> for serde_json::Value {
 }
 
 /// Represents the policy for a given path.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub struct PolicyPaths {
     path: BTreeMap<String, PathPolicy>,
 }
 
 /// Represents the set of capabilities used within a policy.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub struct PathPolicy {
     capabilities: Vec<Capability>,
 }
 
 /// The various set of capabilities available to a policy within Vault.
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Capability {
     Create,

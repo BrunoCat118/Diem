@@ -4,6 +4,7 @@
 #![allow(bare_trait_objects)]
 
 #[allow(clippy::large_enum_variant)]
+#[allow(clippy::derive_partial_eq_without_eq)]
 pub mod types {
     include!(concat!(env!("OUT_DIR"), "/jsonrpc.rs"));
 

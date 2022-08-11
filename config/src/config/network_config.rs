@@ -340,7 +340,7 @@ pub struct IdentityFromConfig {
 }
 
 /// This represents an identity in a secure-storage as defined in NodeConfig::secure.
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct IdentityFromStorage {
     pub backend: SecureBackend,
@@ -405,7 +405,7 @@ impl Default for PeerRole {
 }
 
 /// Represents a single seed configuration for a seed peer
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(default)]
 pub struct Peer {
     pub addresses: Vec<NetworkAddress>,

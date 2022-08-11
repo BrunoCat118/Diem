@@ -4,7 +4,7 @@
 use diem_logger::{Level, CHANNEL_SIZE};
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(default, deny_unknown_fields)]
 pub struct LoggerConfig {
     // channel size for the asychronous channel for node logging.

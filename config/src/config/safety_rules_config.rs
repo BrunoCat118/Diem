@@ -55,7 +55,7 @@ impl SafetyRulesConfig {
 }
 
 /// Defines how safety rules should be executed
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "snake_case", tag = "type")]
 pub enum SafetyRulesService {
     /// This runs safety rules in the same thread as event processor
@@ -69,7 +69,7 @@ pub enum SafetyRulesService {
     Thread,
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct RemoteService {
     pub server_address: NetworkAddress,

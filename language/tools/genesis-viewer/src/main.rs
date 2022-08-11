@@ -181,7 +181,7 @@ fn print_modules(ws: &WriteSet) {
         match v {
             WriteOp::Deletion => panic!("found WriteOp::Deletion in WriteSet"),
             WriteOp::Value(blob) => {
-                let tag = k.path.get(0).expect("empty blob in WriteSet");
+                let tag = k.path.first().expect("empty blob in WriteSet");
                 if *tag == 0 {
                     modules.insert(
                         k.clone(),
@@ -203,7 +203,7 @@ fn print_resources(storage: &impl MoveStorage, ws: &WriteSet) {
         match v {
             WriteOp::Deletion => panic!("found WriteOp::Deletion in WriteSet"),
             WriteOp::Value(blob) => {
-                let tag = k.path.get(0).expect("empty blob in WriteSet");
+                let tag = k.path.first().expect("empty blob in WriteSet");
                 if *tag == 1 {
                     resources.insert(k.clone(), blob.clone());
                 }
@@ -227,7 +227,7 @@ fn print_account_states(storage: &impl MoveStorage, ws: &WriteSet) {
         match v {
             WriteOp::Deletion => panic!("found WriteOp::Deletion in WriteSet"),
             WriteOp::Value(blob) => {
-                let tag = k.path.get(0).expect("empty blob in WriteSet");
+                let tag = k.path.first().expect("empty blob in WriteSet");
                 if *tag == 1 {
                     accounts
                         .entry(k.address)

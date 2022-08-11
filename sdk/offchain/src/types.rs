@@ -293,7 +293,7 @@ impl PaymentCommandObject {
 /// also includes the status of the actor, indicates missing information or willingness to settle
 /// or abort the payment, and the Know-Your-Customer information of the customer involved in the
 /// payment.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub struct PaymentActorObject {
     /// Address of the sender/receiver account. Addresses may be single use or valid for a limited
     /// time, and therefore VASPs should not rely on them remaining stable across time or different
@@ -362,7 +362,7 @@ pub enum ActionType {
     Charge,
 }
 
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub struct PaymentActionObject {
     /// Amount of the transfer. Base units are the same as for on-chain transactions for this
     /// currency. For example, if DiemUSD is represented on-chain where “1” equals 1e-6 dollars,
@@ -385,7 +385,7 @@ pub struct PaymentActionObject {
 
 /// Some fields are immutable after they are defined once. Others can be updated multiple times
 /// (see below). Updating immutable fields with a different value results in a Command error.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub struct PaymentObject {
     /// Information about the sender in this payment
     pub sender: PaymentActorObject,
@@ -465,7 +465,7 @@ impl PaymentObject {
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub struct StatusObject {
     /// Status of the payment from the perspective of this actor. This field can only be set by the
     /// respective sender/receiver VASP and represents the status on the sender/receiver VASP side.
@@ -516,7 +516,7 @@ pub enum AbortCode {
 }
 
 /// Represents a national ID.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub struct NationalIdObject {
     /// Indicates the national ID value - for example, a social security number
     pub id_value: String,
@@ -530,7 +530,7 @@ pub struct NationalIdObject {
 }
 
 /// Represents a physical address
-#[derive(Clone, Debug, Default, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Deserialize, Serialize)]
 pub struct AddressObject {
     /// The city, district, suburb, town, or village
     pub city: Option<String>,
@@ -556,7 +556,7 @@ pub struct AddressObject {
 /// fields are `payload_version` and `type`. All other fields are optional from the point of view of
 /// the protocol -- however they may need to be included for another VASP to be ready to settle the
 /// payment.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub struct KycDataObject {
     /// Version identifier to allow modifications to KYC data Object without needing to bump
     /// version of entire API set. Set to 1

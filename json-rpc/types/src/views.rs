@@ -42,7 +42,7 @@ use std::{
     convert::{TryFrom, TryInto},
 };
 
-#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub struct AmountView {
     pub amount: u64,
     pub currency: String,
@@ -57,7 +57,7 @@ impl AmountView {
     }
 }
 
-#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq, Eq)]
 #[serde(tag = "type")]
 pub enum AccountRoleView {
     #[serde(rename = "child_vasp")]
@@ -160,7 +160,7 @@ impl AccountRoleView {
     }
 }
 
-#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub struct AccountView {
     pub address: AccountAddress,
     pub balances: Vec<AmountView>,
@@ -233,13 +233,13 @@ impl AccountView {
     }
 }
 
-#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub struct PreburnQueueView {
     pub currency: String,
     pub preburns: Vec<PreburnWithMetadataView>,
 }
 
-#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub struct PreburnWithMetadataView {
     pub preburn: AmountView,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -273,7 +273,7 @@ impl TryFrom<(u64, ContractEvent)> for EventView {
     }
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct EventWithProofView {
     pub event_with_proof: BytesView,
 }
@@ -296,7 +296,7 @@ impl TryFrom<&EventWithProof> for EventWithProofView {
     }
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct EventByVersionWithProofView {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub lower_bound_incl: Option<EventWithProofView>,
@@ -560,7 +560,7 @@ impl TryFrom<ContractEvent> for EventDataView {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub struct MetadataView {
     pub version: u64,
     pub accumulator_root_hash: HashValue,
@@ -606,7 +606,7 @@ impl MetadataView {
     }
 }
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, PartialEq, Eq)]
 pub struct BytesView(Box<[u8]>);
 
 impl BytesView {
@@ -685,7 +685,7 @@ impl Serialize for BytesView {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub struct MoveAbortExplanationView {
     pub category: String,
     pub category_description: String,
@@ -702,7 +702,7 @@ impl std::fmt::Display for MoveAbortExplanationView {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
 pub enum VMStatusView {
@@ -921,7 +921,7 @@ impl TryFrom<AccountTransactionsWithProof> for TransactionListView {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub struct TransactionsWithProofsView {
     pub serialized_transactions: Vec<BytesView>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -985,7 +985,7 @@ impl TryFrom<&TransactionListWithProof> for TransactionsWithProofsView {
     }
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct TransactionsProofsView {
     pub ledger_info_to_transaction_infos_proof: BytesView,
     pub transaction_infos: BytesView,
@@ -1017,7 +1017,7 @@ impl TryFrom<&TransactionsProofsView> for TransactionListProof {
     }
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct AccountTransactionsWithProofView {
     pub serialized_txns_with_proofs: Vec<BytesView>,
 }
@@ -1050,7 +1050,7 @@ impl TryFrom<&AccountTransactionsWithProofView> for AccountTransactionsWithProof
 }
 
 #[allow(clippy::large_enum_variant)]
-#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(tag = "type")]
 pub enum TransactionDataView {
     #[serde(rename = "blockmetadata")]
@@ -1154,7 +1154,7 @@ impl From<Transaction> for TransactionDataView {
     }
 }
 
-#[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct ScriptView {
     // script name / type
     pub r#type: String,
@@ -1374,7 +1374,7 @@ impl From<&CurrencyInfoResource> for CurrencyInfoView {
     }
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct StateProofView {
     pub ledger_info_with_signatures: BytesView,
     pub epoch_change_proof: BytesView,
@@ -1407,7 +1407,7 @@ impl TryFrom<&StateProofView> for StateProof {
     }
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct AccumulatorConsistencyProofView {
     pub ledger_consistency_proof: BytesView,
 }
@@ -1430,7 +1430,7 @@ impl TryFrom<&AccumulatorConsistencyProofView> for AccumulatorConsistencyProof {
     }
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct AccountStateWithProofView {
     pub version: u64,
     pub blob: Option<BytesView>,
@@ -1473,7 +1473,7 @@ impl TryFrom<&AccountStateWithProofView> for AccountStateWithProof {
     }
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct AccountStateProofView {
     pub ledger_info_to_transaction_info_proof: BytesView,
     pub transaction_info: BytesView,

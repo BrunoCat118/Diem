@@ -187,7 +187,7 @@ impl<'env> FunctionContext<'env> {
                     assert_eq!(srcs.len(), 2);
                 }
                 self.native_vector_borrow_mut(
-                    *srcs.get(0).unwrap(),
+                    *srcs.first().unwrap(),
                     dummy_state.del_value(0),
                     dummy_state.del_value(1),
                 )
@@ -199,7 +199,7 @@ impl<'env> FunctionContext<'env> {
                 }
                 let res = self
                     .native_vector_push_back(dummy_state.del_value(0), dummy_state.del_value(1));
-                local_state.put_value_override(*srcs.get(0).unwrap(), res);
+                local_state.put_value_override(*srcs.first().unwrap(), res);
                 Ok(vec![])
             }
             (DIEM_CORE_ADDR, "Vector", "pop_back") => {
@@ -209,7 +209,7 @@ impl<'env> FunctionContext<'env> {
                 let res = self.native_vector_pop_back(dummy_state.del_value(0));
                 match res {
                     Ok((new_vec, elem_val)) => {
-                        local_state.put_value_override(*srcs.get(0).unwrap(), new_vec);
+                        local_state.put_value_override(*srcs.first().unwrap(), new_vec);
                         Ok(vec![elem_val])
                     }
                     Err(e) => Err(e),
@@ -222,7 +222,7 @@ impl<'env> FunctionContext<'env> {
                 let res = self.native_vector_destroy_empty(dummy_state.del_value(0));
                 match res {
                     Ok(_) => {
-                        local_state.del_value(*srcs.get(0).unwrap());
+                        local_state.del_value(*srcs.first().unwrap());
                         Ok(vec![])
                     }
                     Err(e) => Err(e),
@@ -239,7 +239,7 @@ impl<'env> FunctionContext<'env> {
                 );
                 match res {
                     Ok(new_vec) => {
-                        local_state.put_value_override(*srcs.get(0).unwrap(), new_vec);
+                        local_state.put_value_override(*srcs.first().unwrap(), new_vec);
                         Ok(vec![])
                     }
                     Err(e) => Err(e),
@@ -442,7 +442,7 @@ impl<'env> FunctionContext<'env> {
             Operation::Havoc(kind) => {
                 if cfg!(debug_assertions) {
                     assert_eq!(srcs.len(), 1);
-                    let target_ty = local_state.get_type(*srcs.get(0).unwrap());
+                    let target_ty = local_state.get_type(*srcs.first().unwrap());
                     match kind {
                         HavocKind::Value => {
                             assert!(target_ty.is_base());

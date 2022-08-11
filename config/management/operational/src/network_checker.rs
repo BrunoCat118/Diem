@@ -347,10 +347,10 @@ async fn check_endpoint_inner_no_handshake(address: NetworkAddress) -> Result<St
             if size == 0 {
                 // Connection is open, and doesn't return anything
                 // This is the closest we can get to working
-                return Ok(format!(
+                Ok(format!(
                     "Accepted write and responded with nothing at {}",
                     address
-                ));
+                ))
             } else {
                 Err(Error::UnexpectedError(format!(
                     "Endpoint {} responded with data when it shouldn't",
