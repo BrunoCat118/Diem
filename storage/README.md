@@ -87,8 +87,8 @@ Patricia tree.
     storage
           └── accumulator      # Implementation of Merkle accumulator.
           └── diemdb          # Implementation of DiemDB.
+          └── diem_scratchpad       # In-memory representation of Diem core data structures used by execution.
           └── schemadb         # Schematized wrapper on top of RocksDB.
-          └── scratchpad       # In-memory representation of Diem core data structures used by execution.
           └── jellyfish-merkle # Implementation of sparse Merkle tree.
           └── state_view       # An abstraction layer representing a snapshot of state where the Move VM reads data.
           └── storage_client   # A Rust wrapper on top of GRPC clients.

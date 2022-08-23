@@ -1,5 +1,5 @@
 [package]
-name = "scratchpad-benchmark"
+name = "diem-scratchpad-benchmark"
 version = "0.1.0"
 authors = ["Diem Association <opensource@diem.com>"]
 description = "Diem executor benchmark"
@@ -26,5 +26,5 @@ diem-logger = { path = "../../common/logger" }
 diem-types = { path = "../../types" }
 diem-workspace-hack = { path = "../../common/workspace-hack" }
 executor-types = { path = "../../execution/executor-types" }
-scratchpad = { path = "..//scratchpad" }
+diem-scratchpad = { path = "..//diem-scratchpad" }
 storage-interface = { path = "../storage-interface" }

@@ -14,6 +14,7 @@ use diem_crypto::{
     },
     HashValue,
 };
+use diem_scratchpad::ProofRead;
 use diem_types::{
     account_state_blob::AccountStateBlob,
     contract_event::ContractEvent,
@@ -24,13 +25,12 @@ use diem_types::{
         Transaction, TransactionInfo, TransactionListWithProof, TransactionStatus, Version,
     },
 };
-use scratchpad::ProofRead;
 use serde::{Deserialize, Serialize};
 use std::{cmp::max, collections::HashMap, sync::Arc};
 use storage_interface::TreeState;
 
 type SparseMerkleProof = diem_types::proof::SparseMerkleProof<AccountStateBlob>;
-type SparseMerkleTree = scratchpad::SparseMerkleTree<AccountStateBlob>;
+type SparseMerkleTree = diem_scratchpad::SparseMerkleTree<AccountStateBlob>;
 
 pub trait ChunkExecutor: Send + Sync {
     /// Verifies the transactions based on the provided proofs and ledger info. If the transactions

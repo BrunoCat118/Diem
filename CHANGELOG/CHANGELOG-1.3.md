@@ -68,7 +68,7 @@
 - \[State Sync Performance Test\] Add additional checks for possible error cases. [\#8365](https://github.com/diem/diem/pull/8365)
 
 **[Storage]**
-- \[scratchpad\] Criterion benchmarks [\#8359](https://github.com/diem/diem/pull/8359) [\#8388](https://github.com/diem/diem/pull/8388)
+- \[diem-scratchpad\] Criterion benchmarks [\#8359](https://github.com/diem/diem/pull/8359) [\#8388](https://github.com/diem/diem/pull/8388)
 - \[pruner\] fix busy looping after db-restore [\#8312](https://github.com/diem/diem/pull/8312)
 - \[storage\] delete unimplemented multi\_get interface [\#8254](https://github.com/diem/diem/pull/8254)
 - \[smt\] experimental batch update [\#8119](https://github.com/diem/diem/pull/8119)

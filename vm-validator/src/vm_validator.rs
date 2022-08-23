@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use anyhow::Result;
+use diem_scratchpad::SparseMerkleTree;
 use diem_state_view::StateViewId;
 use diem_types::{
     account_address::AccountAddress,
@@ -11,7 +12,6 @@ use diem_types::{
 };
 use diem_vm::DiemVMValidator;
 use fail::fail_point;
-use scratchpad::SparseMerkleTree;
 use std::{convert::TryFrom, sync::Arc};
 use storage_interface::{state_view::VerifiedStateView, DbReader};
 

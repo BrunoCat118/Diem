@@ -1800,6 +1800,7 @@ dependencies = [
  "diem-json-rpc",
  "diem-mempool",
  "diem-proptest-helpers",
+ "diem-scratchpad",
  "diem-types",
  "diem-vault-client",
  "diem-workspace-hack",
@@ -1818,7 +1819,6 @@ dependencies = [
  "rand 0.8.3",
  "rusty-fork",
  "safety-rules",
- "scratchpad",
  "serde_json",
  "sha-1 0.9.4",
  "state-sync",
@@ -1924,6 +1924,7 @@ dependencies = [
  "diem-mempool",
  "diem-metrics",
  "diem-proptest-helpers",
+ "diem-scratchpad",
  "diem-sdk",
  "diem-temppath",
  "diem-transaction-builder",
@@ -1945,7 +1946,6 @@ dependencies = [
  "rand 0.8.3",
  "regex",
  "reqwest",
- "scratchpad",
  "serde",
  "serde_json",
  "storage-interface",
@@ -2297,6 +2297,47 @@ dependencies = [
 ]
 
 [[package]]
+name = "diem-scratchpad"
+version = "0.1.0"
+dependencies = [
+ "arc-swap",
+ "bitvec",
+ "criterion",
+ "diem-crypto",
+ "diem-infallible",
+ "diem-types",
+ "diem-workspace-hack",
+ "itertools 0.10.0",
+ "proptest",
+ "rand 0.8.3",
+ "rayon",
+ "storage-interface",
+]
+
+[[package]]
+name = "diem-scratchpad-benchmark"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "diem-config",
+ "diem-crypto",
+ "diem-genesis-tool",
+ "diem-infallible",
+ "diem-logger",
+ "diem-scratchpad",
+ "diem-types",
+ "diem-workspace-hack",
+ "diemdb",
+ "diemdb-benchmark",
+ "executor-types",
+ "itertools 0.10.0",
+ "rand 0.8.3",
+ "rayon",
+ "storage-interface",
+ "structopt 0.3.21",
+]
+
+[[package]]
 name = "diem-sdk"
 version = "0.0.2"
 dependencies = [
@@ -2526,12 +2567,12 @@ dependencies = [
  "bcs",
  "diem-client",
  "diem-config",
+ "diem-scratchpad",
  "diem-state-view",
  "diem-types",
  "diem-workspace-hack",
  "diemdb",
  "move-binary-format",
- "scratchpad",
  "storage-interface",
 ]
 
@@ -3073,6 +3114,7 @@ dependencies = [
  "diem-infallible",
  "diem-logger",
  "diem-metrics",
+ "diem-scratchpad",
  "diem-secure-net",
  "diem-state-view",
  "diem-temppath",
@@ -3089,7 +3131,6 @@ dependencies = [
  "once_cell",
  "proptest",
  "rand 0.8.3",
- "scratchpad",
  "serde",
  "serde_json",
  "storage-interface",
@@ -3152,10 +3193,10 @@ dependencies = [
  "anyhow",
  "bcs",
  "diem-crypto",
+ "diem-scratchpad",
  "diem-secure-net",
  "diem-types",
  "diem-workspace-hack",
- "scratchpad",
  "serde",
  "storage-interface",
  "thiserror",
@@ -6768,47 +6809,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d29ab0c6d3fc0ee92fe66e2d99f700eab17a8d57d1c1d3b748380fb20baa78cd"
 
 [[package]]
-name = "scratchpad"
-version = "0.1.0"
-dependencies = [
- "arc-swap",
- "bitvec",
- "criterion",
- "diem-crypto",
- "diem-infallible",
- "diem-types",
- "diem-workspace-hack",
- "itertools 0.10.0",
- "proptest",
- "rand 0.8.3",
- "rayon",
- "storage-interface",
-]
-
-[[package]]
-name = "scratchpad-benchmark"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "diem-config",
- "diem-crypto",
- "diem-genesis-tool",
- "diem-infallible",
- "diem-logger",
- "diem-types",
- "diem-workspace-hack",
- "diemdb",
- "diemdb-benchmark",
- "executor-types",
- "itertools 0.10.0",
- "rand 0.8.3",
- "rayon",
- "scratchpad",
- "storage-interface",
- "structopt 0.3.21",
-]
-
-[[package]]
 name = "sct"
 version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7512,6 +7512,7 @@ dependencies = [
  "anyhow",
  "bcs",
  "diem-crypto",
+ "diem-scratchpad",
  "diem-secure-net",
  "diem-state-view",
  "diem-types",
@@ -7519,7 +7520,6 @@ dependencies = [
  "itertools 0.10.0",
  "move-core-types",
  "parking_lot 0.11.1",
- "scratchpad",
  "serde",
  "thiserror",
 ]
@@ -8574,6 +8574,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "diem-crypto",
+ "diem-scratchpad",
  "diem-state-view",
  "diem-temppath",
  "diem-transaction-builder",
@@ -8586,7 +8587,6 @@ dependencies = [
  "fail",
  "move-core-types",
  "rand 0.8.3",
- "scratchpad",
  "storage-interface",
  "storage-service",
  "vm-genesis",

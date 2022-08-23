@@ -3,13 +3,13 @@
 
 use criterion::{criterion_group, criterion_main, BatchSize, BenchmarkId, Criterion, Throughput};
 use diem_crypto::{hash::SPARSE_MERKLE_PLACEHOLDER_HASH, HashValue};
+use diem_scratchpad::{test_utils::naive_smt::NaiveSmt, SparseMerkleTree};
 use diem_types::account_state_blob::AccountStateBlob;
 use itertools::zip_eq;
 use rand::{distributions::Standard, prelude::StdRng, seq::IteratorRandom, Rng, SeedableRng};
-use scratchpad::{test_utils::naive_smt::NaiveSmt, SparseMerkleTree};
 use std::collections::HashSet;
 
-type ProofReader = scratchpad::test_utils::proof_reader::ProofReader<AccountStateBlob>;
+type ProofReader = diem_scratchpad::test_utils::proof_reader::ProofReader<AccountStateBlob>;
 
 struct Block {
     smt: SparseMerkleTree<AccountStateBlob>,

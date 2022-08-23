@@ -26,7 +26,7 @@ fn main() {
         .expect("Failed to build rayon global thread pool.");
 
     let opt = Opt::from_args();
-    scratchpad_benchmark::run_benchmark(
+    diem_scratchpad_benchmark::run_benchmark(
         opt.num_updates,
         opt.num_accounts,
         opt.blob_size,

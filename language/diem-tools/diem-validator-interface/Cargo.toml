@@ -17,7 +17,7 @@ diem-types = { path = "../../../types" }
 diemdb = { path = "../../../storage/diemdb" }
 diem-workspace-hack = { path = "../../../common/workspace-hack" }
 storage-interface = { path = "../../../storage/storage-interface" }
-scratchpad = { path = "../../../storage/scratchpad" }
+diem-scratchpad = { path = "../../../storage/diem-scratchpad" }
 diem-state-view = { path = "../../../storage/state-view" }
 move-binary-format = { path = "../../move-binary-format" }
 bcs = "0.1.2"

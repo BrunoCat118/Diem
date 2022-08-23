@@ -11,7 +11,7 @@ use rand::Rng;
 use std::{collections::HashMap, path::PathBuf};
 use storage_interface::DbReader;
 
-type SparseMerkleTree = scratchpad::SparseMerkleTree<AccountStateBlob>;
+type SparseMerkleTree = diem_scratchpad::SparseMerkleTree<AccountStateBlob>;
 
 pub fn run_benchmark(num_updates: usize, max_accounts: u64, blob_size: usize, db_dir: PathBuf) {
     let db = DiemDB::open(

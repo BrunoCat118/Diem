@@ -1,6 +1,7 @@
 // Copyright (c) The Diem Core Contributors
 // SPDX-License-Identifier: Apache-2.0
 
+use diem_scratchpad::SparseMerkleTree;
 use diem_types::{
     account_address::{AccountAddress, HashAccountAddress},
     account_state_blob::AccountStateBlob,
@@ -8,7 +9,6 @@ use diem_types::{
 };
 use executor::process_write_set;
 use executor_types::ProofReader;
-use scratchpad::SparseMerkleTree;
 use std::{collections::HashMap, sync::Arc};
 use vm_genesis::{generate_genesis_change_set_for_testing, GenesisOptions};
 

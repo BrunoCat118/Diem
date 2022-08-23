@@ -4,6 +4,7 @@
 use crate::DbReader;
 use anyhow::{format_err, Result};
 use diem_crypto::{hash::SPARSE_MERKLE_PLACEHOLDER_HASH, HashValue};
+use diem_scratchpad::{AccountStatus, SparseMerkleTree};
 use diem_state_view::{StateView, StateViewId};
 use diem_types::{
     access_path::AccessPath,
@@ -14,7 +15,6 @@ use diem_types::{
     transaction::{Version, PRE_GENESIS_VERSION},
 };
 use parking_lot::RwLock;
-use scratchpad::{AccountStatus, SparseMerkleTree};
 use std::{
     collections::{hash_map::Entry, HashMap},
     convert::TryInto,
@@ -45,7 +45,7 @@ pub struct VerifiedStateView<'a> {
     /// account state map and an an optional account state proof as value. When the VM queries an
     /// `access_path`, this cache will first check whether `reader_cache` is hit. If hit, it
     /// will return the corresponding value of that `access_path`; otherwise, the account state
-    /// will be loaded into the cache from scratchpad or persistent storage in order as a
+    /// will be loaded into the cache from diem-scratchpad or persistent storage in order as a
     /// deserialized ordered map and then be returned. If the VM queries this account again,
     /// the cached data can be read directly without bothering storage layer. The proofs in
     /// cache are needed by ScratchPad after VM execution to construct an in-memory sparse Merkle

@@ -19,7 +19,7 @@ diem-crypto = { path = "../../crypto/crypto" }
 diem-secure-net = { path = "../../secure/net" }
 diem-types = { path = "../../types" }
 diem-workspace-hack = { path = "../../common/workspace-hack" }
-scratchpad = { path = "../../storage/scratchpad" }
+diem-scratchpad = { path = "../../storage/diem-scratchpad" }
 storage-interface = { path = "../../storage/storage-interface" }
 
 [features]

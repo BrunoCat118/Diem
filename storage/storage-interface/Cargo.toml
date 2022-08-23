@@ -22,7 +22,7 @@ diem-secure-net = { path = "../../secure/net" }
 diem-state-view = { path = "../state-view" }
 diem-types = { path = "../../types" }
 diem-workspace-hack = { path = "../../common/workspace-hack" }
-scratchpad = { path = "../scratchpad" }
+diem-scratchpad = { path = "../diem-scratchpad" }
 move-core-types = { path = "../../language/move-core/types" }
 
 [features]
