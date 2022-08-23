@@ -24,7 +24,7 @@ clap = { version = "2.33.3", features = ["ansi_term", "atty", "color", "default"
 codespan-reporting = { version = "0.11.1", default-features = false, features = ["serde", "serialization"] }
 crossbeam-channel = { version = "0.5.1", features = ["crossbeam-utils", "default", "std"] }
 crossbeam-deque = { version = "0.8.1", features = ["crossbeam-epoch", "crossbeam-utils", "default", "std"] }
-crossbeam-utils = { version = "0.8.3", features = ["default", "lazy_static", "std"] }
+crossbeam-utils = { version = "0.8.8", features = ["default", "lazy_static", "std"] }
 either = { version = "1.6.1", features = ["default", "use_std"] }
 futures = { version = "0.3.12", features = ["alloc", "async-await", "default", "executor", "futures-executor", "std"] }
 futures-channel = { version = "0.3.16", features = ["alloc", "default", "futures-sink", "sink", "std"] }
@@ -33,7 +33,7 @@ futures-io = { version = "0.3.16", features = ["default", "std"] }
 futures-sink = { version = "0.3.16", features = ["alloc", "default", "std"] }
 futures-util = { version = "0.3.16", features = ["alloc", "async-await", "async-await-macro", "channel", "default", "futures-channel", "futures-io", "futures-macro", "futures-sink", "io", "memchr", "proc-macro-hack", "proc-macro-nested", "sink", "slab", "std"] }
 getrandom = { version = "0.2.2", default-features = false, features = ["std"] }
-hyper = { version = "0.14.11", features = ["client", "default", "full", "h2", "http1", "http2", "runtime", "server", "socket2", "stream", "tcp"] }
+hyper = { version = "0.14.20", features = ["client", "default", "full", "h2", "http1", "http2", "runtime", "server", "socket2", "stream", "tcp"] }
 indexmap = { version = "1.7.0", default-features = false, features = ["std"] }
 itertools = { version = "0.10.0", features = ["default", "use_alloc", "use_std"] }
 itoa = { version = "0.4.7", features = ["default", "std"] }
@@ -46,7 +46,6 @@ petgraph = { version = "0.5.1", features = ["default", "graphmap", "matrix_graph
 plotters = { version = "0.3.0", default-features = false, features = ["area_series", "evcxr", "histogram", "line_series", "plotters-svg", "svg_backend"] }
 prost = { version = "0.8.0", features = ["default", "prost-derive", "std"] }
 rand = { version = "0.8.3", features = ["alloc", "default", "getrandom", "libc", "rand_chacha", "rand_hc", "small_rng", "std", "std_rng"] }
-rand_core = { version = "0.5.1", default-features = false, features = ["alloc", "getrandom", "std"] }
 regex = { version = "1.5.6", features = ["aho-corasick", "default", "memchr", "perf", "perf-cache", "perf-dfa", "perf-inline", "perf-literal", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"] }
 regex-automata = { version = "0.1.10", features = ["default", "regex-syntax", "std"] }
 regex-syntax = { version = "0.6.26", features = ["default", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"] }
@@ -80,7 +79,7 @@ clap = { version = "2.33.3", features = ["ansi_term", "atty", "color", "default"
 codespan-reporting = { version = "0.11.1", default-features = false, features = ["serde", "serialization"] }
 crossbeam-channel = { version = "0.5.1", features = ["crossbeam-utils", "default", "std"] }
 crossbeam-deque = { version = "0.8.1", features = ["crossbeam-epoch", "crossbeam-utils", "default", "std"] }
-crossbeam-utils = { version = "0.8.3", features = ["default", "lazy_static", "std"] }
+crossbeam-utils = { version = "0.8.8", features = ["default", "lazy_static", "std"] }
 either = { version = "1.6.1", features = ["default", "use_std"] }
 futures = { version = "0.3.12", features = ["alloc", "async-await", "default", "executor", "futures-executor", "std"] }
 futures-channel = { version = "0.3.16", features = ["alloc", "default", "futures-sink", "sink", "std"] }
@@ -89,7 +88,7 @@ futures-io = { version = "0.3.16", features = ["default", "std"] }
 futures-sink = { version = "0.3.16", features = ["alloc", "default", "std"] }
 futures-util = { version = "0.3.16", features = ["alloc", "async-await", "async-await-macro", "channel", "default", "futures-channel", "futures-io", "futures-macro", "futures-sink", "io", "memchr", "proc-macro-hack", "proc-macro-nested", "sink", "slab", "std"] }
 getrandom = { version = "0.2.2", default-features = false, features = ["std"] }
-hyper = { version = "0.14.11", features = ["client", "default", "full", "h2", "http1", "http2", "runtime", "server", "socket2", "stream", "tcp"] }
+hyper = { version = "0.14.20", features = ["client", "default", "full", "h2", "http1", "http2", "runtime", "server", "socket2", "stream", "tcp"] }
 indexmap = { version = "1.7.0", default-features = false, features = ["std"] }
 itertools = { version = "0.10.0", features = ["default", "use_alloc", "use_std"] }
 itoa = { version = "0.4.7", features = ["default", "std"] }
@@ -104,7 +103,6 @@ proc-macro2 = { version = "0.4.30", features = ["default", "proc-macro"] }
 prost = { version = "0.8.0", features = ["default", "prost-derive", "std"] }
 quote = { version = "0.6.13", features = ["default", "proc-macro"] }
 rand = { version = "0.8.3", features = ["alloc", "default", "getrandom", "libc", "rand_chacha", "rand_hc", "small_rng", "std", "std_rng"] }
-rand_core = { version = "0.5.1", default-features = false, features = ["alloc", "getrandom", "std"] }
 regex = { version = "1.5.6", features = ["aho-corasick", "default", "memchr", "perf", "perf-cache", "perf-dfa", "perf-inline", "perf-literal", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"] }
 regex-automata = { version = "0.1.10", features = ["default", "regex-syntax", "std"] }
 regex-syntax = { version = "0.6.26", features = ["default", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"] }
@@ -139,7 +137,7 @@ clap = { version = "2.33.3", features = ["ansi_term", "atty", "color", "default"
 codespan-reporting = { version = "0.11.1", default-features = false, features = ["serde", "serialization"] }
 crossbeam-channel = { version = "0.5.1", features = ["crossbeam-utils", "default", "std"] }
 crossbeam-deque = { version = "0.8.1", features = ["crossbeam-epoch", "crossbeam-utils", "default", "std"] }
-crossbeam-utils = { version = "0.8.3", features = ["default", "lazy_static", "std"] }
+crossbeam-utils = { version = "0.8.8", features = ["default", "lazy_static", "std"] }
 either = { version = "1.6.1", features = ["default", "use_std"] }
 futures = { version = "0.3.12", features = ["alloc", "async-await", "default", "executor", "futures-executor", "std"] }
 futures-channel = { version = "0.3.16", features = ["alloc", "default", "futures-sink", "sink", "std"] }
@@ -148,7 +146,7 @@ futures-io = { version = "0.3.16", features = ["default", "std"] }
 futures-sink = { version = "0.3.16", features = ["alloc", "default", "std"] }
 futures-util = { version = "0.3.16", features = ["alloc", "async-await", "async-await-macro", "channel", "default", "futures-channel", "futures-io", "futures-macro", "futures-sink", "io", "memchr", "proc-macro-hack", "proc-macro-nested", "sink", "slab", "std"] }
 getrandom = { version = "0.2.2", default-features = false, features = ["std"] }
-hyper = { version = "0.14.11", features = ["client", "default", "full", "h2", "http1", "http2", "runtime", "server", "socket2", "stream", "tcp"] }
+hyper = { version = "0.14.20", features = ["client", "default", "full", "h2", "http1", "http2", "runtime", "server", "socket2", "stream", "tcp"] }
 indexmap = { version = "1.7.0", default-features = false, features = ["std"] }
 itertools = { version = "0.10.0", features = ["default", "use_alloc", "use_std"] }
 itoa = { version = "0.4.7", features = ["default", "std"] }
@@ -161,7 +159,6 @@ petgraph = { version = "0.5.1", features = ["default", "graphmap", "matrix_graph
 plotters = { version = "0.3.0", default-features = false, features = ["area_series", "evcxr", "histogram", "line_series", "plotters-svg", "svg_backend"] }
 prost = { version = "0.8.0", features = ["default", "prost-derive", "std"] }
 rand = { version = "0.8.3", features = ["alloc", "default", "getrandom", "libc", "rand_chacha", "rand_hc", "small_rng", "std", "std_rng"] }
-rand_core = { version = "0.5.1", default-features = false, features = ["alloc", "getrandom", "std"] }
 regex = { version = "1.5.6", features = ["aho-corasick", "default", "memchr", "perf", "perf-cache", "perf-dfa", "perf-inline", "perf-literal", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"] }
 regex-automata = { version = "0.1.10", features = ["default", "regex-syntax", "std"] }
 regex-syntax = { version = "0.6.26", features = ["default", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"] }
@@ -195,7 +192,7 @@ clap = { version = "2.33.3", features = ["ansi_term", "atty", "color", "default"
 codespan-reporting = { version = "0.11.1", default-features = false, features = ["serde", "serialization"] }
 crossbeam-channel = { version = "0.5.1", features = ["crossbeam-utils", "default", "std"] }
 crossbeam-deque = { version = "0.8.1", features = ["crossbeam-epoch", "crossbeam-utils", "default", "std"] }
-crossbeam-utils = { version = "0.8.3", features = ["default", "lazy_static", "std"] }
+crossbeam-utils = { version = "0.8.8", features = ["default", "lazy_static", "std"] }
 either = { version = "1.6.1", features = ["default", "use_std"] }
 futures = { version = "0.3.12", features = ["alloc", "async-await", "default", "executor", "futures-executor", "std"] }
 futures-channel = { version = "0.3.16", features = ["alloc", "default", "futures-sink", "sink", "std"] }
@@ -204,7 +201,7 @@ futures-io = { version = "0.3.16", features = ["default", "std"] }
 futures-sink = { version = "0.3.16", features = ["alloc", "default", "std"] }
 futures-util = { version = "0.3.16", features = ["alloc", "async-await", "async-await-macro", "channel", "default", "futures-channel", "futures-io", "futures-macro", "futures-sink", "io", "memchr", "proc-macro-hack", "proc-macro-nested", "sink", "slab", "std"] }
 getrandom = { version = "0.2.2", default-features = false, features = ["std"] }
-hyper = { version = "0.14.11", features = ["client", "default", "full", "h2", "http1", "http2", "runtime", "server", "socket2", "stream", "tcp"] }
+hyper = { version = "0.14.20", features = ["client", "default", "full", "h2", "http1", "http2", "runtime", "server", "socket2", "stream", "tcp"] }
 indexmap = { version = "1.7.0", default-features = false, features = ["std"] }
 itertools = { version = "0.10.0", features = ["default", "use_alloc", "use_std"] }
 itoa = { version = "0.4.7", features = ["default", "std"] }
@@ -219,7 +216,6 @@ proc-macro2 = { version = "0.4.30", features = ["default", "proc-macro"] }
 prost = { version = "0.8.0", features = ["default", "prost-derive", "std"] }
 quote = { version = "0.6.13", features = ["default", "proc-macro"] }
 rand = { version = "0.8.3", features = ["alloc", "default", "getrandom", "libc", "rand_chacha", "rand_hc", "small_rng", "std", "std_rng"] }
-rand_core = { version = "0.5.1", default-features = false, features = ["alloc", "getrandom", "std"] }
 regex = { version = "1.5.6", features = ["aho-corasick", "default", "memchr", "perf", "perf-cache", "perf-dfa", "perf-inline", "perf-literal", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"] }
 regex-automata = { version = "0.1.10", features = ["default", "regex-syntax", "std"] }
 regex-syntax = { version = "0.6.26", features = ["default", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"] }
