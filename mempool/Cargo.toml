@@ -21,7 +21,7 @@ serde = { version = "1.0.124", default-features = false }
 tokio = { version = "1.18.2", features = ["full"] }
 tokio-stream = "0.1.8"
 
-bounded-executor = { path = "../common/bounded-executor" }
+bounded-executor = { path = "../crates/bounded-executor" }
 channel = { path = "../common/channel" }
 bcs = "0.1.2"
 diem-config = { path = "../config" }
