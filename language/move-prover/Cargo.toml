@@ -18,7 +18,7 @@ abigen = { path = "abigen" }
 errmapgen = { path = "errmapgen" }
 bytecode = { path = "bytecode" }
 bytecode-interpreter = { path = "interpreter" }
-diem-workspace-hack = { path = "../../common/workspace-hack" }
+diem-workspace-hack = { path = "../../crates/diem-workspace-hack" }
 move-ir-types = { path = "../move-ir/types" }
 
 # external dependencies

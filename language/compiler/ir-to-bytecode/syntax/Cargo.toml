@@ -15,7 +15,7 @@ hex = "0.4.3"
 move-ir-types = { path = "../../../move-ir/types" }
 move-core-types = { path = "../../../move-core/types" }
 move-symbol-pool = { path = "../../../move-symbol-pool" }
-diem-workspace-hack = { path = "../../../../common/workspace-hack" }
+diem-workspace-hack = { path = "../../../../crates/diem-workspace-hack" }
 
 [features]
 default = []

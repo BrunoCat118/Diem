@@ -10,7 +10,7 @@ license = "Apache-2.0"
 # diem dependencies
 bytecode = { path = "../bytecode" }
 bytecode-interpreter-crypto = { path = "crypto" }
-diem-workspace-hack = { path = "../../../common/workspace-hack" }
+diem-workspace-hack = { path = "../../../crates/diem-workspace-hack" }
 move-binary-format = { path = "../../move-binary-format" }
 move-core-types = { path = "../../move-core/types" }
 move-model = { path = "../../move-model" }

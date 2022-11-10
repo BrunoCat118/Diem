@@ -9,7 +9,7 @@ license = "Apache-2.0"
 [dependencies]
 # diem dependencies
 move-model = { path = "../../move-model" }
-diem-workspace-hack = { path = "../../../common/workspace-hack" }
+diem-workspace-hack = { path = "../../../crates/diem-workspace-hack" }
 move-core-types = { path = "../../move-core/types" }
 bytecode-verifier = { path = "../../bytecode-verifier" }
 move-command-line-common = { path = "../../move-command-line-common" }

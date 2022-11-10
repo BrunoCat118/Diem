@@ -31,7 +31,7 @@ diem-metrics = { path = "../common/metrics" }
 diem-infallible = { path = "../common/infallible" }
 diem-proptest-helpers = { path = "../common/proptest-helpers", optional = true }
 diem-types = { path = "../types" }
-diem-workspace-hack = { path = "../common/workspace-hack" }
+diem-workspace-hack = { path = "../crates/diem-workspace-hack" }
 mirai-annotations = "1.10.1"
 network = { path = "../network" }
 rand = "0.8.3"

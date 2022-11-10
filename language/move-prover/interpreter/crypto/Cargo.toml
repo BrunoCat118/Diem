@@ -7,7 +7,7 @@ edition = "2018"
 license = "Apache-2.0"
 
 [dependencies]
-diem-workspace-hack = { path = "../../../../common/workspace-hack" }
+diem-workspace-hack = { path = "../../../../crates/diem-workspace-hack" }
 
 # external dependencies
 anyhow = "1.0.38"

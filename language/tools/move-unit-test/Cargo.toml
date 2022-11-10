@@ -19,7 +19,7 @@ regex = "1.5.5"
 
 move-command-line-common = { path = "../../move-command-line-common" }
 move-stdlib = { path = "../../move-stdlib", features = ["testing"] }
-diem-workspace-hack = { path = "../../../common/workspace-hack" }
+diem-workspace-hack = { path = "../../../crates/diem-workspace-hack" }
 move-core-types = { path = "../../move-core/types" }
 move-lang = { path = "../../move-lang" }
 move-vm-types = { path = "../../move-vm/types" }

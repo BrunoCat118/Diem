@@ -18,4 +18,4 @@ warp = "0.3.0"
 
 diem-logger = { path = "../logger" }
 diem-metrics = { path = "../metrics" }
-diem-workspace-hack = { path = "../workspace-hack" }
+diem-workspace-hack = { path = "../../crates/diem-workspace-hack" }

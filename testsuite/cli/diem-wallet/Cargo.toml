@@ -23,7 +23,7 @@ ed25519-dalek = { version = "0.1.0", package = "ed25519-dalek-fiat", default-fea
 diem-crypto = { path = "../../../crypto/crypto", features = ["fuzzing"] }
 diem-temppath = { path = "../../../common/temppath/" }
 diem-types = { path = "../../../types" }
-diem-workspace-hack = { path = "../../../common/workspace-hack" }
+diem-workspace-hack = { path = "../../../crates/diem-workspace-hack" }
 mirai-annotations = "1.10.1"
 
 [features]

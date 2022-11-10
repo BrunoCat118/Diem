@@ -10,5 +10,5 @@ license = "Apache-2.0"
 prettydiff = "0.4.0"
 anyhow = "1.0.38"
 regex = "1.5.5"
-diem-workspace-hack = { path = "../../../common/workspace-hack" }
+diem-workspace-hack = { path = "../../../crates/diem-workspace-hack" }
 move-command-line-common = { path = "../../move-command-line-common" }

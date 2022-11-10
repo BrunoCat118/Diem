@@ -24,7 +24,7 @@ bytecode-verifier = { path = "../../bytecode-verifier" }
 
 disassembler = { path = "../disassembler" }
 move-command-line-common = { path = "../../move-command-line-common" }
-diem-workspace-hack = { path = "../../../common/workspace-hack" }
+diem-workspace-hack = { path = "../../../crates/diem-workspace-hack" }
 move-bytecode-utils = { path = "../move-bytecode-utils" }
 move-coverage = { path = "../move-coverage" }
 move-core-types = { path = "../../move-core/types" }

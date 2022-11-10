@@ -14,4 +14,4 @@ anyhow = "1.0.38"
 difference = "2.0.0"
 walkdir = "2.3.1"
 
-diem-workspace-hack = { path = "../../common/workspace-hack" }
+diem-workspace-hack = { path = "../../crates/diem-workspace-hack" }
