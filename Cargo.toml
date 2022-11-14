@@ -2,7 +2,6 @@
 resolver = "2"
 
 members = [
-    "client/assets-proof",
     "common/channel",
     "common/channel/many-keys-stress-test",
     "common/crash-handler",
@@ -34,6 +33,8 @@ members = [
     "consensus",
     "consensus/consensus-types",
     "consensus/safety-rules",
+    "crates/bounded-executor",
+    "crates/diem-assets-proof",
     "crates/diem-bitvec",
     "crates/bounded-executor",
     "crates/diem-faucet",
@@ -187,7 +188,7 @@ default-members = [
     "config/management/operational",
     "config/seed-peer-generator",
     "consensus/safety-rules",
-    "client/assets-proof",
+    "crates/diem-assets-proof",
     "crates/diem-faucet",
     "crates/swiss-knife",
     "execution/db-bootstrapper",
