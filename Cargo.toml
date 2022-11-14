@@ -3,7 +3,6 @@ resolver = "2"
 
 members = [
     "client/assets-proof",
-    "client/swiss-knife",
     "common/channel",
     "common/channel/many-keys-stress-test",
     "common/crash-handler",
@@ -43,6 +42,7 @@ members = [
     "crates/diem-logger",
     "crates/diem-proptest-helpers",
     "crates/diem-workspace-hack",
+    "crates/swiss-knife",
     "crypto/crypto",
     "crypto/crypto-derive",
     "devtools/x",
@@ -189,7 +189,7 @@ default-members = [
     "consensus/safety-rules",
     "client/assets-proof",
     "crates/diem-faucet",
-    "client/swiss-knife",
+    "crates/swiss-knife",
     "execution/db-bootstrapper",
     "execution/execution-correctness",
     "language/compiler",
