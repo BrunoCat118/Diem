@@ -4,7 +4,6 @@ resolver = "2"
 members = [
     "client/assets-proof",
     "client/faucet",
-    "client/json-rpc",
     "client/swiss-knife",
     "common/channel",
     "common/channel/many-keys-stress-test",
@@ -39,6 +38,10 @@ members = [
     "consensus/safety-rules",
     "crates/diem-bitvec",
     "crates/bounded-executor",
+    "crates/diem-json-rpc-client",
+    "crates/diem-log-derive",
+    "crates/diem-logger",
+    "crates/diem-proptest-helpers",
     "crates/diem-workspace-hack",
     "crypto/crypto",
     "crypto/crypto-derive",
