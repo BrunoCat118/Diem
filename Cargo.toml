@@ -3,7 +3,6 @@ resolver = "2"
 
 members = [
     "client/assets-proof",
-    "client/faucet",
     "client/swiss-knife",
     "common/channel",
     "common/channel/many-keys-stress-test",
@@ -38,6 +37,7 @@ members = [
     "consensus/safety-rules",
     "crates/diem-bitvec",
     "crates/bounded-executor",
+    "crates/diem-faucet",
     "crates/diem-json-rpc-client",
     "crates/diem-log-derive",
     "crates/diem-logger",
@@ -188,7 +188,7 @@ default-members = [
     "config/seed-peer-generator",
     "consensus/safety-rules",
     "client/assets-proof",
-    "client/faucet",
+    "crates/diem-faucet",
     "client/swiss-knife",
     "execution/db-bootstrapper",
     "execution/execution-correctness",
