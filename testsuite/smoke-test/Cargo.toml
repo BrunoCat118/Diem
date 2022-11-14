@@ -40,7 +40,7 @@ generate-key = { path = "../../config/generate-key" }
 move-move-command-line-common = { path = "../../language/move-command-line-common", package = "move-command-line-common" }
 move-stdlib = { path = "../../language/move-stdlib" }
 diem-config = { path = "../../config" }
-diem-crypto = { path = "../../crypto/crypto" }
+diem-crypto = { path = "../../crates/diem-crypto" }
 diem-genesis-tool = {path = "../../config/management/genesis", features = ["testing"] }
 diem-global-constants = { path = "../../config/global-constants" }
 diem-infallible = { path = "../../common/infallible" }

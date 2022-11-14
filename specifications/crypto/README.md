@@ -130,7 +130,7 @@ moment, suffice to say that for every Diem data structure, we also define
 and specify a domain separator.
 
 More specifically, the domain separator [starts with a
-prefix](https://github.com/diem/diem/blob/ca14568db9df8c7008dfc6698392ef479e013cf6/crypto/crypto/src/hash.rs#L114-L117)
+prefix](https://github.com/diem/diem/blob/ca14568db9df8c7008dfc6698392ef479e013cf6/crates/diem-crypto/src/hash.rs#L114-L117)
 defined as an ASCII-encoded byte-string:
 
 ```rust

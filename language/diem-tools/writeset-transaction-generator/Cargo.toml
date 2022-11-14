@@ -22,8 +22,8 @@ once_cell = "1.7.2"
 
 bytecode-verifier = { path = "../../bytecode-verifier" }
 diem-workspace-hack = { path = "../../../crates/diem-workspace-hack" }
-diem-crypto-derive = { path = "../../../crypto/crypto-derive" }
-diem-crypto = { path = "../../../crypto/crypto" }
+diem-crypto-derive = { path = "../../../crates/diem-crypto-derive" }
+diem-crypto = { path = "../../../crates/diem-crypto" }
 diem-types = { path = "../../../types" }
 diem-framework-releases = { path = "../../diem-framework/releases" }
 diem-framework = { path = "../../diem-framework" }

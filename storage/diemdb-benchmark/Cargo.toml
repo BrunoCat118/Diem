@@ -18,7 +18,7 @@ rand = "0.8.3"
 structopt = "0.3.21"
 
 diemdb = { path = "../diemdb" }
-diem-crypto = { path = "../../crypto/crypto" }
+diem-crypto = { path = "../../crates/diem-crypto" }
 diem-jellyfish-merkle = { path = "../jellyfish-merkle" }
 diem-config = { path = "../../config" }
 diem-types = { path = "../../types" }
