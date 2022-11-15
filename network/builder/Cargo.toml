@@ -32,4 +32,4 @@ diem-workspace-hack = { path = "../../crates/diem-workspace-hack" }
 netcore = { path = "../netcore" }
 network = { path = "../." }
 network-discovery = { path = "../discovery" }
-subscription-service = { path = "../../common/subscription-service" }
+subscription-service = { path = "../../crates/subscription-service" }

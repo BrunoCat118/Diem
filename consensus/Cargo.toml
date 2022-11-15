@@ -53,7 +53,7 @@ short-hex-str = { path = "../common/short-hex-str" }
 state-sync = { path = "../state-sync" }
 schemadb = { path = "../storage/schemadb" }
 storage-interface = { path = "../storage/storage-interface" }
-subscription-service = { path = "../common/subscription-service" }
+subscription-service = { path = "../crates/subscription-service" }
 
 [dev-dependencies]
 proptest = "1.0.0"

@@ -42,7 +42,7 @@ memsocket = { path = "../network/memsocket", optional = true }
 netcore = { path = "../network/netcore" }
 network = { path = "../network" }
 storage-interface = { path = "../storage/storage-interface" }
-subscription-service = { path = "../common/subscription-service" }
+subscription-service = { path = "../crates/subscription-service" }
 vm-genesis = { path = "../language/tools/vm-genesis", optional = true }
 
 [dev-dependencies]
@@ -61,7 +61,7 @@ memsocket = { path = "../network/memsocket" }
 network = { path = "../network", features = ["fuzzing", "testing"] }
 network-builder = { path  = "../network/builder" }
 storage-service = { path = "../storage/storage-service" }
-subscription-service = { path = "../common/subscription-service" }
+subscription-service = { path = "../crates/subscription-service" }
 diem-transaction-builder = { path = "../sdk/transaction-builder" }
 diem-time-service = { path = "../common/time-service", features = ["testing"] }
 vm-genesis = { path = "../language/tools/vm-genesis", features = ["fuzzing"] }
