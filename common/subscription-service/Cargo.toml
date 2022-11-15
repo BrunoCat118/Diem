@@ -14,4 +14,4 @@ anyhow = "1.0.38"
 
 diem-types = { path = "../../types" }
 diem-workspace-hack = { path = "../../crates/diem-workspace-hack" }
-channel = { path = "../channel" }
+channel = { path = "../../crates/channel" }

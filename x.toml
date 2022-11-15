@@ -208,7 +208,6 @@ members = [
     "language-benchmarks",
     "language-e2e-tests",
     "language-e2e-testsuite",
-    "many-keys-stress-test",
     "memsocket",
     "module-generation",
     "move-lang-functional-tests",
