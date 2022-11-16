@@ -6,7 +6,6 @@ members = [
     "common/logger/derive",
     "common/num-variants",
     "common/proptest-helpers",
-    "common/rate-limiter",
     "config",
     "config/generate-key",
     "config/global-constants",
@@ -33,6 +32,7 @@ members = [
     "crates/diem-json-rpc-client",
     "crates/diem-metrics",
     "crates/diem-metrics-core",
+    "crates/diem-rate-limiter",
     "crates/diem-retrier",
     "crates/diem-temppath",
     "crates/diem-time-service",
@@ -177,7 +177,6 @@ members = [
 #
 # For more, see the "Conditional compilation for tests" section in documentation/coding_guidelines.md.
 default-members = [
-    "common/rate-limiter",
     "config/generate-key",
     "config/management/genesis",
     "config/management/operational",
@@ -185,6 +184,7 @@ default-members = [
     "consensus/safety-rules",
     "crates/diem-assets-proof",
     "crates/diem-faucet",
+    "crates/diem-rate-limiter",
     "crates/swiss-knife",
     "execution/db-bootstrapper",
     "execution/execution-correctness",
