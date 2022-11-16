@@ -24,7 +24,7 @@ diem-logger = { path = "../../common/logger" }
 diem-client = { path = "../../crates/diem-client", features = ["blocking"], default-features = false }
 diem-secure-push-metrics = { path = "../push-metrics" }
 diem-secure-storage = { path = "../storage" }
-diem-time-service = { path = "../../common/time-service" }
+diem-time-service = { path = "../../crates/diem-time-service" }
 diem-types = { path = "../../types" }
 diem-workspace-hack = { path = "../../crates/diem-workspace-hack" }
 diem-transaction-builder = { path = "../../sdk/transaction-builder" }
@@ -40,7 +40,7 @@ executor-types = { path = "../../execution/executor-types" }
 diem-genesis-tool = {path = "../../config/management/genesis", features = ["testing"] }
 diem-json-rpc = { path = "../../json-rpc", features = ["fuzzing"] }
 diem-secure-storage = { path = "../storage", features = ["testing"] }
-diem-time-service = { path = "../../common/time-service", features = ["testing"] }
+diem-time-service = { path = "../../crates/diem-time-service", features = ["testing"] }
 diem-vm = { path = "../../language/diem-vm" }
 diemdb = { path = "../../storage/diemdb" }
 storage-interface= { path = "../../storage/storage-interface" }
