@@ -44,7 +44,7 @@ compiler = { path = "../../language/compiler" }
 executor-test-helpers = { path = "../executor-test-helpers" }
 diem-config = { path = "../../config" }
 diem-genesis-tool = {path = "../../config/management/genesis", features = ["testing"] }
-diem-temppath = { path = "../../common/temppath" }
+diem-temppath = { path = "../../crates/diem-temppath" }
 diemdb = { path = "../../storage/diemdb" }
 storage-interface = { path = "../../storage/storage-interface", features=["fuzzing"] }
 diem-transaction-builder = { path = "../../sdk/transaction-builder" }
