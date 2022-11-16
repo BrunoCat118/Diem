@@ -4,7 +4,6 @@ resolver = "2"
 members = [
     "common/logger",
     "common/logger/derive",
-    "common/num-variants",
     "common/proptest-helpers",
     "config",
     "config/generate-key",
@@ -38,6 +37,7 @@ members = [
     "crates/diem-time-service",
     "crates/diem-workspace-hack",
     "crates/fallible",
+    "crates/num-variants",
     "crates/proxy",
     "crates/short-hex-str",
     "crates/subscription-service",
