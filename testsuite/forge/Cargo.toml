@@ -27,7 +27,7 @@ tempfile = "3.2.0"
 
 diem-sdk = { path = "../../sdk" }
 debug-interface = { path = "../../crates/debug-interface" }
-diem-logger = { path = "../../common/logger" }
+diem-logger = { path = "../../crates/diem-logger" }
 diem-config = { path = "../../config" }
 diem-workspace-hack = { path = "../../crates/diem-workspace-hack" }
 diem-framework-releases = { path = "../../language/diem-framework/releases" }

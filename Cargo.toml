@@ -2,8 +2,6 @@
 resolver = "2"
 
 members = [
-    "common/logger",
-    "common/logger/derive",
     "config",
     "config/generate-key",
     "config/global-constants",
@@ -28,6 +26,8 @@ members = [
     "crates/diem-faucet",
     "crates/diem-infallible",
     "crates/diem-json-rpc-client",
+    "crates/diem-log-derive",
+    "crates/diem-logger",
     "crates/diem-metrics",
     "crates/diem-metrics-core",
     "crates/diem-proptest-helpers",

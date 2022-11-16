@@ -30,7 +30,7 @@ diem-crypto = { path = "../crates/diem-crypto" }
 diem-framework-releases = { path = "../language/diem-framework/releases" }
 diem-genesis-tool = {path = "../config/management/genesis", features = ["testing"] }
 diem-json-rpc = { path = "../json-rpc" }
-diem-logger = { path = "../common/logger" }
+diem-logger = { path = "../crates/diem-logger" }
 diem-mempool = { path = "../mempool" }
 diem-metrics = { path = "../crates/diem-metrics" }
 diem-secure-storage = { path = "../secure/storage" }
