@@ -32,7 +32,7 @@ diem-config = { path = "../../config" }
 diem-workspace-hack = { path = "../../crates/diem-workspace-hack" }
 diem-framework-releases = { path = "../../language/diem-framework/releases" }
 diem-genesis-tool = { path = "../../config/management/genesis" }
-diem-retrier = { path = "../../common/retrier" }
+diem-retrier = { path = "../../crates/diem-retrier" }
 diem-secure-storage = { path = "../../secure/storage" }
 base64 = "0.13.0"
 kube = "0.51.0"
