@@ -2,7 +2,6 @@
 resolver = "2"
 
 members = [
-    "common/diemdoc",
     "common/logger",
     "common/logger/derive",
     "common/metrics",
@@ -34,6 +33,7 @@ members = [
     "crates/diem-client",
     "crates/diem-crypto",
     "crates/diem-crypto-derive",
+    "crates/diem-documentation-tool",
     "crates/diem-faucet",
     "crates/diem-infallible",
     "crates/diem-json-rpc-client",
