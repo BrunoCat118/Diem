@@ -4,7 +4,6 @@ resolver = "2"
 members = [
     "common/logger",
     "common/logger/derive",
-    "common/proptest-helpers",
     "config",
     "config/generate-key",
     "config/global-constants",
@@ -31,6 +30,7 @@ members = [
     "crates/diem-json-rpc-client",
     "crates/diem-metrics",
     "crates/diem-metrics-core",
+    "crates/diem-proptest-helpers",
     "crates/diem-rate-limiter",
     "crates/diem-retrier",
     "crates/diem-temppath",
