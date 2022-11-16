@@ -2,7 +2,6 @@
 resolver = "2"
 
 members = [
-    "common/crash-handler",
     "common/debug-interface",
     "common/diemdoc",
     "common/logger",
@@ -29,6 +28,7 @@ members = [
     "consensus/safety-rules",
     "crates/bounded-executor",
     "crates/channel",
+    "crates/crash-handler",
     "crates/diem-assets-proof",
     "crates/diem-bitvec",
     "crates/diem-client",
