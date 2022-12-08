@@ -19,6 +19,8 @@ use clap::Parser;
 pub enum Tool {
     #[clap(subcommand)]
     Account(account::AccountSubcommand),
+    #[clap(subcommand)]
+    Config(config::ConfigTool),
 }
 
 impl Tool {
@@ -26,6 +28,7 @@ impl Tool {
         use Tool::*;
         match self {
             Account(tool) => tool.execute().await,
+            Config(tool) => tool.execute().await,
         }
     }
 }
