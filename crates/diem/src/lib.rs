@@ -4,8 +4,10 @@
 #![forbid(unsafe_code)]
 
 pub mod account;
+pub mod client_proxy;
 pub mod common;
 pub mod config;
+pub mod diem_client;
 pub mod genesis;
 pub mod key;
 pub mod move_tool;

@@ -15,14 +15,18 @@ pub struct Config {
     pub rpc_endpoint: String,
     pub faucet_endpoint: String,
     pub account_address: String,
+    pub chain: String,
+    pub waypoint_url: String,
 }
 
 impl Default for Config {
     fn default() -> Self {
         Config {
-            rpc_endpoint: "127.0.0.1:8080".to_string(),
-            faucet_endpoint: "127.0.0.1:8081".to_string(),
+            rpc_endpoint: "https://testnet.diem.com/v1".to_string(),
+            faucet_endpoint: "https://testnet.diem.com/mint".to_string(),
             account_address: "TODO".to_string(),
+            chain: "TESTNET".to_string(),
+            waypoint_url: "https://testnet.diem.com/waypoint.txt".to_string(),
         }
     }
 }
@@ -78,6 +82,8 @@ impl ConfigPath {
     pub fn load(&self) -> Result<Config, CliError> {
         if let Some(path) = &self.config_path {
             if !std::path::Path::new(path).exists() {
+                println!("Configuration file not found, using default testnet values.");
+                println!("Run diem config init, to create a configuration file.");
                 Ok(Config::default())
             } else {
                 Config::load(path)

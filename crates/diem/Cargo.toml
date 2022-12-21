@@ -30,3 +30,6 @@ swiss-knife = { path = "../../crates/swiss-knife" }
 rand = "0.8.3"
 home = "0.5.4"
 diem-workspace-hack = { path = "../diem-workspace-hack" }
+diem-transaction-builder = { path = "../../sdk/transaction-builder" }
+bcs = "0.1.2"
+rust_decimal = "1.10.3"
