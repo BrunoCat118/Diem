@@ -215,12 +215,6 @@ jobs:
       #- name: Login to Amazon ECR
       #  id: login-ecr
       #  uses: aws-actions/amazon-ecr-login@v1.3.3
-      - name: Login to ECR
-        id: login-ecr
-        env: 
-          ENV_ACP_ECR_AWS_ACCOUNT_NUM: ${{ secrets.ENV_ACP_ECR_AWS_ACCOUNT_NUM }}
-          ENV_ACP_ECR_AWS_REGION: ${{ secrets.ENV_ACP_ECR_AWS_REGION }}
-        run: aws ecr get-login-password --region "$ENV_ACP_ECR_AWS_REGION" | docker login --username AWS --password-stdin "$ENV_ACP_ECR_AWS_ACCOUNT_NUM".dkr.ecr."$ENV_ACP_ECR_AWS_REGION".amazonaws.com
       - name: Sign in to dockerhub, install image signing cert.
         uses: ./.github/actions/dockerhub_login
         with:
@@ -254,7 +248,6 @@ jobs:
           GIT_REV=$(git rev-parse --short=8 HEAD)
           echo "::set-output name=head-tag::land_$GIT_REV";
           aws ecr get-login-password --region ${{ secrets.ENV_ACP_ECR_AWS_REGION }} | docker login --username AWS --password-stdin "${AWS_ECR_ACCOUNT_URL}"
-          aws ecr 
           docker/docker_republish.sh -t pre_${BRANCH}_${GIT_REV} -o land_${GIT_REV} -r ${AWS_ECR_ACCOUNT_URL} -d -i "${{ matrix.target_images }}"
       - name: Early terminate workflow
         if: ${{ failure() }}
