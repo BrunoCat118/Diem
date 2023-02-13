@@ -160,7 +160,7 @@ jobs:
 
   dev-setup-sh-test:
     runs-on: ubuntu-20.04-xl
-    timeout-minutes: 30
+    timeout-minutes: 65
     needs: prepare
     if: ${{ needs.prepare.outputs.test-dev-setup == 'true' }}
     strategy:
@@ -168,11 +168,12 @@ jobs:
       matrix:
         target_os: [alpine, arch, github]
     steps:
+      - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.4.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: build image with dev-setup.sh
-        run: docker build -f docker/ci/${{ matrix.target_os }}/Dockerfile -t diem/build_environment:test .
+        run: docker build -f docker/ci/${{ matrix.target_os }}/Dockerfile -t diem/diem_build_environment:latest .
       - name: Early terminate workflow
         if: ${{ failure() }}
         uses: ./.github/actions/early-terminator
@@ -180,7 +181,8 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
 
   build-images:
-    runs-on: ubuntu-20.04-xl
+    runs-on: [self-hosted, testnet-runner]
+    timeout-minutes: 65
     needs: prepare
     if: ${{ github.event_name == 'push' && needs.prepare.outputs.build-images == 'true' }}
     outputs:
@@ -192,6 +194,7 @@ jobs:
         target_images:
           [client faucet cluster-test forge, init tools validator validator-tcb]
     steps:
+      - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.4.0
         with:
           fetch-depth: 0 #get all the history!!!
@@ -203,15 +206,21 @@ jobs:
       - name: setup_aws_ecr_login
         run: |
           echo 'AWS_ECR_ACCOUNT_URL=${{ secrets.ENV_ACP_ECR_AWS_ACCOUNT_NUM }}.dkr.ecr.${{ secrets.ENV_ACP_ECR_AWS_REGION }}.amazonaws.com' >> $GITHUB_ENV
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.ENV_ACP_ECR_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.ENV_ACP_ECR_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.ENV_ACP_ECR_AWS_REGION }}
-      - name: Login to Amazon ECR
+      #- name: Configure AWS credentials
+      #  uses: aws-actions/configure-aws-credentials@v1
+      #  with:
+      #    aws-access-key-id: ${{ secrets.ENV_ACP_ECR_AWS_ACCESS_KEY_ID }}
+      #    aws-secret-access-key: ${{ secrets.ENV_ACP_ECR_AWS_SECRET_ACCESS_KEY }}
+      #    aws-region: ${{ secrets.ENV_ACP_ECR_AWS_REGION }}
+      #- name: Login to Amazon ECR
+      #  id: login-ecr
+      #  uses: aws-actions/amazon-ecr-login@v1.3.3
+      - name: Login to ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1.3.3
+        env: 
+          ENV_ACP_ECR_AWS_ACCOUNT_NUM: ${{ secrets.ENV_ACP_ECR_AWS_ACCOUNT_NUM }}
+          ENV_ACP_ECR_AWS_REGION: ${{ secrets.ENV_ACP_ECR_AWS_REGION }}
+        run: aws ecr get-login-password --region "$ENV_ACP_ECR_AWS_REGION" | docker login --username AWS --password-stdin "$ENV_ACP_ECR_AWS_ACCOUNT_NUM".dkr.ecr."$ENV_ACP_ECR_AWS_REGION".amazonaws.com
       - name: Sign in to dockerhub, install image signing cert.
         uses: ./.github/actions/dockerhub_login
         with:
@@ -244,8 +253,8 @@ jobs:
           BRANCH="$CHANGES_TARGET_BRANCH"
           GIT_REV=$(git rev-parse --short=8 HEAD)
           echo "::set-output name=head-tag::land_$GIT_REV";
-          aws ecr get-login-password --region ${{ secrets.ENV_ACP_ECR_AWS_REGION }} | \
-          docker login --username AWS --password-stdin "${AWS_ECR_ACCOUNT_URL}"
+          aws ecr get-login-password --region ${{ secrets.ENV_ACP_ECR_AWS_REGION }} | docker login --username AWS --password-stdin "${AWS_ECR_ACCOUNT_URL}"
+          aws ecr 
           docker/docker_republish.sh -t pre_${BRANCH}_${GIT_REV} -o land_${GIT_REV} -r ${AWS_ECR_ACCOUNT_URL} -d -i "${{ matrix.target_images }}"
       - name: Early terminate workflow
         if: ${{ failure() }}
@@ -254,13 +263,15 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
 
   need-base-images:
-    runs-on: [self-hosted, ACP]
+    runs-on: [self-hosted, testnet-runner]
+    timeout-minutes: 65
     needs: prepare
     if: ${{ github.event_name == 'push' && needs.prepare.outputs.build-images == 'true' && needs.prepare.outputs.need-base-images == 'true' }}
     outputs:
       # The last matrix build to succeed will set the output.   Hilarious.
       prev-tag: ${{ steps.build-extra-images.outputs.prev-tag }}
     steps:
+      - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.4.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -416,13 +427,14 @@ jobs:
             }
 
   non-rust-lint:
-    runs-on: ubuntu-20.04-xl
-    timeout-minutes: 10
+    runs-on: [self-hosted, testnet-runner]
+    timeout-minutes: 65
     needs: prepare
     if: ${{ needs.prepare.outputs.test-non-rust-lint == 'true'  }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
     steps:
+      - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.4.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -444,8 +456,8 @@ jobs:
       #   with:
       #     github-token: ${{secrets.GITHUB_TOKEN}}
   lint:
-    runs-on: ubuntu-20.04-xl
-    timeout-minutes: 30
+    runs-on: [self-hosted, testnet-runner]
+    timeout-minutes: 65
     needs: prepare
     if: ${{ needs.prepare.outputs.any-changes-founds == 'true' }}
     container:
@@ -453,6 +465,7 @@ jobs:
       volumes:
         - "${{github.workspace}}:/opt/git/diem"
     steps:
+      - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.4.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -476,7 +489,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
 
   unit-test:
-    runs-on: ubuntu-20.04-xl
+    runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 120
     needs: prepare
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
@@ -485,6 +498,7 @@ jobs:
       volumes:
         - "${{github.workspace}}:/opt/git/diem"
     steps:
+      - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.4.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -518,8 +532,8 @@ jobs:
       - uses: ./.github/actions/build-teardown
 
   codegen-unit-test:
-    runs-on: ubuntu-20.04-xl
-    timeout-minutes: 60
+    runs-on: [self-hosted, testnet-runner]
+    timeout-minutes: 65
     needs: prepare
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
     container:
@@ -527,6 +541,7 @@ jobs:
       volumes:
         - "${{github.workspace}}:/opt/git/diem"
     steps:
+      - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.4.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -548,7 +563,7 @@ jobs:
       - uses: ./.github/actions/build-teardown
 
   e2e-test:
-    runs-on: ubuntu-20.04-xl
+    runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 70
     needs: prepare
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
@@ -566,6 +581,7 @@ jobs:
       FLAKY_TESTS_FILE: /tmp/failures
       MESSAGE_PAYLOAD_FILE: /tmp/message
     steps:
+      - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.4.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -637,7 +653,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
 
   forge-test:
-    runs-on: ubuntu-latest-xl
+    runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 120
     needs: prepare
     if: ${{ needs.prepare.outputs.test-rust == 'true' && needs.prepare.outputs.test-compatibility == 'true' }}
@@ -646,6 +662,7 @@ jobs:
       volumes:
         - "${{github.workspace}}:/opt/git/diem"
     steps:
+      - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.3.4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -657,7 +674,7 @@ jobs:
 
   docker-compose-test:
     runs-on: ubuntu-20.04-xl
-    timeout-minutes: 40
+    timeout-minutes: 65
     needs: prepare
     if: ${{ needs.prepare.outputs.test-docker-compose == 'true' }}
     steps:
@@ -692,8 +709,8 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
 
   crypto-unit-test:
-    runs-on: ubuntu-20.04
-    timeout-minutes: 60
+    runs-on: [self-hosted, testnet-runner]
+    timeout-minutes: 65
     needs: prepare
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
     container:
@@ -701,6 +718,7 @@ jobs:
       volumes:
         - "${{github.workspace}}:/opt/git/diem"
     steps:
+      - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.4.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -755,10 +773,11 @@ jobs:
 
   helm-test:
     runs-on: ubuntu-20.04-xl
-    timeout-minutes: 20
+    timeout-minutes: 65
     needs: prepare
     if: ${{ needs.prepare.outputs.test-helm == 'true' }}
     steps:
+      - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.4.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -829,7 +848,8 @@ jobs:
 
   api_spec_test:
     name: API specification test
-    runs-on: ubuntu-20.04
+    runs-on: [self-hosted, testnet-runner]
+    timeout-minutes: 65
     needs: prepare
     if: ${{ needs.prepare.outputs.test-api-spec == 'true' }}
     container:
@@ -837,15 +857,16 @@ jobs:
       volumes:
         - "${{github.workspace}}:/opt/git/diem"
     steps:
+      - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.3.4
       - uses: ./.github/actions/build-setup
-      - name:
+      - name: test
         working-directory: api
         run: make test
 
   # Compile (but don't run) the benchmarks, to insulate against bit rot
   build-benchmarks:
-    runs-on: ubuntu-20.04-xl
+    runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 30
     needs: prepare
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
@@ -854,6 +875,7 @@ jobs:
       volumes:
         - "${{github.workspace}}:/opt/git/diem"
     steps:
+      - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.4.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -873,8 +895,8 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
 
   build-dev:
-    runs-on: ubuntu-20.04-xl
-    timeout-minutes: 30
+    runs-on: [self-hosted, testnet-runner]
+    timeout-minutes: 65
     needs: prepare
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
     container:
@@ -882,6 +904,7 @@ jobs:
       volumes:
         - "${{github.workspace}}:/opt/git/diem"
     steps:
+      - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.4.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -912,6 +935,7 @@ jobs:
     needs: prepare
     if: ${{ needs.prepare.outputs.test-website-build == 'true' }}
     steps:
+      - run: git config --global --add safe.directory '*'
       # Checks-out the Diem website repository under $GITHUB_WORKSPACE, so job can access it
       - uses: actions/checkout@v2.4.0
         with:
@@ -951,14 +975,15 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
 
   land-blocking-test-forge:
-    name: Run land blocking test in Forge
-    runs-on: [self-hosted, ACP]
+    name: Run land blocking test in Forge new
+    runs-on: [self-hosted, testnet-runner]
     needs: [prepare, build-images, need-base-images]
     if: ${{ always() && needs.build-images.result=='success' && needs.prepare.outputs.test-land-blocking == 'true' }}
     outputs:
       forge-result: ${{ steps.post-test-result.outputs.forge-result }}
-    timeout-minutes: 45
+    timeout-minutes: 65
     steps:
+      - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.4.0
         with:
           # This ensures that the tip of the PR is checked out instead of the merge between the base ref and the tip
@@ -1075,13 +1100,14 @@ jobs:
 
   land-blocking-test-forge-new:
     name: Run land blocking test in Forge
-    runs-on: self-hosted
+    runs-on: [self-hosted, testnet-runner]
     needs: [prepare, build-images, need-base-images]
     if: ${{ always() && needs.build-images.result=='success' && needs.prepare.outputs.test-land-blocking == 'true' }}
     outputs:
       forge-result: ${{ steps.post-test-result.outputs.forge-result }}
-    timeout-minutes: 45
+    timeout-minutes: 65
     steps:
+      - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.3.4
         with:
           # This ensures that the tip of the PR is checked out instead of the merge between the base ref and the tip
@@ -1122,7 +1148,7 @@ jobs:
   compare_lbt_signals:
     name: compare-lbt_signals
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 10
     #always run this job even if needed jobs failed or are skipped.
     if: ${{ always() && needs.land-blocking-test.result!='skipped' && needs.land-blocking-test-forge.result!='skipped'}}
     needs:
