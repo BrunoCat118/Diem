@@ -183,7 +183,7 @@ jobs:
   build-images:
     runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 65
-    needs: [prepare, dev-setup-sh-test]
+    needs: prepare
     if: ${{ github.event_name == 'push' && needs.prepare.outputs.build-images == 'true' }}
     outputs:
       head-tag: ${{ steps.push-to-acp-ecr.outputs.head-tag }}
@@ -258,7 +258,7 @@ jobs:
   need-base-images:
     runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 65
-    needs: [prepare, build-images]
+    needs: prepare
     if: ${{ github.event_name == 'push' && needs.prepare.outputs.build-images == 'true' && needs.prepare.outputs.need-base-images == 'true' }}
     outputs:
       # The last matrix build to succeed will set the output.   Hilarious.
@@ -422,7 +422,7 @@ jobs:
   non-rust-lint:
     runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 65
-    needs: [prepare, need-base-images]
+    needs: prepare
     if: ${{ needs.prepare.outputs.test-non-rust-lint == 'true'  }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
