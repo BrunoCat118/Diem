@@ -183,7 +183,7 @@ jobs:
   build-images:
     runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 65
-    needs: prepare
+    needs: [prepare, dev-setup-sh-test]
     if: ${{ github.event_name == 'push' && needs.prepare.outputs.build-images == 'true' }}
     outputs:
       head-tag: ${{ steps.push-to-acp-ecr.outputs.head-tag }}
@@ -258,7 +258,7 @@ jobs:
   need-base-images:
     runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 65
-    needs: prepare
+    needs: [prepare, build-images]
     if: ${{ github.event_name == 'push' && needs.prepare.outputs.build-images == 'true' && needs.prepare.outputs.need-base-images == 'true' }}
     outputs:
       # The last matrix build to succeed will set the output.   Hilarious.
@@ -422,7 +422,7 @@ jobs:
   non-rust-lint:
     runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 65
-    needs: prepare
+    needs: [prepare, need-base-images]
     if: ${{ needs.prepare.outputs.test-non-rust-lint == 'true'  }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
@@ -451,7 +451,7 @@ jobs:
   lint:
     runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 65
-    needs: prepare
+    needs: [prepare, non-rust-lint]
     if: ${{ needs.prepare.outputs.any-changes-founds == 'true' }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
@@ -484,7 +484,7 @@ jobs:
   unit-test:
     runs-on: ubuntu-20.04-xl
     timeout-minutes: 120
-    needs: prepare
+    needs: [prepare, lint]
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
@@ -527,7 +527,7 @@ jobs:
   codegen-unit-test:
     runs-on: ubuntu-20.04-xl
     timeout-minutes: 65
-    needs: prepare
+    needs: [prepare, unit-test]
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
@@ -558,7 +558,7 @@ jobs:
   e2e-test:
     runs-on: ubuntu-20.04-xl
     timeout-minutes: 70
-    needs: prepare
+    needs: [prepare, codegen-unit-test]
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
@@ -648,7 +648,7 @@ jobs:
   forge-test:
     runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 120
-    needs: prepare
+    needs: [prepare, e2e-test]
     if: ${{ needs.prepare.outputs.test-rust == 'true' && needs.prepare.outputs.test-compatibility == 'true' }}
     container:
       image: diem/build_environment:${{ needs.prepare.outputs.changes-target-branch }}
@@ -668,7 +668,7 @@ jobs:
   docker-compose-test:
     runs-on: ubuntu-20.04-xl
     timeout-minutes: 65
-    needs: prepare
+    needs: [prepare, forge-test]
     if: ${{ needs.prepare.outputs.test-docker-compose == 'true' }}
     steps:
       - uses: actions/checkout@v2.4.0
@@ -704,7 +704,7 @@ jobs:
   crypto-unit-test:
     runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 65
-    needs: prepare
+    needs: [prepare, docker-compose-test]
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
@@ -767,7 +767,7 @@ jobs:
   helm-test:
     runs-on: ubuntu-20.04-xl
     timeout-minutes: 65
-    needs: prepare
+    needs: [prepare, crypto-unit-test]
     if: ${{ needs.prepare.outputs.test-helm == 'true' }}
     steps:
       - run: git config --global --add safe.directory '*'
@@ -843,7 +843,7 @@ jobs:
     name: API specification test
     runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 65
-    needs: prepare
+    needs: [prepare, helm-test]
     if: ${{ needs.prepare.outputs.test-api-spec == 'true' }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
@@ -861,7 +861,7 @@ jobs:
   build-benchmarks:
     runs-on: ubuntu-20.04-xl
     timeout-minutes: 30
-    needs: prepare
+      needs: [prepare, api_spec_test]
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
@@ -890,7 +890,7 @@ jobs:
   build-dev:
     runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 65
-    needs: prepare
+    needs: [prepare, build-benchmarks]
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
@@ -925,7 +925,7 @@ jobs:
   developers-site:
     name: run-developer-site-build
     runs-on: ubuntu-20.04
-    needs: prepare
+    needs: [prepare, build-dev]
     if: ${{ needs.prepare.outputs.test-website-build == 'true' }}
     steps:
       - run: git config --global --add safe.directory '*'
