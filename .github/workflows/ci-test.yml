@@ -861,7 +861,7 @@ jobs:
   build-benchmarks:
     runs-on: ubuntu-20.04-xl
     timeout-minutes: 30
-      needs: [prepare, api_spec_test]
+    needs: [prepare, api_spec_test]
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
