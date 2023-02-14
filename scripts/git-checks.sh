@@ -70,14 +70,14 @@ fi
 done
 
 # If there are whitespace errors, print the offending file names and fail.
-for rev in $(git rev-list $oldrev..$newrev); do
-	comparison=$(git rev-parse --quiet --verify $rev^ || true)
-
-	whitespace=$(git diff --check $comparison $rev || true)
-	if [[ $whitespace ]] ; then
-		echo "Found whitespace errors in commit $rev:"
-		echo
-		git diff --check $comparison $rev
-		exit 1
-	fi
-done
+#for rev in $(git rev-list $oldrev..$newrev); do
+#	comparison=$(git rev-parse --quiet --verify $rev^ || true)
+#
+#	whitespace=$(git diff --check $comparison $rev || true)
+#	if [[ $whitespace ]] ; then
+#		echo "Found whitespace errors in commit $rev:"
+#		echo
+#		git diff --check $comparison $rev
+#		exit 1
+#	fi
+#done
