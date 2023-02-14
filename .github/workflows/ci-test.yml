@@ -482,7 +482,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
 
   unit-test:
-    runs-on: [self-hosted, testnet-runner]
+    runs-on: ubuntu-20.04-xl
     timeout-minutes: 120
     needs: prepare
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
@@ -556,7 +556,7 @@ jobs:
       - uses: ./.github/actions/build-teardown
 
   e2e-test:
-    runs-on: [self-hosted, testnet-runner]
+    runs-on: ubuntu-20.04-xl
     timeout-minutes: 70
     needs: prepare
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
