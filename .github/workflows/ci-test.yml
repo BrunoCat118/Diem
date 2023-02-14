@@ -525,7 +525,7 @@ jobs:
       - uses: ./.github/actions/build-teardown
 
   codegen-unit-test:
-    runs-on: [self-hosted, testnet-runner]
+    runs-on: ubuntu-20.04-xl
     timeout-minutes: 65
     needs: prepare
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
