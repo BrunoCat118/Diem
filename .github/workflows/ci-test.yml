@@ -168,7 +168,6 @@ jobs:
       matrix:
         target_os: [alpine, arch, github]
     steps:
-      - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.4.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -194,7 +193,6 @@ jobs:
         target_images:
           [client faucet cluster-test forge, init tools validator validator-tcb]
     steps:
-      - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.4.0
         with:
           fetch-depth: 0 #get all the history!!!
@@ -264,7 +262,6 @@ jobs:
       # The last matrix build to succeed will set the output.   Hilarious.
       prev-tag: ${{ steps.build-extra-images.outputs.prev-tag }}
     steps:
-      - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.4.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
