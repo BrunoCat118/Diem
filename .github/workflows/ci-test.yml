@@ -180,7 +180,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
 
   build-images:
-    runs-on: [self-hosted, testnet-runner]
+    runs-on: ubuntu-20.04-xl
     timeout-minutes: 65
     needs: prepare
     if: ${{ github.event_name == 'push' && needs.prepare.outputs.build-images == 'true' }}
@@ -254,7 +254,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
 
   need-base-images:
-    runs-on: [self-hosted, testnet-runner]
+    runs-on: ubuntu-20.04-xl
     timeout-minutes: 65
     needs: prepare
     if: ${{ github.event_name == 'push' && needs.prepare.outputs.build-images == 'true' && needs.prepare.outputs.need-base-images == 'true' }}
