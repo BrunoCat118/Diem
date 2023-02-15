@@ -184,8 +184,8 @@ jobs:
     timeout-minutes: 65
     needs: prepare
     if: ${{ github.event_name == 'push' && needs.prepare.outputs.build-images == 'true' }}
-    outputs:
-      head-tag: ${{ steps.push-to-acp-ecr.outputs.head-tag }}
+    #outputs:
+    #  head-tag: ${{ steps.push-to-acp-ecr.outputs.head-tag }}
     environment:
       name: Docker
     strategy:
@@ -201,9 +201,9 @@ jobs:
         uses: diem/actions/changes@faadd16607b77dfa2231a8f366883e01717b3225
         with:
           workflow-file: docker-publish.yml
-      - name: setup_aws_ecr_login
-        run: |
-          echo 'AWS_ECR_ACCOUNT_URL=${{ secrets.ENV_ACP_ECR_AWS_ACCOUNT_NUM }}.dkr.ecr.${{ secrets.ENV_ACP_ECR_AWS_REGION }}.amazonaws.com' >> $GITHUB_ENV
+      #- name: setup_aws_ecr_login
+      #  run: |
+      #    echo 'AWS_ECR_ACCOUNT_URL=${{ secrets.ENV_ACP_ECR_AWS_ACCOUNT_NUM }}.dkr.ecr.${{ secrets.ENV_ACP_ECR_AWS_REGION }}.amazonaws.com' >> $GITHUB_ENV
       #- name: Configure AWS credentials
       #  uses: aws-actions/configure-aws-credentials@v1
       #  with:
@@ -238,15 +238,15 @@ jobs:
           exit $success
         env:
           DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: ${{ secrets.ENV_DOCKERHUB_KEY_PASSWORD }}
-      - name: push to ACP ecr
-        id: push-to-acp-ecr
-        run: |
-          #push to ACP ecr with standard names
-          BRANCH="$CHANGES_TARGET_BRANCH"
-          GIT_REV=$(git rev-parse --short=8 HEAD)
-          echo "::set-output name=head-tag::land_$GIT_REV";
-          aws ecr get-login-password --region ${{ secrets.ENV_ACP_ECR_AWS_REGION }} | docker login --username AWS --password-stdin "${AWS_ECR_ACCOUNT_URL}"
-          docker/docker_republish.sh -t pre_${BRANCH}_${GIT_REV} -o land_${GIT_REV} -r ${AWS_ECR_ACCOUNT_URL} -d -i "${{ matrix.target_images }}"
+      #- name: push to ACP ecr
+      #  id: push-to-acp-ecr
+      #  run: |
+      #    #push to ACP ecr with standard names
+      #    BRANCH="$CHANGES_TARGET_BRANCH"
+      #    GIT_REV=$(git rev-parse --short=8 HEAD)
+      #    echo "::set-output name=head-tag::land_$GIT_REV";
+      #    aws ecr get-login-password --region ${{ secrets.ENV_ACP_ECR_AWS_REGION }} | docker login --username AWS --password-stdin "${AWS_ECR_ACCOUNT_URL}"
+      #    docker/docker_republish.sh -t pre_${BRANCH}_${GIT_REV} -o land_${GIT_REV} -r ${AWS_ECR_ACCOUNT_URL} -d -i "${{ matrix.target_images }}"
       - name: Early terminate workflow
         if: ${{ failure() }}
         uses: ./.github/actions/early-terminator
@@ -479,7 +479,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
 
   unit-test:
-    runs-on: ubuntu-20.04-xl
+    runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 120
     needs: prepare
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
