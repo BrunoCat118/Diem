@@ -217,7 +217,7 @@ impl GitCli {
             info!("Setting up scratch worktree in {}", scratch_dir);
             let output = self
                 .git_command()
-                .args(&["worktree", "add"])
+                .args(&["worktree", "add", "-f"])
                 .arg(&scratch_dir)
                 .args(&[&format!("{:x}", hash), "--detach"])
                 .output()
