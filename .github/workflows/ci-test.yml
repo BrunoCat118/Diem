@@ -556,7 +556,7 @@ jobs:
     runs-on: ubuntu-20.04-xl
     timeout-minutes: 70
     needs: [prepare, unit-test]
-    if: ${{ needs.prepare.outputs.test-rust == 'true' }}
+    if: ${{ always() && needs.prepare.outputs.test-rust == 'true' }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
       volumes:
@@ -646,7 +646,7 @@ jobs:
     runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 120
     needs: [prepare, unit-test]
-    if: always() && ${{ needs.prepare.outputs.test-rust == 'true' && needs.prepare.outputs.test-compatibility == 'true' }}
+    if: ${{ always() && needs.prepare.outputs.test-rust == 'true' && needs.prepare.outputs.test-compatibility == 'true' }}
     container:
       image: diem/build_environment:${{ needs.prepare.outputs.changes-target-branch }}
       volumes:
