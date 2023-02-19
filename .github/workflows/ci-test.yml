@@ -479,7 +479,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
 
   unit-test:
-    runs-on: [self-hosted, testnet-runner]
+    runs-on: [self-hosted, testnet-runner-r5]
     timeout-minutes: 120
     needs: prepare
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
