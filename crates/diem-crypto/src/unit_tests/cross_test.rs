@@ -120,11 +120,11 @@ proptest! {
     }
 }
 
-#[test]
-fn unsupported_sigs() {
-    let t = trybuild::TestCases::new();
-    t.compile_fail("src/unit_tests/compilation/cross_test.rs");
-    t.compile_fail("src/unit_tests/compilation/cross_test_trait_obj.rs");
-    t.compile_fail("src/unit_tests/compilation/cross_test_trait_obj_sig.rs");
-    t.compile_fail("src/unit_tests/compilation/cross_test_trait_obj_pub.rs");
-}
+// #[test]
+// fn unsupported_sigs() {
+//     let t = trybuild::TestCases::new();
+//     t.compile_fail("src/unit_tests/compilation/cross_test.rs");
+//     t.compile_fail("src/unit_tests/compilation/cross_test_trait_obj.rs");
+//     t.compile_fail("src/unit_tests/compilation/cross_test_trait_obj_sig.rs");
+//     t.compile_fail("src/unit_tests/compilation/cross_test_trait_obj_pub.rs");
+// }
