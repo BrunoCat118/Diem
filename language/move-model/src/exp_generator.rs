@@ -140,7 +140,7 @@ pub trait ExpGenerator<'env> {
         ));
         self.mk_call(&NUM_TYPE, oper, vec![])
     }
-
+    #[allow(deprecated)]
     /// Join an iterator of boolean expressions with a boolean binary operator.
     fn mk_join_bool(&self, oper: Operation, args: impl Iterator<Item = Exp>) -> Option<Exp> {
         args.fold1(|a, b| self.mk_bool_call(oper.clone(), vec![a, b]))
