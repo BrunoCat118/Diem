@@ -16,6 +16,7 @@ use diem_sdk::{
     },
 };
 use futures::future::{try_join_all, FutureExt};
+#[allow(deprecated)]
 use itertools::zip;
 use rand::{
     seq::{IteratorRandom, SliceRandom},
@@ -604,7 +605,7 @@ async fn wait_for_accounts_sequence(
     let deadline = Instant::now() + Duration::from_secs(TXN_EXPIRATION_SECONDS); //TXN_MAX_WAIT;
     let addresses: Vec<_> = accounts.iter().map(|d| d.address()).collect();
     let mut uncommitted = addresses.clone().into_iter().collect::<HashSet<_>>();
-
+    #[allow(deprecated)]
     while Instant::now() < deadline {
         match query_sequence_numbers(client, &addresses).await {
             Ok(sequence_numbers) => {

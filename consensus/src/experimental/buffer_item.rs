@@ -10,6 +10,7 @@ use diem_types::{
     ledger_info::{LedgerInfo, LedgerInfoWithSignatures},
     validator_verifier::ValidatorVerifier,
 };
+#[allow(deprecated)]
 use itertools::zip;
 use std::collections::BTreeMap;
 
@@ -62,7 +63,7 @@ impl BufferItem {
             ordered_proof,
         }))
     }
-
+    #[allow(deprecated)]
     // pipeline functions
     pub fn advance_to_executed(self, executed_blocks: Vec<ExecutedBlock>) -> Self {
         match self {
