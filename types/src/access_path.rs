@@ -13,7 +13,7 @@
 //! }
 //!
 //! struct C {
-//!   List<int> mylist;
+//!  `List<int>` mylist;
 //! }
 //!
 //! A a;

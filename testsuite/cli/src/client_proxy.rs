@@ -41,6 +41,7 @@ use diem_types::{
 };
 use diem_wallet::{io_utils, WalletLibrary};
 use move_vm_test_utils::InMemoryStorage;
+#[allow(unused_imports)]
 use num_traits::{
     cast::{FromPrimitive, ToPrimitive},
     identities::Zero,
@@ -1234,7 +1235,7 @@ impl ClientProxy {
             .write_recovery(Path::new(space_delim_strings[1]))?;
         Ok(())
     }
-
+    #[allow(rustdoc::invalid_html_tags)]
     /// Recover wallet accounts from command 'recover <file>' and return vec<(account_address, index)>.
     pub fn recover_wallet_accounts(
         &mut self,

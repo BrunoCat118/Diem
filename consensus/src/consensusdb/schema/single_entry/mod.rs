@@ -8,7 +8,7 @@
 //! and be used. ```text
 //! |<-------key------->|<-----value----->|
 //! | single entry key  | raw value bytes |
-//! ```
+//! ```text
 
 use super::{ensure_slice_len_eq, SINGLE_ENTRY_CF_NAME};
 use anyhow::{format_err, Result};
