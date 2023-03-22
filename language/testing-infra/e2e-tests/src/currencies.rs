@@ -40,7 +40,7 @@ pub fn add_currency_to_system(
     let (compiled_module, module) = {
         let module = format!(
             r#"
-            module 0x1.{} {{
+            module 0x1.{currency_code} {{
                 import 0x1.Diem;
                 import 0x1.FixedPoint32;
                 struct {currency_code} has store {{ x: bool }}

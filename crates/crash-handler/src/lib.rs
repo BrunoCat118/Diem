@@ -35,7 +35,10 @@ fn handle_panic(panic_info: &PanicInfo<'_>) {
     let backtrace = format!("{:#?}", Backtrace::new());
 
     let info = CrashInfo { details, backtrace };
-    error!("{}", crash_info = toml::to_string_pretty(&info).unwrap());
+    error!(
+        "{crash_info}",
+        crash_info = toml::to_string_pretty(&info).unwrap()
+    );
 
     // Wait till the logs have been flushed
     diem_logger::flush();
