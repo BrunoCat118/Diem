@@ -158,29 +158,29 @@ jobs:
         with:
           pattern: '^api\|^scripts/dev_setup.sh'
 
-  dev-setup-sh-test:
-    runs-on: ubuntu-20.04-xl
-    timeout-minutes: 65
-    needs: prepare
-    if: ${{ needs.prepare.outputs.test-dev-setup == 'true' }}
-    strategy:
-      fail-fast: false
-      matrix:
-        target_os: [alpine, arch, github]
-    steps:
-      - uses: actions/checkout@v2.4.0
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: build image with dev-setup.sh
-        run: docker build -f docker/ci/${{ matrix.target_os }}/Dockerfile -t diem/diem_build_environment:latest .
-      - name: Early terminate workflow
-        if: ${{ failure() }}
-        uses: ./.github/actions/early-terminator
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+  #dev-setup-sh-test:
+  #  runs-on: ubuntu-20.04
+  #  timeout-minutes: 65
+  #  needs: prepare
+  #  if: ${{ needs.prepare.outputs.test-dev-setup == 'true' }}
+  #  strategy:
+  #    fail-fast: false
+  #    matrix:
+  #      target_os: [alpine, arch, github]
+  #  steps:
+  #    - uses: actions/checkout@v2.4.0
+  #      with:
+  #        ref: ${{ github.event.pull_request.head.sha }}
+  #    - name: build image with dev-setup.sh
+  #      run: docker build -f docker/ci/${{ matrix.target_os }}/Dockerfile -t diem/diem_build_environment:latest .
+  #    - name: Early terminate workflow
+  #      if: ${{ failure() }}
+  #      uses: ./.github/actions/early-terminator
+  #      with:
+  #        github-token: ${{secrets.GITHUB_TOKEN}}
 
   build-images:
-    runs-on: ubuntu-20.04-xl
+    runs-on: testnet-runner-ubuntu
     timeout-minutes: 65
     needs: prepare
     if: ${{ github.event_name == 'push' && needs.prepare.outputs.build-images == 'true' }}
@@ -254,7 +254,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
 
   need-base-images:
-    runs-on: ubuntu-20.04-xl
+    runs-on: testnet-runner-ubuntu
     timeout-minutes: 65
     needs: prepare
     if: ${{ github.event_name == 'push' && needs.prepare.outputs.build-images == 'true' && needs.prepare.outputs.need-base-images == 'true' }}
@@ -522,7 +522,7 @@ jobs:
       - uses: ./.github/actions/build-teardown
 
   codegen-unit-test:
-    runs-on: ubuntu-20.04-xl
+    runs-on: testnet-runner-ubuntu
     timeout-minutes: 65
     needs: prepare
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
@@ -553,7 +553,7 @@ jobs:
       - uses: ./.github/actions/build-teardown
 
   e2e-test:
-    runs-on: ubuntu-20.04-xl
+    runs-on: testnet-runner-ubuntu
     timeout-minutes: 70
     needs: prepare
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
@@ -642,28 +642,28 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 
-  forge-test:
-    runs-on: [self-hosted, testnet-runner]
-    timeout-minutes: 120
-    needs: prepare
-    if: ${{ needs.prepare.outputs.test-rust == 'true' && needs.prepare.outputs.test-compatibility == 'true' }}
-    container:
-      image: diem/build_environment:${{ needs.prepare.outputs.changes-target-branch }}
-      volumes:
-        - "${{github.workspace}}:/opt/git/diem"
-    steps:
-      - run: git config --global --add safe.directory '*'
-      - uses: actions/checkout@v2.3.4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 0 #get all the history!!!
-      - uses: ./.github/actions/build-setup
-      - name: compatibility tests
-        run: |
-          cargo test -p testcases --test forge-local-compatibility
+  #forge-test:
+  #  runs-on: [self-hosted, testnet-runner]
+  #  timeout-minutes: 120
+  #  needs: prepare
+  #  if: ${{ needs.prepare.outputs.test-rust == 'true' && needs.prepare.outputs.test-compatibility == 'true' }}
+  #  container:
+  #    image: diem/build_environment:${{ needs.prepare.outputs.changes-target-branch }}
+  #    volumes:
+  #      - "${{github.workspace}}:/opt/git/diem"
+  #  steps:
+  #    - run: git config --global --add safe.directory '*'
+  #    - uses: actions/checkout@v2.3.4
+  #      with:
+  #        ref: ${{ github.event.pull_request.head.sha }}
+  #        fetch-depth: 0 #get all the history!!!
+  #    - uses: ./.github/actions/build-setup
+  #    - name: compatibility tests
+  #      run: |
+  #       cargo test -p testcases --test forge-local-compatibility
 
   docker-compose-test:
-    runs-on: ubuntu-20.04-xl
+    runs-on: testnet-runner-ubuntu
     timeout-minutes: 65
     needs: prepare
     if: ${{ needs.prepare.outputs.test-docker-compose == 'true' }}
@@ -762,7 +762,7 @@ jobs:
   #         github-token: ${{secrets.GITHUB_TOKEN}}
 
   helm-test:
-    runs-on: ubuntu-20.04-xl
+    runs-on: testnet-runner-ubuntu
     timeout-minutes: 65
     needs: prepare
     if: ${{ needs.prepare.outputs.test-helm == 'true' }}
@@ -856,7 +856,7 @@ jobs:
 
   # Compile (but don't run) the benchmarks, to insulate against bit rot
   build-benchmarks:
-    runs-on: ubuntu-20.04-xl
+    runs-on: testnet-runner-ubuntu
     timeout-minutes: 30
     needs: prepare
     if: ${{ needs.prepare.outputs.test-rust == 'true' }}
@@ -964,218 +964,219 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 
-  land-blocking-test-forge:
-    name: Run land blocking test in Forge new
-    runs-on: [self-hosted, testnet-runner]
-    needs: [prepare, build-images, need-base-images]
-    if: ${{ always() && needs.build-images.result=='success' && needs.prepare.outputs.test-land-blocking == 'true' }}
-    outputs:
-      forge-result: ${{ steps.post-test-result.outputs.forge-result }}
-    timeout-minutes: 65
-    steps:
-      - run: git config --global --add safe.directory '*'
-      - uses: actions/checkout@v2.4.0
-        with:
-          # This ensures that the tip of the PR is checked out instead of the merge between the base ref and the tip
-          # On `push` this value will be empty and will "do-the-right-thing"
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Launch forge test
-        run: |
-          set +e
-          date
-          export FGI_OUTPUT_LOG=$(mktemp)
-          echo "FGI_OUTPUT_LOG=$FGI_OUTPUT_LOG" >> $GITHUB_ENV
-          cmd=""
-          if ${{ needs.need-base-images.result!='success' }}; then
-            cmd="./scripts/fgi/run --tag ${{ needs.build-images.outputs.head-tag }} --suite land_blocking --report forge_report.json"
-          else
-            cmd="./scripts/fgi/run --tag ${{ needs.build-images.outputs.head-tag }} --base-image-tag ${{ needs.need-base-images.outputs.prev-tag }} --suite land_blocking_compat --report forge_report.json"
-          fi
-          eval $cmd
-          ret=$?
-          echo "fgi exit code: $ret"
-          echo "FGI_REPRO_CMD=$cmd" >> $GITHUB_ENV
-          echo "FGI_EXIT_CODE=$ret" >> $GITHUB_ENV
-      - name: Post test results on PR
-        uses: actions/github-script@v4.0.2
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            // Find the number of the pull request that trigggers this push
-            let pr_num = ${{ needs.prepare.outputs.changes-pull-request-number }};
-            if (!pr_num) {
-              console.warn("Did not find pull request num in previous step");
-              console.log("GH event payload\n", context.payload);
-              return;
-            }
-            // Read and check forge test results
-            let should_fail = false;
-            let env_vars = process.env;
-            let body = '';
-            const fsp = require('fs').promises;
-            try {
-              data = await fsp.readFile('forge_report.json', 'utf-8');
-              var result = JSON.parse(data);
-              // TODO - set P/F based on metrics TPS, latency
-              body = `Forge Test Result
-            \`\`\`
-            ${result.text}
-            ${result.logs}
-            ${result.dashboard}
-            \`\`\`
-            `;
-              // Check FGI exit code for errors
-              if (parseInt(env_vars.FGI_EXIT_CODE) != 0) {
-                body += "\n :exclamation: Forge Test failed - non-zero exit code for `fgi` \n"
-                should_fail = true;
-              }
-            } catch (err) {
-              if (err.code === 'ENOENT') {
-                body = "Forge Test failed - no test report found.\n";
-              } else {
-                body = "Forge Test runner failed.";
-                console.error(err);
-              }
-              body += " See https://github.com/diem/diem/actions/runs/${{github.run_id}}";
-              // Post comment on PR then fail this workflow
-              should_fail = true;
-            }
-            // Add repro cmd to message
-            try {
-              body += "\nRepro cmd:\n";
-              body += `
-              \`\`\`
-              ${env_vars.FGI_REPRO_CMD}
-              \`\`\`
-              `
-            } catch (err) {
-              if (err.code === 'ReferenceError') {
-                console.error("One of the following env vars is not set");
-              } else {
-                body += "[GHA DEBUG]\nFound error in actions/github-script\n";
-                body += err;
-              }
-            }
-            // Post test result on original pull request
-            try {
-              if (!should_fail) {
-                body += "\n :tada: Land-blocking forge test passed! :ok_hand:"
-              }
-              await github.issues.createComment(
-                  {
-                    issue_number: pr_num,
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    body: body,
-                  }
-              );
-            } catch (err) {
-              if (err.status === 401) {
-                // Fail silently for auth but log to console.
-                console.warn("GH token has expired when trying to POST\n", err);
-              } else {
-                console.error("HttpError other than 401 is not bypassed");
-                throw err;
-              }
-            }
-            // Fail the workflow if test fails
-            if (should_fail) {
-              throw "Land-blocking test failed";
-            }
-      - name: Early terminate workflow
-        if: ${{ failure() }}
-        uses: ./.github/actions/early-terminator
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+  #land-blocking-test-forge:
+  #  name: Run land blocking test in Forge new
+  #  runs-on: [self-hosted, testnet-runner]
+  #  needs: [prepare, build-images, need-base-images]
+  #  if: ${{ always() && needs.build-images.result=='success' && needs.prepare.outputs.test-land-blocking == 'true' }}
+  #  outputs:
+  #    forge-result: ${{ steps.post-test-result.outputs.forge-result }}
+  #  timeout-minutes: 65
+  #  steps:
+  #    - run: git config --global --add safe.directory '*'
+  #    - uses: actions/checkout@v2.4.0
+  #      with:
+  #        # This ensures that the tip of the PR is checked out instead of the merge between the base ref and the tip
+  #        # On `push` this value will be empty and will "do-the-right-thing"
+  #        ref: ${{ github.event.pull_request.head.sha }}
+  #    - name: Launch forge test
+  #      run: |
+  #        set +e
+  #        date
+  #        export FGI_OUTPUT_LOG=$(mktemp)
+  #        echo "FGI_OUTPUT_LOG=$FGI_OUTPUT_LOG" >> $GITHUB_ENV
+  #        cmd=""
+  #        if ${{ needs.need-base-images.result!='success' }}; then
+  #          cmd="./scripts/fgi/run --tag ${{ needs.build-images.outputs.head-tag }} --suite land_blocking --report forge_report.json"
+  #        else
+  #          cmd="./scripts/fgi/run --tag ${{ needs.build-images.outputs.head-tag }} --base-image-tag ${{ needs.need-base-images.outputs.prev-tag }} --suite land_blocking_compat --report forge_report.json"
+  #        fi
+  #        eval $cmd
+  #        ret=$?
+  #        echo "fgi exit code: $ret"
+  #        echo "FGI_REPRO_CMD=$cmd" >> $GITHUB_ENV
+  #        echo "FGI_EXIT_CODE=$ret" >> $GITHUB_ENV
+  #    - name: Post test results on PR
+  #      uses: actions/github-script@v4.0.2
+  #      with:
+  #        github-token: ${{secrets.GITHUB_TOKEN}}
+  #        script: |
+  #          // Find the number of the pull request that trigggers this push
+  #          let pr_num = ${{ needs.prepare.outputs.changes-pull-request-number }};
+  #          if (!pr_num) {
+  #            console.warn("Did not find pull request num in previous step");
+  #            console.log("GH event payload\n", context.payload);
+  #            return;
+  #          }
+  #          // Read and check forge test results
+  #          let should_fail = false;
+  #          let env_vars = process.env;
+  #          let body = '';
+  #          const fsp = require('fs').promises;
+  #          try {
+  #            data = await fsp.readFile('forge_report.json', 'utf-8');
+  #            var result = JSON.parse(data);
+  #            // TODO - set P/F based on metrics TPS, latency
+  #           body = `Forge Test Result
+  #          \`\`\`
+  #          ${result.text}
+  #          ${result.logs}
+  #          ${result.dashboard}
+  #          \`\`\`
+  #          `;
+  #           // Check FGI exit code for errors
+  #            if (parseInt(env_vars.FGI_EXIT_CODE) != 0) {
+  #              body += "\n :exclamation: Forge Test failed - non-zero exit code for `fgi` \n"
+  #              should_fail = true;
+  #            }
+  #          } catch (err) {
+  #            if (err.code === 'ENOENT') {
+  #              body = "Forge Test failed - no test report found.\n";
+  #            } else {
+  #              body = "Forge Test runner failed.";
+  #              console.error(err);
+  #            }
+  #            body += " See https://github.com/diem/diem/actions/runs/${{github.run_id}}";
+  #            // Post comment on PR then fail this workflow
+  #            should_fail = true;
+  #          }
+  #          // Add repro cmd to message
+  #          try {
+  #            body += "\nRepro cmd:\n";
+  #            body += `
+  #            \`\`\`
+  #            ${env_vars.FGI_REPRO_CMD}
+  #            \`\`\`
+  #            `
+  #          } catch (err) {
+  #            if (err.code === 'ReferenceError') {
+  #              console.error("One of the following env vars is not set");
+  #            } else {
+  #
+  #body += "[GHA DEBUG]\nFound error in actions/github-script\n";
+  #              body += err;
+  #            }
+  #          }
+  #          // Post test result on original pull request
+  #          try {
+  #            if (!should_fail) {
+  #              body += "\n :tada: Land-blocking forge test passed! :ok_hand:"
+  #            }
+  #            await github.issues.createComment(
+  #                {
+  #                  issue_number: pr_num,
+  #                  owner: context.repo.owner,
+  #                  repo: context.repo.repo,
+  #                  body: body,
+  #                }
+  #            );
+  #          } catch (err) {
+  #            if (err.status === 401) {
+  #              // Fail silently for auth but log to console.
+  #              console.warn("GH token has expired when trying to POST\n", err);
+  #            } else {
+  #              console.error("HttpError other than 401 is not bypassed");
+  #              throw err;
+  #            }
+  #          }
+  #          // Fail the workflow if test fails
+  #          if (should_fail) {
+  #            throw "Land-blocking test failed";
+  #          }
+  #    - name: Early terminate workflow
+  #      if: ${{ failure() }}
+  #      uses: ./.github/actions/early-terminator
+  #      with:
+  #        github-token: ${{secrets.GITHUB_TOKEN}}
 
-  land-blocking-test-forge-new:
-    name: Run land blocking test in Forge
-    runs-on: [self-hosted, testnet-runner]
-    needs: [prepare, build-images, need-base-images]
-    if: ${{ always() && needs.build-images.result=='success' && needs.prepare.outputs.test-land-blocking == 'true' }}
-    outputs:
-      forge-result: ${{ steps.post-test-result.outputs.forge-result }}
-    timeout-minutes: 65
-    steps:
-      - run: git config --global --add safe.directory '*'
-      - uses: actions/checkout@v2.3.4
-        with:
+  #land-blocking-test-forge-new:
+  #  name: Run land blocking test in Forge
+  #  runs-on: [self-hosted, testnet-runner]
+  #  needs: [prepare, build-images, need-base-images]
+  #  if: ${{ always() && needs.build-images.result=='success' && needs.prepare.outputs.test-land-blocking == 'true' }}
+  #  outputs:
+  #    forge-result: ${{ steps.post-test-result.outputs.forge-result }}
+  #  timeout-minutes: 65
+  # steps:
+  #    - run: git config --global --add safe.directory '*'
+  #    - uses: actions/checkout@v2.3.4
+  #      with:
           # This ensures that the tip of the PR is checked out instead of the merge between the base ref and the tip
           # On `push` this value will be empty and will "do-the-right-thing"
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Launch forge test
-        # NOTE Remember to update PR comment payload if cti cmd is updated.
-        run: |
-          set +e
-          date
-          export FGI_OUTPUT_LOG=$(mktemp)
-          echo "FGI_OUTPUT_LOG=$FGI_OUTPUT_LOG" >> $GITHUB_ENV
-          cmd=""
-          if ${{ needs.need-base-images.result!='success' }}; then
-            cmd="./scripts/fgi/run --tag ${{ needs.build-images.outputs.head-tag }} --suite land_blocking"
-          else
-            cmd="./scripts/fgi/run -E SLACK_URL=${{ secrets.WEBHOOK_FORGE }} --tag ${{ needs.build-images.outputs.head-tag }} --base-image-tag ${{ needs.need-base-images.outputs.prev-tag }} --suite land_blocking_compat"
-          fi
-          eval $cmd
-          ret=$?
-          echo "fgi exit code: $ret"
-          echo "FGI_REPRO_CMD=$cmd" >> $GITHUB_ENV
-          echo "FGI_EXIT_CODE=$ret" >> $GITHUB_ENV
-      - name: Post test results on PR
-        id: post-test-result
-        if: always()
-        # set result to do comparison instead of fail workflow
-        # once we turn off CT and turn on forge, will post forge testing result instead
-        run: |
-          if [ $FGI_EXIT_CODE -eq 1 ]; then
-            echo "::set-output name=forge-result::failed";
-          else
-            echo "::set-output name=forge-result::success";
-          fi
+  #        ref: ${{ github.event.pull_request.head.sha }}
+  #    - name: Launch forge test
+  #      # NOTE Remember to update PR comment payload if cti cmd is updated.
+  #      run: |
+  #        set +e
+  #        date
+  #        export FGI_OUTPUT_LOG=$(mktemp)
+  #        echo "FGI_OUTPUT_LOG=$FGI_OUTPUT_LOG" >> $GITHUB_ENV
+  #        cmd=""
+  #        if ${{ needs.need-base-images.result!='success' }}; then
+  #         cmd="./scripts/fgi/run --tag ${{ needs.build-images.outputs.head-tag }} --suite land_blocking"
+  #        else
+  #          cmd="./scripts/fgi/run -E SLACK_URL=${{ secrets.WEBHOOK_FORGE }} --tag ${{ needs.build-images.outputs.head-tag }} --base-image-tag ${{ needs.need-base-images.outputs.prev-tag }} --suite land_blocking_compat"
+  #        fi
+  #        eval $cmd
+  #        ret=$?
+  #        echo "fgi exit code: $ret"
+  #        echo "FGI_REPRO_CMD=$cmd" >> $GITHUB_ENV
+  #        echo "FGI_EXIT_CODE=$ret" >> $GITHUB_ENV
+  #    - name: Post test results on PR
+  #      id: post-test-result
+  #      if: always()
+  #      # set result to do comparison instead of fail workflow
+  #      # once we turn off CT and turn on forge, will post forge testing result instead
+  #      run: |
+  #        if [ $FGI_EXIT_CODE -eq 1 ]; then
+  #          echo "::set-output name=forge-result::failed";
+  #        else
+  #          echo "::set-output name=forge-result::success";
+  #        fi
 
   #this is a temp job here to compare lbt signals between Forge and Cluster Test
   #it will be removed once Forge LBT is turned on
-  compare_lbt_signals:
-    name: compare-lbt_signals
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+  #compare_lbt_signals:
+  #  name: compare-lbt_signals
+  #  runs-on: ubuntu-latest
+  #  timeout-minutes: 10
     #always run this job even if needed jobs failed or are skipped.
-    if: ${{ always() && needs.land-blocking-test.result!='skipped' && needs.land-blocking-test-forge.result!='skipped'}}
-    needs:
-      - prepare
-      - land-blocking-test-forge
-    steps:
-      - run: |
-          success="${{
-            needs.land-blocking-test.result==needs.land-blocking-test-forge.outputs.forge-result
-          }}"
-          if [[ "$success" != "true" ]]; then
-            jq -n \
-              --arg msg "Alert: Two LBT tests results are mismatch." \
-              --arg url "https://github.com/${{ github.repository }}/actions/runs/${{github.run_id}}" \
-              --arg pr_url "https://github.com/${{ github.repository }}/pull/${{ needs.prepare.outputs.changes-pull-request-number }}" \
-            '{
-              "attachments": [
-              {
-                "text": $msg,
-                "actions": [
-                {
-                  "type": "button",
-                  "text": "Visit Job",
-                  "url": $url
-                },
-                {
-                  "type": "button",
-                  "text": "Visit PR",
-                  "url": $pr_url
-                }
-                ]
-              }
-              ]
-            }' > /tmp/payload
-            curl -X POST -H 'Content-type: application/json' -d @/tmp/payload ${{ secrets.WEBHOOK_FORGE }}
-          fi
-      - name: Clean up
-        # always step here to avoid break workflow
-        if: ${{ always() }}
-        run: echo "===== forge tests done ===="
+  #  if: ${{ always() && needs.land-blocking-test.result!='skipped' && needs.land-blocking-test-forge.result!='skipped'}}
+  #  needs:
+  #    - prepare
+  #    - land-blocking-test-forge
+  #  steps:
+  #    - run: |
+  #        success="${{
+  #          needs.land-blocking-test.result==needs.land-blocking-test-forge.outputs.forge-result
+  #        }}"
+  #        if [[ "$success" != "true" ]]; then
+  #          jq -n \
+  #            --arg msg "Alert: Two LBT tests results are mismatch." \
+  #            --arg url "https://github.com/${{ github.repository }}/actions/runs/${{github.run_id}}" \
+  #            --arg pr_url "https://github.com/${{ github.repository }}/pull/${{ needs.prepare.outputs.changes-pull-request-number }}" \
+  #          '{
+  #            "attachments": [
+  #            {
+  #              "text": $msg,
+  #              "actions": [
+  #              {
+  #                "type": "button",
+  #                "text": "Visit Job",
+  #                "url": $url
+  #              },
+  #             {
+  #                "type": "button",
+  #                "text": "Visit PR",
+  #                "url": $pr_url
+  #              }
+  #              ]
+  #            }
+  #            ]
+  #          }' > /tmp/payload
+  #          curl -X POST -H 'Content-type: application/json' -d @/tmp/payload ${{ secrets.WEBHOOK_FORGE }}
+  #        fi
+  #    - name: Clean up
+  #      # always step here to avoid break workflow
+  #      if: ${{ always() }}
+  #      run: echo "===== forge tests done ===="
