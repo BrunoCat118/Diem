@@ -419,7 +419,7 @@ jobs:
   non-rust-lint:
     runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 65
-    needs: [prepare, need-base-images ]
+    needs: prepare
     if: ${{ always() && needs.prepare.outputs.test-non-rust-lint == 'true'  }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
@@ -448,7 +448,7 @@ jobs:
   lint:
     runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 65
-    needs: [prepare, non-rust-lint]
+    needs: prepare
     if: ${{ always() && needs.prepare.outputs.any-changes-founds == 'true' }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
@@ -701,7 +701,7 @@ jobs:
   crypto-unit-test:
     runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 65
-    needs: [prepare, docker-compose-test]
+    needs: [prepare, unit-test]
     if: ${{ always() && needs.prepare.outputs.test-rust == 'true' }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
