@@ -481,7 +481,7 @@ jobs:
   unit-test:
     runs-on: [self-hosted, testnet-runner-r5]
     timeout-minutes: 120
-    needs: [prepare, lint]
+    needs: prepare
     if: ${{ always() && needs.prepare.outputs.test-rust == 'true' }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
@@ -668,6 +668,7 @@ jobs:
     needs: [prepare, e2e-test]
     if: ${{ always() && needs.prepare.outputs.test-docker-compose == 'true' }}
     steps:
+      - run: sudo rm -rf /home/ubuntu/actions-runner/_work/diem
       - uses: actions/checkout@v2.4.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
