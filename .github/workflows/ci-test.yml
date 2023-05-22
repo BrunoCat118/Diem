@@ -663,7 +663,7 @@ jobs:
   #       cargo test -p testcases --test forge-local-compatibility
 
   docker-compose-test:
-    runs-on: testnet-runner-ubuntu
+    runs-on: testnet-runner-ubuntu-2x-1
     timeout-minutes: 65
     needs: [prepare, codegen-unit-test]
     if: ${{ always() && needs.prepare.outputs.test-docker-compose == 'true' }}
@@ -864,19 +864,13 @@ jobs:
   build-benchmarks:
     runs-on: testnet-runner-ubuntu
     timeout-minutes: 30
-    needs: [prepare, docker-compose-test]
+    needs: [prepare, codegen-unit-test]
     if: ${{ always() && needs.prepare.outputs.test-rust == 'true' }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
       volumes:
         - "${{github.workspace}}:/opt/git/diem"
     steps:
-      - name: Chown user
-        run: |
-          sudo chown -R $USER:$USER $GITHUB_WORKSPACE
-      - name: docker prune
-        run: |
-          docker system prune -f
       - run: git config --global --add safe.directory '*'
       - uses: actions/checkout@v2.4.0
         with:
