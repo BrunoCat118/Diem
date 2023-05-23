@@ -256,7 +256,7 @@ jobs:
   need-base-images:
     runs-on: testnet-runner-ubuntu
     timeout-minutes: 65
-    needs: [prepare, build-images ]
+    needs: prepare
     if: ${{ always() && github.event_name == 'push' && needs.prepare.outputs.build-images == 'true' && needs.prepare.outputs.need-base-images == 'true' }}
     outputs:
       # The last matrix build to succeed will set the output.   Hilarious.
@@ -665,7 +665,7 @@ jobs:
   docker-compose-test:
     runs-on: testnet-runner-ubuntu-2x-1
     timeout-minutes: 65
-    needs: [prepare, codegen-unit-test]
+    needs: prepare
     if: ${{ always() && needs.prepare.outputs.test-docker-compose == 'true' }}
     steps:
       - name: Chown user
@@ -770,7 +770,7 @@ jobs:
   helm-test:
     runs-on: testnet-runner-ubuntu
     timeout-minutes: 65
-    needs: [prepare, crypto-unit-test]
+    needs: prepare
     if: ${{ always() && needs.prepare.outputs.test-helm == 'true' }}
     steps:
       - run: git config --global --add safe.directory '*'
@@ -846,7 +846,7 @@ jobs:
     name: API specification test
     runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 65
-    needs: [prepare, helm-test]
+    needs: prepare
     if: ${{ always() && needs.prepare.outputs.test-api-spec == 'true' }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
@@ -864,7 +864,7 @@ jobs:
   build-benchmarks:
     runs-on: testnet-runner-ubuntu
     timeout-minutes: 30
-    needs: [prepare, codegen-unit-test]
+    needs: prepare
     if: ${{ always() && needs.prepare.outputs.test-rust == 'true' }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
@@ -893,7 +893,7 @@ jobs:
   build-dev:
     runs-on: [self-hosted, testnet-runner]
     timeout-minutes: 65
-    needs: [prepare, build-benchmarks]
+    needs: prepare
     if: ${{ always() && needs.prepare.outputs.test-rust == 'true' }}
     container:
       image: ghcr.io/diem/diem_build_environment:${{ needs.prepare.outputs.changes-target-branch }}
@@ -928,7 +928,7 @@ jobs:
   developers-site:
     name: run-developer-site-build
     runs-on: ubuntu-20.04
-    needs: [prepare, build-dev]
+    needs: prepare
     if: ${{ always() && needs.prepare.outputs.test-website-build == 'true' }}
     steps:
       - run: git config --global --add safe.directory '*'
