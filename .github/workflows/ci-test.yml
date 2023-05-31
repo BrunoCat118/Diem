@@ -193,6 +193,12 @@ jobs:
         target_images:
           [client faucet cluster-test forge, init tools validator validator-tcb]
     steps:
+      - name: Chown user
+        run: |
+          sudo chown -R $USER:$USER $GITHUB_WORKSPACE
+      - name: docker prune
+        run: |
+          docker system prune -f
       - uses: actions/checkout@v2.4.0
         with:
           fetch-depth: 0 #get all the history!!!
@@ -262,6 +268,12 @@ jobs:
       # The last matrix build to succeed will set the output.   Hilarious.
       prev-tag: ${{ steps.build-extra-images.outputs.prev-tag }}
     steps:
+      - name: Chown user
+        run: |
+          sudo chown -R $USER:$USER $GITHUB_WORKSPACE
+      - name: docker prune
+        run: |
+          docker system prune -f
       - uses: actions/checkout@v2.4.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
