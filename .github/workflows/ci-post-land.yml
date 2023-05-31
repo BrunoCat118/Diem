@@ -86,7 +86,7 @@ jobs:
     needs: prepare
     environment:
       name: Sccache
-    runs-on: testnet-runner-ubuntu
+    runs-on: testnet-runner-ubuntu-2x-2
     container:
       image: diem/build_environment:${{ needs.prepare.outputs.changes-target-branch }}
       volumes:
@@ -161,6 +161,12 @@ jobs:
       IMAGE_NAME: ${{ github.repository }}_build_environment
       IMAGE_TAG: ${{ needs.prepare.outputs.changes-target-branch }}
     steps:
+      - name: Chown user
+        run: |
+          sudo chown -R $USER:$USER $GITHUB_WORKSPACE
+      - name: docker prune
+        run: |
+          docker system prune -f
       - uses: actions/checkout@v2.4.0
         with:
           # This ensures that the tip of the PR is checked out instead of the merge between the base ref and the tip
@@ -262,6 +268,12 @@ jobs:
       name: Docker
       url: https://hub.docker.com/u/diem
     steps:
+      - name: Chown user
+        run: |
+          sudo chown -R $USER:$USER $GITHUB_WORKSPACE
+      - name: docker prune
+        run: |
+          docker system prune -f
       - uses: actions/checkout@v2.4.0
         with:
           fetch-depth: 0 #get all the history!!!
