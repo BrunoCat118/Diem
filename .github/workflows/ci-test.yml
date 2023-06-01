@@ -687,6 +687,9 @@ jobs:
       - name: Chown user
         run: |
           sudo chown -R $USER:$USER $GITHUB_WORKSPACE
+      - name: docker stop
+        run: |
+          docker stop $(docker ps -a -q)
       - name: docker prune
         run: |
           docker system prune -f
