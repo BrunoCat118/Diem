@@ -229,7 +229,7 @@ jobs:
           key_password: ${{ secrets.ENV_DOCKERHUB_KEY_PASSWORD }}
       - name: pre-release docker images
         run: |
-          BRANCH="${{ steps.changes.outputs.changes-target-branch }}"
+          BRANCH="${{ env.GITHUB_REF_NAME }}"
           echo Target Images: ${{ matrix.target_images }}
           IFS=' ' read -ra TARGET_IMAGES <<< "${{ matrix.target_images }}"
           success=0
