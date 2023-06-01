@@ -235,6 +235,10 @@ jobs:
           success=0
           tmpfile=$(mktemp)
           echo "Failed to push:" > "${tmpfile}"
+          echo "***************************"
+          echo $BRANCH
+          echo $TARGET_IMAGES
+          echo "***************************"
           for image in "${TARGET_IMAGES[@]}"; do
             docker/build_push.sh -u -p -b ${BRANCH} -n "$image" || success=$(echo "$image" >> "${tmpfile}"; echo 1)
           done
