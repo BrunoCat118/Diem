@@ -692,7 +692,10 @@ jobs:
           docker stop $(docker ps -a -q) || echo "no containers to stop"
       - name: docker prune
         run: |
-          docker system prune -f
+          docker system prune -f || echo "docker system already clean"
+      - name: remove docker volumes
+        run: |
+          docker volume prune --all || echo "no volumes to remove"
       - uses: actions/checkout@v2.4.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
