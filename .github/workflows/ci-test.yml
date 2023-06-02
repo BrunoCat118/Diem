@@ -720,7 +720,8 @@ jobs:
           export PATH="$HOME/.cargo/bin:$PATH"
           source "$HOME/.cargo/env"
       - name: run sdk-compatibility tests from latest
-        run: cd sdk/compatibility && cargo test -- --include-ignored
+        run: |
+          export PATH="$HOME/.cargo/bin:$PATH" && source "$HOME/.cargo/env" && cd sdk/compatibility && cargo test -- --include-ignored
         env:
           JSON_RPC_URL: "http://127.0.0.1:8080"
           FAUCET_URL: "http://127.0.0.1:8000"
