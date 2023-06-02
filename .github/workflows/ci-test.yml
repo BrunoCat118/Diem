@@ -704,7 +704,7 @@ jobs:
           sudo apt --assume-yes update
           sudo apt --assume-yes install expect
           sudo apt --assume-yes install build-essential
-          sudo apt --assume-yes install openssl
+          sudo apt --assume-yes install openssl pkg-config libssl-dev
       - name: build validator docker image
         run: docker/diem-build.sh docker/validator/Dockerfile diem/validator:test
       - name: build faucet image
