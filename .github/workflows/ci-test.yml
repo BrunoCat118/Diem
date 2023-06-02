@@ -695,7 +695,7 @@ jobs:
           docker system prune -f || echo "docker system already clean"
       - name: remove docker volumes
         run: |
-          docker volume prune --all || echo "no volumes to remove"
+          docker volume prune --all -f || echo "no volumes to remove"
       - uses: actions/checkout@v2.4.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
