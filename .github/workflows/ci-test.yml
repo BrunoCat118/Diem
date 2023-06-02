@@ -716,7 +716,8 @@ jobs:
           IMAGE_TAG: "test"
       - name: install cargo
         run: |
-          curl https://sh.rustup.rs -sSf | sh
+          curl https://sh.rustup.rs -sSf | sh -s -- -y
+          source "$HOME/.cargo/env"
       - name: run sdk-compatibility tests from latest
         run: cd sdk/compatibility && cargo test -- --include-ignored
         env:
