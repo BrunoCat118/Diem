@@ -714,6 +714,9 @@ jobs:
         env:
           # this overrides the default docker tag of "testnet"
           IMAGE_TAG: "test"
+      - name: install cargo
+        run: |
+          curl https://sh.rustup.rs -sSf | sh
       - name: run sdk-compatibility tests from latest
         run: cd sdk/compatibility && cargo test -- --include-ignored
         env:
