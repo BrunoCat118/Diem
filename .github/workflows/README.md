@@ -23,7 +23,7 @@ Below is a list of all actions implemented in this directory:
 - name: Chown user
   run: |
     sudo chown -R $USER:$USER $GITHUB_WORKSPACE
-* adding steps to cleanup workspaces in self-hosted runner using ``` docker system prune ``` command
+* adding steps to cleanup workspaces in self-hosted runner using ``` docker system prune ``` command and ``` docker volume prune --all -f ```
 
 #### ci-post-land fix
 * adding the runs-ons section of jobs to self-hosted runner names
