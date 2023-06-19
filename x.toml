@@ -84,7 +84,8 @@ allowed = [
     "clippy::question-mark",
     "clippy::let-underscore-future",
     "clippy::implicit-saturating-sub",
-    "clippy::box-default"
+    "clippy::box-default",
+    "clippy::useless-conversion",
 ]
 warn = [
     "clippy::wildcard_dependencies",
